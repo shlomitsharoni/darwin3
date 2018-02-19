@@ -277,6 +277,10 @@ C--   Initialise float position
       ENDIF
 #endif /* ALLOW_FLT */
 
+#ifdef ALLOW_SUN
+      CALL SUN_INIT_VARIA( myThid )
+#endif /* ALLOW_SUN */
+
 #ifdef ALLOW_PTRACERS
 # ifndef ALLOW_AUTODIFF
       IF ( usePTRACERS ) THEN
