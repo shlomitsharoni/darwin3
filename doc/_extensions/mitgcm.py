@@ -23,10 +23,13 @@ from sphinx.util.nodes import split_explicit_title
 def setup(app):
     app.add_role(
         'filelink',
-        filelink('https://github.com/MITgcm/MITgcm/blob/master/%s'))
+        filelink('https://github.com/darwinproject/darwin3/blob/darwin/%s'))
+#        filelink('https://gud.mit.edu/MITgcm/source/%s?v=darwin3'))
     app.add_role(
         'varlink',
-        autolink('http://mitgcm.org/lxr/ident/MITgcm?_i=%s'))
+#        autolink('http://mitgcm.org/lxr/ident/MITgcm?_i=%s'))
+        autolink('https://gud.mit.edu/MITgcm/ident?v=darwin3;i=%s'))
+
 
 def filelink(pattern):
     """
