@@ -17,7 +17,6 @@ C     !USES:
 #include "SIZE.h"
 #include "GRID.h"
 #include "PARAMS.h"
-#include "EXF_PARAM.h"
 #include "EXF_FIELDS.h"
 #include "PTRACERS_SIZE.h"
 #include "PTRACERS_PARAMS.h"
@@ -56,17 +55,10 @@ C     !LOCAL VARIABLES:
       DO bj=myByLo(mythid),myByHi(myThid)
        DO bi=myBxLo(mythid),myBxHi(myThid)
         DO j=1-OLy,sNy+OLy
-        DO i=1-OLx,sNx+OLx
-         AtmosP(i,j,bi,bj) = 1.0 _d 0
-        ENDDO
-        ENDDO
-        IF (pCO2File .EQ. ' ') THEN
-         DO j=1-OLy,sNy+OLy
          DO i=1-OLx,sNx+OLx
-          atmospCO2(i,j,bi,bj) = darwin_atmos_pCO2
+          AtmosP(i,j,bi,bj) = 1.0 _d 0
          ENDDO
-         ENDDO
-        ENDIF
+        ENDDO
        ENDDO
       ENDDO
 #endif

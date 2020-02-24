@@ -56,7 +56,6 @@
      &    darwin_read_phos,
      &    darwin_chlInitBalanced,
      &    darwin_chlIter0,
-     &    phymin,
      &    katten_w,
      &    katten_chl,
      &    parfrac,
@@ -98,7 +97,6 @@
      &    wPIC_sink,
      &    Kdissc,
 #ifdef DARWIN_ALLOW_CARBON
-     &    darwin_atmos_pCO2,
      &    R_OP,
      &    R_OC,
      &    m3perkg,
@@ -142,24 +140,20 @@
      &    hillnumGraz,
      &    hollexp,
      &    phygrazmin,
-     &    pmaxPON,
-     &    pmaxDON,
-     &    pcoefO2,
      &    pmaxDIN,
-     &    ksatPOM,
-     &    ksatDOM,
+     &    pcoefO2,
      &    ksatDIN,
      &    alpha_hydrol,
      &    yod,
      &    yoe,
      &    ynd,
      &    yne,
-     &    fnh4,
-     &    ynh4,
-     &    yonh4,
-     &    fno2,
-     &    yno2,
-     &    yono2,
+C     &    fnh4,
+C     &    ynh4,
+C     &    yonh4,
+C     &    fno2,
+C     &    yno2,
+C     &    yono2,
      &    depthdenit
 
 #ifdef DARWIN_ALLOW_CDOM
@@ -195,6 +189,8 @@
      &    darwin_lambda_aCDOM,
      &    darwin_Sdom,
      &    darwin_aCDOM_fac,
+     &    darwin_rCDOM,
+     &    darwin_RPOC,
      &    darwin_allomSpectra,
      &    darwin_aCarCell,
      &    darwin_bCarCell,
@@ -285,11 +281,10 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       darwin_read_phos = .FALSE.
       darwin_chlInitBalanced = .FALSE.
       darwin_chlIter0 = 0
-      phymin = 120 _d -20
       katten_w = 4. _d -2
       katten_chl = 4. _d -2
       parfrac = 0.4 _d 0
-      parconv = 1. _d 0/0.2174 _d 0
+      parconv = 1 _d 0/0.2174 _d 0
       tempnorm = 0.3 _d 0
       TempAeArr = -4000.0 _d 0
       TemprefArr = 293.15 _d 0
@@ -304,33 +299,32 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       scav_exp = 0.58 _d 0
       scav_R_POPPOC = 1.1321 _d -4
       depthfesed = -1.0 _d 0
-      fesedflux = 1.0 _d 0 * 1.0 _d -3 / pday
-      fesedflux_pcm = 0.68 _d 0 * 1.0 _d -3
+      fesedflux = 1 _d -3 / pday
+      fesedflux_pcm = 0.68 _d -3
       R_CP_fesed = 106 _d 0
-      Knita = 1.0 _d 0/(.50 _d 0*pday)
-      Knitb = 1.0 _d 0/(10.0 _d 0*pday)
-      PAR_oxi = 10. _d 0
-      Kdoc = 1.0 _d 0/(100.0 _d 0*pday)
-      Kdop = 1.0 _d 0/(100.0 _d 0*pday)
-      Kdon = 1.0 _d 0/(100.0 _d 0*pday)
-      KdoFe = 1.0 _d 0/(100.0 _d 0*pday)
-      KPOC = 1.0 _d 0/(50.0 _d 0*pday)
+      Knita = 1 _d 0/(0.5 _d 0*pday)
+      Knitb = 1 _d 0/(10 _d 0*pday)
+      PAR_oxi = 10 _d 0
+      Kdoc = 1 _d 0/(100 _d 0*pday)
+      Kdop = 1 _d 0/(100 _d 0*pday)
+      Kdon = 1 _d 0/(100 _d 0*pday)
+      KdoFe = 1 _d 0/(100 _d 0*pday)
+      KPOC = 1 _d 0/(50 _d 0*pday)
       KPOP = KPOC
       KPON = KPOC
       KPOFe = KPOC
-      KPOSi = 1.0 _d 0/(300.0 _d 0*pday)
-      wC_sink = 10.0 _d 0/pday
+      KPOSi = 1 _d 0/(300 _d 0*pday)
+      wC_sink = 10 _d 0/pday
       wP_sink = wC_sink
       wN_sink = wC_sink
       wFe_sink = wC_sink
       wSi_sink = wC_sink
-      wPIC_sink = 15.0 _d 0/pday
-      Kdissc = 1.0 _d 0/(300.0 _d 0*pday)
+      wPIC_sink = 15 _d 0/pday
+      Kdissc = 1 _d 0/(300 _d 0*pday)
 #ifdef DARWIN_ALLOW_CARBON
-      darwin_atmos_pCO2 = 278 _d -6
       R_OP = 170 _d 0
       R_OC = 170 _d 0/120.0 _d 0
-      m3perkg = 1. _d 0 / 1024.5 _d 0
+      m3perkg = 1 _d 0 / 1024.5 _d 0
       surfSaltMinInit = 4.0 _d 0
       surfSaltMaxInit = 50.0 _d 0
       surfTempMinInit = -4.0 _d 0
@@ -357,6 +351,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       surfSiMax = 500.0 _d 0
 #endif
       diaz_ini_fac = 1 _d 0
+C     O2crit from Lipschultz et al 1990, DSR 37, 1513-1541:
       O2crit = 6.0 _d 0
       denit_NP = 120.0 _d 0
       denit_NO3 = 104.0 _d 0
@@ -371,24 +366,20 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       hillnumGraz = 1.0 _d 0
       hollexp = 1.0 _d 0
       phygrazmin = 120 _d -10
-      pmaxPON = 5/pday
-      pmaxDON = 5/pday
-      pcoefO2 = 290.820 _d 0/pday
+      pcoefO2 = 290.82 _d 0/pday
       pmaxDIN = 20/pday
-      ksatPOM = 1 _d 0
-      ksatDOM = 1 _d 0
       ksatDIN = 0.01 _d 0
       alpha_hydrol = 2.0 _d 0
       yod = 0.2 _d 0
       yoe = yod/467*4/(1-yod)*106 _d 0
       ynd = 0.16 _d 0
       yne = ynd/467*5/(1-ynd)*106 _d 0
-      fnh4 = 0.1 _d 0
-      ynh4 = 1/(16+467/6/fnh4)*106 _d 0
-      yonh4 = fnh4/467*4/(1-fnh4)*106 _d 0
-      fno2 = 0.1 _d 0
-      yno2 = 1/(16+563/2/fno2)*106 _d 0
-      yono2 = fno2/563*4/(1-fno2)*106 _d 0
+C      fnh4 = 0.1 _d 0
+C      ynh4 = 1/(16+467/6/fnh4)*106 _d 0
+C      yonh4 = fnh4/467*4/(1-fnh4)*106 _d 0
+C      fno2 = 0.1 _d 0
+C      yno2 = 1/(16+563/2/fno2)*106 _d 0
+C      yono2 = fno2/563*4/(1-fno2)*106 _d 0
       depthdenit = 185.0 _d 0
 
       READ(UNIT=iUnit, NML=DARWIN_PARAMS)
@@ -438,7 +429,10 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       darwin_lambda_aCDOM = 450.0 _d 0
       darwin_Sdom = 0.014 _d 0
       darwin_aCDOM_fac = 0.2 _d 0
+      darwin_rCDOM = 0.0 _d 0
+      darwin_RPOC = 0.0 _d 0
       darwin_allomSpectra = .FALSE.
+C     from Montagnes et al 1994:
       darwin_aCarCell = 0.109 _d -9
       darwin_bCarCell = 0.991 _d 0
       darwin_absorpSlope = -0.075 _d 0

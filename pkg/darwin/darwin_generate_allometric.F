@@ -291,7 +291,7 @@ c EXCRETION
         kexcsi(jp) = a_kexcsi(g) * biovol(jp)**b_kexcsi(g)
         kexcfe(jp) = a_kexcfe(g) * biovol(jp)**b_kexcfe(g)
 
-        IF (DARWIN_effective_ksat) THEN
+        IF (darwin_effective_ksat) THEN
 c        compute effective half sat for uptake of non-quota elements
 C        we compute it for NO3 and scale for others
          IF (darwin_select_kn_allom.EQ.1) THEN
@@ -342,8 +342,8 @@ C real parameters
           yieldNO3(jp) = yne
         ENDIF
 
-        ksatPON(jp)  = ksatPOM
-        ksatDON(jp)  = ksatDOM
+        ksatPON(jp)  = a_ksatPON(g)
+        ksatDON(jp)  = a_ksatDON(g)
         ksatPOC(jp)  = ksatPON(jp)/R_NC(jp)
         ksatPOP(jp)  = ksatPON(jp)/R_NC(jp)*R_PC(jp)
         ksatPOFe(jp) = ksatPON(jp)/R_NC(jp)*R_FeC(jp)
@@ -450,7 +450,7 @@ C assign grazing preference according to predator/prey radius ratio
 C           grazing size preference ratio
             pp_opt = a_ppOpt(gz) * biovol(jz)**b_ppOpt(gz)
 C           standard deviation of size preference
-            pp_sig = a_pp_sig(gz)
+            pp_sig = a_ppSig(gz)
             prd_pry = biovol(jz) / biovol(jp)
             palat(jp,jz) =
      &        EXP(-(LOG(prd_pry/pp_opt)**2) / (2*pp_sig**2))

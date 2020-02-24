@@ -41,14 +41,14 @@
      &    combNO,
      &    isPrey,
      &    isPred,
+     &    tempMort,
+     &    tempMort2,
+     &    tempGraz,
      &    Xmin,
      &    amminhib,
      &    acclimtimescl,
      &    mort,
      &    mort2,
-     &    tempMort,
-     &    tempMort2,
-     &    tempGraz,
      &    ExportFracMort,
      &    ExportFracMort2,
      &    ExportFracExude,
@@ -213,8 +213,12 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
 #ifdef ALLOW_RADTRANS
       DO jp = 1, nplank
-       chl2cmin(jp)=chl2cmax(jp)/
-     &   (1+(chl2cmax(jp)* alpha_mean(jp) *2000. _d 0)/(2*pcmax(jp)))
+       IF (pcmax(jp) .GT. 0 _d 0) THEN
+         chl2cmin(jp)=chl2cmax(jp)/
+     &     (1+(chl2cmax(jp)* alpha_mean(jp) *2000. _d 0)/(2*pcmax(jp)))
+       ELSE
+         chl2cmin(jp) = 0 _d 0
+       ENDIF
       ENDDO
 #else
       DO jp = 1, nPhoto
@@ -255,7 +259,9 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
         ENDIF
 #endif
        ELSE
-        PCmax(jp) = 0 _d 0
+        IF (bacttype(jp) .EQ. 0) THEN
+         PCmax(jp) = 0 _d 0
+        ENDIF
         vmaxPO4(jp) = 0 _d 0
         vmaxNO3(jp) = 0 _d 0
         vmaxNO2(jp) = 0 _d 0
@@ -367,7 +373,6 @@ C re-compute isPrey and isPred to speed up grazing loops
         combNO(jp) = DARWIN_UNUSED
         amminhib(jp) = DARWIN_UNUSED
         acclimtimescl(jp) = DARWIN_UNUSED
-        PCmax(jp) = DARWIN_UNUSED
 
         phytoTempCoeff(jp) = DARWIN_UNUSED
         phytoTempExp1(jp) = DARWIN_UNUSED

@@ -8,8 +8,15 @@ C #include RADTRANS_PARAMS.h
 C     !DESCRIPTION:
 C Contains parameters for the radtrans package
 C
-C Requires: EXF_PARAM.h
 C Requires: RADTRANS_SIZE.h
+
+C  RT_loadFieldsEarly :: whether forcing fields need to be read early
+C                        for initialization
+
+      COMMON/radtrans_forcing_params_l/
+     &    RT_loadFieldsEarly
+
+      LOGICAL RT_loadFieldsEarly
 
 C Radtrans forcing parameters work just like the parameters in the exf
 C package.  The forcing files are as follows:
@@ -20,20 +27,15 @@ C   RT_EsFile  :: downward diffuse irradiance below sea surface [W/m^2]
 C                 per waveband, not taking into account ice cover
 C   RT_iceFile :: fraction of the sea surface covered by ice
 C                 used to reduce incoming irradiances
-
-      COMMON/radtrans_forcing_params_l/
-     &    useRTYearlyFields,
-     &    RT_loadFieldsEarly
-
-      LOGICAL useRTYearlyFields
-      LOGICAL RT_loadFieldsEarly
+C
+C Parameters for interpolation are in RADTRANS_EXF_PARAMS.h
 
       COMMON/radtrans_forcing_c/
      &    RT_E_mask, RT_EdFile, RT_EsFile
       COMMON/radtrans_forcing_i/
      &    RT_E_startdate1, RT_E_startdate2
       COMMON/radtrans_forcing_r/
-     &    RT_E_startTime, RT_E_period,
+     &    RT_E_startTime, RT_E_period, RT_E_RepCycle,
      &    RT_Ed_const, RT_Es_const,
      &    RT_Ed_exfremo_intercept, RT_Es_exfremo_intercept,
      &    RT_Ed_exfremo_slope, RT_Es_exfremo_slope,
@@ -45,6 +47,7 @@ C                 used to reduce incoming irradiances
       INTEGER RT_E_startdate2
       _RL RT_E_StartTime
       _RL RT_E_period
+      _RL RT_E_RepCycle
       _RL RT_Ed_const(nlam)
       _RL RT_Es_const(nlam)
       _RL RT_Ed_exfremo_intercept(nlam)
@@ -54,25 +57,13 @@ C                 used to reduce incoming irradiances
       _RL RT_inscal_Ed(nlam)
       _RL RT_inscal_Es(nlam)
 
-#ifdef USE_EXF_INTERPOLATION
-      COMMON/radtrans_interp_i/
-     &    RT_E_nlon, RT_E_nlat, RT_E_interpMethod
-      COMMON/radtrans_interp_r/
-     &    RT_E_lon0, RT_E_lat0, RT_E_lon_inc, RT_E_lat_inc
-      INTEGER RT_E_interpMethod, RT_E_nlon, RT_E_nlat
-      _RL  RT_E_lon0
-      _RL  RT_E_lat0
-      _RL  RT_E_lon_inc
-      _RL  RT_E_lat_inc(MAX_LAT_INC)
-#endif
-
       COMMON/RT_forcing_ice_c/
      &    RT_icemask, RT_icefile
       COMMON/RT_forcing_ice_i/
      &    RT_icestartdate1, RT_icestartdate2
       COMMON/RT_forcing_ice_r/
      &    RT_iceStartTime,
-     &    RT_iceperiod, RT_iceconst,
+     &    RT_iceperiod, RT_iceRepCycle, RT_iceconst,
      &    RT_ice_exfremo_intercept, RT_ice_exfremo_slope,
      &    RT_inscal_ice
       CHARACTER*128  RT_icefile
@@ -81,22 +72,11 @@ C                 used to reduce incoming irradiances
       INTEGER RT_icestartdate2
       _RL RT_iceStartTime
       _RL RT_iceperiod
+      _RL RT_iceRepCycle
       _RL RT_iceconst
       _RL RT_ice_exfremo_intercept
       _RL RT_ice_exfremo_slope
       _RL RT_inscal_ice
-
-#ifdef USE_EXF_INTERPOLATION
-      COMMON/RT_interp_ice_i/
-     &    RT_ice_nlon, RT_ice_nlat, RT_ice_interpMethod
-      COMMON/RT_interp_ice_r/
-     &    RT_ice_lon0, RT_ice_lat0, RT_ice_lon_inc, RT_ice_lat_inc
-      INTEGER RT_ice_interpMethod, RT_ice_nlon, RT_ice_nlat
-      _RL  RT_ice_lon0
-      _RL  RT_ice_lat0
-      _RL  RT_ice_lon_inc
-      _RL  RT_ice_lat_inc(MAX_LAT_INC)
-#endif
 
 C other run-time parameters
 C

@@ -73,6 +73,13 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
+      WRITE(diagName,'(A)')'DenitN'
+      WRITE(diagTitle,'(A)')'Nitrogen loss due to denitrification'
+      diagUnits = 'mmol N/m^3/s    '
+      diagCode  = 'SMRP    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
 #ifdef ALLOW_RADTRANS
       DO j = 1, nlam
         WRITE(diagName,'(A,I3.3)')'PAR',j
@@ -295,6 +302,13 @@ C-      use units & names from data.ptracers :
      I             diagName, diagCode, diagUnits, diagTitle, 0, myThid )
       ENDDO
 
+      WRITE(diagName,'(A)')'sfcSolFe'
+      WRITE(diagTitle,'(A)')'Soluble iron input at sea surface'
+      diagUnits = 'mmol Fe/m2/s    '
+      diagCode  = 'SM P    L1      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
 #ifdef DARWIN_ALLOW_CARBON
       WRITE(diagName,'(A)')'pH'
       WRITE(diagTitle,'(A)')'pH'
@@ -341,7 +355,7 @@ C-      use units & names from data.ptracers :
 
       WRITE(diagName,'(A)')'gO2surf'
       WRITE(diagTitle,'(A)')'Tendency of O2 due to air-sea exch'
-      diagUnits = 'mmol O/m3/s     '
+      diagUnits = 'mmol O2/m3/s    '
       diagCode  = 'SM      L1      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )

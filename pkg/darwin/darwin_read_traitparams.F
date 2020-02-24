@@ -15,6 +15,7 @@
 #ifdef ALLOW_DARWIN
 
       NAMELIST/DARWIN_RANDOM_PARAMS/
+     &    phymin,
      &    Smallgrow,
      &    Biggrow,
      &    Smallgrowrange,
@@ -117,7 +118,7 @@
 
       NAMELIST/DARWIN_TRAIT_PARAMS/
      &    darwin_sort_biovol,
-     &    DARWIN_effective_ksat,
+     &    darwin_effective_ksat,
      &    darwin_select_kn_allom,
      &    logvolbase,
      &    logvolinc,
@@ -173,6 +174,8 @@
      &    a_amminhib,
      &    a_acclimtimescl,
      &    a_acclimtimescl_denom,
+     &    a_ksatPON,
+     &    a_ksatDON,
      &    a_grazemax,
      &    a_grazemax_denom,
      &    b_grazemax,
@@ -184,9 +187,9 @@
      &    a_bioswim,
      &    a_bioswim_denom,
      &    b_bioswim,
-     &    a_pp_sig,
-     &    a_pp_opt,
-     &    b_pp_opt,
+     &    a_ppSig,
+     &    a_ppOpt,
+     &    b_ppOpt,
      &    a_PCmax,
      &    a_PCmax_denom,
      &    b_PCmax,
@@ -273,6 +276,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C     DARWIN_RANDOM_PARAMS
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
+      phymin = 120 _d -20
       Smallgrow = .7 _d 0
       Biggrow = .4 _d 0
       Smallgrowrange = 0. _d 0
@@ -380,7 +384,7 @@ C     DARWIN_TRAIT_PARAMS
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
       darwin_sort_biovol = .FALSE.
-      DARWIN_effective_ksat = .FALSE.
+      darwin_effective_ksat = .FALSE.
       darwin_select_kn_allom = 2
       logvolbase = 0.0 _d 0
       logvolinc = 0.0 _d 0
@@ -408,6 +412,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       grp_tempMort = 1
       grp_tempMort2 = 1
       grp_tempGraz = 1
+C     used to be 120D-20 for phyto
       a_Xmin = 0 _d 0
       a_R_NC = 16.0 _d 0/120.0 _d 0
       a_R_PC = 1 _d 0/120.0 _d 0
@@ -426,7 +431,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       a_phytoTempOptimum = 2. _d 0
       a_phytoDecayPower = 4. _d 0
 #ifdef DARWIN_ALLOW_GEIDER
-      a_mQyield = 7.5 _d -5
+      a_mQyield = 75 _d -6
       a_chl2cmax = .3 _d 0
       a_inhibGeider = 0 _d 0
 #else
@@ -436,9 +441,12 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       a_amminhib = 4.6 _d 0
       a_acclimtimescl = 1 _d 0/(20*pday)
       a_acclimtimescl_denom = 1 _d 0
+      a_ksatPON = 1 _d 0
+      a_ksatDON = 1 _d 0
       a_grazemax = 21.9 _d 0 / pday
       a_grazemax_denom = 1. _d 0
       b_grazemax = -0.16 _d 0
+C     used to be 22.4
       a_kgrazesat = 1.00 _d 0
       b_kgrazesat = 0.00 _d 0
       a_biosink = 0.28 _d -1 / pday
@@ -447,17 +455,19 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       a_bioswim = 0.00 _d 0 / pday
       a_bioswim_denom = 1. _d 0
       b_bioswim = 0.18 _d 0
-      a_pp_sig = 1.0 _d 0
-      a_pp_opt = 1024. _d 0
-      b_pp_opt = 0.00 _d 0
+      a_ppSig = 1.0 _d 0
+      a_ppOpt = 1024. _d 0
+      b_ppOpt = 0.00 _d 0
       a_PCmax = 1.00 _d 0 / pday
       a_PCmax_denom = 1. _d 0
       b_PCmax = -0.15 _d 0
       a_qcarbon = 1.80 _d -11
       b_qcarbon = 0.94 _d 0
+C     was 3.21 _d -11 / pday
       a_respRate_c = 0.00 _d 0
       a_respRate_c_denom = 1. _d 0
       b_respRate_c = 0.93 _d 0
+C     was 0.32 _d -1 / pday
       a_kexcC = 0.00 _d 0
       b_kexcC = -0.33 _d 0
       a_vmaxNO3 = 0.51 _d 0 / pday
@@ -469,6 +479,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       b_Qnmin = -0.17 _d 0
       a_Qnmax = 0.25 _d 0
       b_Qnmax = -0.13 _d 0
+C     was 0.24 _d -1 / pday
       a_kexcN = 0.00 _d 0
       b_kexcN = -0.33 _d 0
       a_vmaxNO2 = 0.51 _d 0 / pday
@@ -502,25 +513,33 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       b_vmaxSiO2 = -0.27 _d 0
       a_ksatSiO2 = 0.24 _d -1
       b_ksatSiO2 = 0.27 _d 0
+C     was 0.084
       a_Qsimin = 2.00 _d -3
+C     was -0.17
       b_Qsimin = 0.00 _d 0
+C     was 0.3
       a_Qsimax = 4.00 _d -3
+C     was -0.13
       b_Qsimax = 0.00 _d 0
       a_kexcSi = 0.00 _d 0  / pday
       b_kexcSi = 0.00 _d 0
+C     was 96.2 _d -6 / pday
       a_vmaxFeT = 14.0 _d -6 / pday
       a_vmaxFeT_denom = 1.0 _d 0
       b_vmaxFeT = -0.27 _d 0
+C     was 32.1 _d -6
       a_ksatFeT = 80.0 _d -6
       b_ksatFeT = 0.27 _d 0
+C     [Mongin 2006]
       a_Qfemin = 1.50 _d -6
       b_Qfemin = 0.00 _d 0
+C     [Mongin 2006]
       a_Qfemax = 80.0 _d -6
       b_Qfemax = 0.00 _d 0
       a_kexcFe = 0.00 _d 0  / pday
       b_kexcFe = 0.00 _d 0
       grp_ExportFracPreyPred = 0.5 _d 0
-      grp_ass_eff = 0.70 _d 0
+      grp_ass_eff = 0.7 _d 0
 
       READ(UNIT=iUnit, NML=DARWIN_TRAIT_PARAMS)
 

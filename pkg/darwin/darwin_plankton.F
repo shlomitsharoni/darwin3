@@ -438,8 +438,8 @@ c phosphorus
         uptakePO4 = vmaxPO4(j) * limitp * regQ *
      &                       uptakeTempFunc * X(j)
 c       normalized Droop limitation
-        limitp = MAX(0., MIN(1., (1.0-Qpmin(j)/Qp(j))/
-     &                            (1.0-Qpmin(j)/Qpmax(j))))
+        limitp = MIN(1., (1.0-Qpmin(j)/MAX(Qpmin(j), Qp(j)))/
+     &                   (1.0-Qpmin(j)/Qpmax(j)))
 #endif
 
 c silica
@@ -474,8 +474,8 @@ c iron
      &                       uptakeTempFunc * X(j)
 
 c       normalized Droop limitation
-        limitfe = MAX(0., MIN(1., (1.0-Qfemin(j)/Qfe(j))/
-     &                            (1.0-Qfemin(j)/Qfemax(j))))
+        limitfe = MIN(1., (1.0-Qfemin(j)/MAX(Qfemin(j), Qfe(j)))/
+     &                    (1.0-Qfemin(j)/Qfemax(j)))
 #endif
 
 c nitrogen
@@ -753,7 +753,7 @@ C==== bacteria =========================================================
 C       POM-consuming (particle-associated)
         IF (bactType(j) .EQ. 1) THEN
 
-          PCm = yield(j)*pmaxPON*reminTempFunc
+          PCm = yield(j)*PCmax(j)*reminTempFunc
           muPON  = PCm*PON/(PON + ksatPON(j))
           muPOC  = PCm*POC/(POC + ksatPOC(j))
           muPOP  = PCm*POP/(POP + ksatPOP(j))
@@ -785,7 +785,7 @@ C         These are the bacteria products for remineralization of POM:
 C       DOM-consuming (free-living):
         ELSEIF (bactType(j) .EQ. 2) THEN
 
-          PCm = yield(j)*pmaxDON*reminTempFunc
+          PCm = yield(j)*PCmax(j)*reminTempFunc
           muDON  = PCm*DON/(DON + ksatDON(j))
           muDOC  = PCm*DOC/(DOC + ksatDOC(j))
           muDOP  = PCm*DOP/(DOP + ksatDOP(j))
