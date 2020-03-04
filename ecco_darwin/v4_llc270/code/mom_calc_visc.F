@@ -610,7 +610,7 @@ C  Harmonic on Zeta points
      &         + viscAh_ZLthQG(i,j)
 #endif
 #ifdef ALLOW_3D_VISCAH
-     &         + viscAhZfld(i,j,k,bi,bj)
+     &          +viscFacAdj*viscAhZfld(i,j,k,bi,bj)
 #endif
          viscAh_ZMin(i,j)=MAX(viscAhGridMin*L2rdt,Uscl)
          viscAh_Z(i,j)=MAX(viscAh_ZMin(i,j),Alin)
@@ -629,7 +629,7 @@ C  BiHarmonic on Zeta points
          Alin=viscA4Z+viscA4Grid*L4rdt
      &           +viscA4_ZLth(i,j)+viscA4_ZSmg(i,j)
 #ifdef ALLOW_3D_VISCA4
-     &         + viscA4Zfld(i,j,k,bi,bj)
+     &          +viscFacAdj*viscA4Zfld(i,j,k,bi,bj)
 #endif
          viscA4_ZMin(i,j)=MAX(viscA4GridMin*L4rdt,U4scl)
          viscA4_Z(i,j)=MAX(viscA4_ZMin(i,j),Alin)
