@@ -218,9 +218,16 @@ Cejz add nitrifier params
       _RL muNO2
       _RL resptoNO2
       _RL resptoNO3
+      _RL fracPOC
+      _RL fracDOC
+      _RL fracPON
+      _RL fracDON
+      _RL fracPOP
+      _RL fracDOP
+      _RL fracPOFe
+      _RL fracDOFe
 
 Cejz add
-      _RL EPS
       _RL NOfac
 
 #ifdef DARWIN_ALLOW_CDOM
@@ -294,7 +301,6 @@ C==== precompute a few things ==========================================
       PARtot = SUM(PAR)
 
 Cejz add
-      EPS = 1D-38
       NOfac = 1.414 !10^(1/3) factor for NO uptake kinetics
 
 C==== make all bio fields non-negative and compute quotas ==============
@@ -843,16 +849,43 @@ Cejz    bactType 3 consumes DOM+POM as in 2018 Nat Comm paper:
 
           growth = mu*X(j)
 
-          uptakePOC = growth/yield(j)*muPOC/(muPOC + muDOC + EPS)
-          uptakePON = growth/yield(j)*R_NC(j)*muPON/(muPON + muDON +EPS)
-          uptakePOP = growth/yield(j)*R_PC(j)*muPOP/(muPOP + muDOP +EPS)
-          uptakePOFe = growth/yield(j)*R_FeC(j)*
-     &                 muPOFe/(muPOFe + muDOFe + EPS)
-          uptakeDOC = growth/yield(j)*muDOC/(muPOC + muDOC + EPS)
-          uptakeDON = growth/yield(j)*R_NC(j)*muDON/(muPON + muDON +EPS)
-          uptakeDOP = growth/yield(j)*R_PC(j)*muDOP/(muPOP + muDOP +EPS)
-          uptakeDOFe = growth/yield(j)*R_FeC(j)*
-     &                 muDOFe/(muPOFe + muDOFe + EPS)
+          IF (muPOC + muDOC .GT. 0) THEN
+            fracPOC = muPOC/(muPOC + muDOC)
+            fracDOC = muDOC/(muPOC + muDOC)
+          ELSE
+            fracPOC = 0 _d 0
+            fracDOC = 0 _d 0
+          ENDIF
+          IF (muPON + muDON .GT. 0) THEN
+            fracPON = muPON/(muPON + muDON)
+            fracDON = muDON/(muPON + muDON)
+          ELSE
+            fracPON = 0 _d 0
+            fracDON = 0 _d 0
+          ENDIF
+          IF (muPOP + muDOP .GT. 0) THEN
+            fracPOP = muPOP/(muPOP + muDOP)
+            fracDOP = muDOP/(muPOP + muDOP)
+          ELSE
+            fracPOP = 0 _d 0
+            fracDOP = 0 _d 0
+          ENDIF
+          IF (muPOFe + muDOFe .GT. 0) THEN
+            fracPOFe = muPOFe/(muPOFe + muDOFe)
+            fracDOFe = muDOFe/(muPOFe + muDOFe)
+          ELSE
+            fracPOFe = 0 _d 0
+            fracDOFe = 0 _d 0
+          ENDIF
+
+          uptakePOC = growth/yield(j)*fracPOC
+          uptakePON = growth/yield(j)*R_NC(j)*fracPON
+          uptakePOP = growth/yield(j)*R_PC(j)*fracPOP
+          uptakePOFe = growth/yield(j)*R_FeC(j)*fracPOFe
+          uptakeDOC = growth/yield(j)*fracDOC
+          uptakeDON = growth/yield(j)*R_NC(j)*fracDON
+          uptakeDOP = growth/yield(j)*R_PC(j)*fracDOP
+          uptakeDOFe = growth/yield(j)*R_FeC(j)*fracDOFe
           uptakeO2 = isAerobic(j)*growth/yieldO2(j)
           uptakeNO3 = isDenit(j)*growth/yieldNO3(j)
 
@@ -860,22 +893,14 @@ Cejz      remineralization: POM and DOM respired to inorganic
 Cejz note that this needs to be split into POC vs DOC here bc reminPOC and
 CreminDOC are split below (i.e. added as sources to DIC in two diff
 Cplaces)
-          respPOC = growth*(1/yield(j)-1)*
-     &              muPOC/(muPOC + muDOC + EPS)
-          respPON = growth*(1/yield(j)-1)*R_NC(j)*
-     &              muPON/(muPON + muDON + EPS)
-          respPOP = growth*(1/yield(j)-1)*R_PC(j)*
-     &              muPOP/(muPOP + muDOP + EPS)
-          respPOFe = growth*(1/yield(j)-1)*R_FeC(j)*
-     &              muPOFe/(muPOFe + muDOFe + EPS)
-          respDOC = growth*(1/yield(j)-1)*
-     &              muDOC/(muPOC + muDOC + EPS)
-          respDON = growth*(1/yield(j)-1)*R_NC(j)*
-     &              muDON/(muPON + muDON + EPS)
-          respDOP = growth*(1/yield(j)-1)*R_PC(j)*
-     &              muDOP/(muPOP + muDOP + EPS)
-          respDOFe = growth*(1/yield(j)-1)*R_FeC(j)*
-     &              muDOFe/(muPOFe + muDOFe + EPS)
+          respPOC = growth*(1/yield(j)-1)*fracPOC
+          respPON = growth*(1/yield(j)-1)*R_NC(j)*fracPON
+          respPOP = growth*(1/yield(j)-1)*R_PC(j)*fracPOP
+          respPOFe = growth*(1/yield(j)-1)*R_FeC(j)*fracPOFe
+          respDOC = growth*(1/yield(j)-1)*fracDOC
+          respDON = growth*(1/yield(j)-1)*R_NC(j)*fracDON
+          respDOP = growth*(1/yield(j)-1)*R_PC(j)*fracDOP
+          respDOFe = growth*(1/yield(j)-1)*R_FeC(j)*fracDOFe
 
 Cez     NH4-oxidizing chemoautotrophs:
         ELSEIF (bactType(j) .EQ. 4) THEN
