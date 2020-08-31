@@ -214,6 +214,16 @@ c !LOCAL VARIABLES: ====================================================
 
       _RL tmp
 
+Cejz add nitrifier params
+      _RL muNH4
+      _RL muNO2
+      _RL resptoNO2
+      _RL resptoNO3
+
+Cejz add
+      _RL EPS
+      _RL NOfac
+
 #ifdef DARWIN_ALLOW_CDOM
       _RL CDOM
       _RL reminPOC_CDOM
@@ -283,6 +293,10 @@ C for grazing
 C==== precompute a few things ==========================================
 
       PARtot = SUM(PAR)
+
+Cejz add
+      EPS = 1D-38
+      NOfac = 1.414 !10^(1/3) factor for NO uptake kinetics
 
 C==== make all bio fields non-negative and compute quotas ==============
 
@@ -744,6 +758,14 @@ C==== bacteria =========================================================
         respDOP = 0. _d 0
         respDOFe = 0. _d 0
         growth = 0. _d 0
+Cejz add nitrifier uptake and resp:
+        uptakeDIC = 0. _d 0
+        uptakeNH4 = 0. _d 0
+        uptakeNO2 = 0. _d 0
+        uptakePO4 = 0. _d 0
+        uptakeFeT = 0. _d 0
+        resptoNO2 = 0. _d 0
+        resptoNO3 = 0. _d 0
 
         IF (isAerobic(j) .NE. 0) THEN
           muO = yieldO2(j)*pcoefO2*O2
@@ -808,6 +830,96 @@ C         DOC respired to DIC
           respDOP  = respDOC*R_PC(j)
           respDOFe = respDOC*R_FeC(j)
 
+Cejz start add bactType 3 - 5
+
+Cejz    bactType 3 consumes DOM+POM as in 2018 Nat Comm paper:
+        ELSEIF (bactType(j) .EQ. 3) THEN
+
+          PCm = yield(j)*PCmax(j)*reminTempFunc
+          muPON  = PCm*PON/(PON + ksatPON(j))
+          muPOC  = PCm*POC/(POC + ksatPOC(j))
+          muPOP  = PCm*POP/(POP + ksatPOP(j))
+          muPOFe = PCm*POFe/(POFe + ksatPOFe(j))
+          muDON  = PCm*DON/(DON + ksatDON(j))
+          muDOC  = PCm*DOC/(DOC + ksatDOC(j))
+          muDOP  = PCm*DOP/(DOP + ksatDOP(j))
+          muDOFe = PCm*DOFe/(DOFe + ksatDOFe(j))
+          mu = MIN(PCm, muPON + muDON, muPOC + muDOC, muPOP + muDOP,
+     &             muPOFe + muDOFe, muO)
+
+          growth = mu*X(j)
+
+          uptakePOC = growth/yield(j)*muPOC/(muPOC + muDOC + EPS)
+          uptakePON = growth/yield(j)*R_NC(j)*muPON/(muPON + muDON +EPS)
+          uptakePOP = growth/yield(j)*R_PC(j)*muPOP/(muPOP + muDOP +EPS)
+          uptakePOFe = growth/yield(j)*R_FeC(j)*
+     &                 muPOFe/(muPOFe + muDOFe + EPS)
+          uptakeDOC = growth/yield(j)*muDOC/(muPOC + muDOC + EPS)
+          uptakeDON = growth/yield(j)*R_NC(j)*muDON/(muPON + muDON +EPS)
+          uptakeDOP = growth/yield(j)*R_PC(j)*muDOP/(muPOP + muDOP +EPS)
+          uptakeDOFe = growth/yield(j)*R_FeC(j)*
+     &                 muDOFe/(muPOFe + muDOFe + EPS)
+          uptakeO2 = isAerobic(j)*growth/yieldO2(j)
+          uptakeNO3 = isDenit(j)*growth/yieldNO3(j)
+
+Cejz      remineralization: POM and DOM respired to inorganic
+Cejz note that this needs to be split into POC vs DOC here bc reminPOC and
+CreminDOC are split below (i.e. added as sources to DIC in two diff
+Cplaces)
+          respPOC = growth*(1/yield(j)-1)*
+     &              muPOC/(muPOC + muDOC + EPS)
+          respPON = growth*(1/yield(j)-1)*R_NC(j)*
+     &              muPON/(muPON + muDON + EPS)
+          respPOP = growth*(1/yield(j)-1)*R_PC(j)*
+     &              muPOP/(muPOP + muDOP + EPS)
+          respPOFe = growth*(1/yield(j)-1)*R_FeC(j)*
+     &              muPOFe/(muPOFe + muDOFe + EPS)
+          respDOC = growth*(1/yield(j)-1)*
+     &              muDOC/(muPOC + muDOC + EPS)
+          respDON = growth*(1/yield(j)-1)*R_NC(j)*
+     &              muDON/(muPON + muDON + EPS)
+          respDOP = growth*(1/yield(j)-1)*R_PC(j)*
+     &              muDOP/(muPOP + muDOP + EPS)
+          respDOFe = growth*(1/yield(j)-1)*R_FeC(j)*
+     &              muDOFe/(muPOFe + muDOFe + EPS)
+
+Cez     NH4-oxidizing chemoautotrophs:
+        ELSEIF (bactType(j) .EQ. 4) THEN
+
+Cez       Max growth rate is based on max uptake of NH4
+          PCm = yield(j)*pmaxDIN*reminTempFunc
+          muNH4 = PCm*NH4/(NH4 + ksatDIN)
+          mu = MIN(muNH4, muO)
+
+          growth = mu*X(j)
+
+          uptakeNH4 = growth/yield(j)
+          uptakeDIC = growth
+          uptakePO4 = uptakeDIC*R_PC(j)
+          uptakeFeT = uptakeDIC*R_FeC(j)
+          uptakeO2 = isAerobic(j)*growth/yieldO2(j)
+          resptoNO2 = growth*(1/yield(j) - 1)
+
+Cez     NO2-oxidizing chemoautotrophs:
+        ELSEIF (bactType(j) .EQ. 5) THEN
+
+Cez       Max growth rate is based on max uptake of NO2
+          PCm = yield(j)*pmaxDIN*NOfac*reminTempFunc
+          muNO2 = PCm*NO2/(NO2 + ksatDIN*NOfac)
+          mu = MIN(muNO2, muO)
+
+          growth = mu*X(j)
+
+          uptakeNO2 = growth/yield(j)
+          uptakeDIC = growth
+          uptakePO4 = uptakeDIC*R_PC(j)
+          uptakeFeT = uptakeDIC*R_FeC(j)
+          uptakeO2 = isAerobic(j)*growth/yieldO2(j)
+Cez simplification as in Zakem 2018: really biomass N is from NH4 or DON
+Cez but makes no quantitative diff since 1/yield = 333
+          resptoNO3 = growth*(1/yield(j) - 1)
+
+Cejz end add bactType 3 - 5
         ENDIF
 
 #ifdef DARWIN_DIAG_PERTYPE
@@ -847,6 +959,15 @@ C       add B consum and accumulating remin, and prod:
         reminDOP = reminDOP + respDOP
         reminDOFe = reminDOFe + respDOFe
 
+Cejz add nitrifier consumption and remineralization:
+        consumDIC  = consumDIC  + uptakeDIC
+        consumNH4  = consumNH4  + uptakeNH4
+        consumNO2  = consumNO2  + uptakeNO2
+        consumPO4  = consumPO4  + uptakePO4
+        consumFeT  = consumFeT  + uptakeFeT
+        prodNO2 = prodNO2 + resptoNO2
+        prodNO3 = prodNO3 + resptoNO3
+
        ENDIF
 C     j loop end
       ENDDO
@@ -855,9 +976,12 @@ C=======================================================================
 C=======================================================================
 
       gTr(iDIC )=gTr(iDIC ) - consumDIC - consumDIC_PIC
+Cejz add nitrifier prodNO2 and prodNO3 here, so that it can be zeroed
+Cout below
+Cejz  gTr(iNH4 )=gTr(iNH4 ) - consumNH4
       gTr(iNH4 )=gTr(iNH4 ) - consumNH4
-      gTr(iNO2 )=gTr(iNO2 ) - consumNO2
-      gTr(iNO3 )=gTr(iNO3 ) - consumNO3
+      gTr(iNO2 )=gTr(iNO2 ) - consumNO2 + prodNO2
+      gTr(iNO3 )=gTr(iNO3 ) - consumNO3 + prodNO3
       gTr(iPO4 )=gTr(iPO4 ) - consumPO4
       gTr(iSiO2)=gTr(iSiO2) - consumSiO2
       gTr(iFeT )=gTr(iFeT ) - consumFeT
@@ -905,6 +1029,9 @@ C if running with bacteria
 
 c nitrogen chemistry
 c NH4 -> NO2 -> NO3 by bacterial action, parameterized
+Cejz: since prodNO2 and prodNO3 by nitrifiers are already accounted,
+Cthis works like the implicit remin terms: will add to nitrification
+CUNLESS knita and knitb are set to 0
       prodNO2 = knita*NH4
       prodNO3 = knitb*NO2
       IF (PAR_oxi .NE. 0.0 _d 0) THEN
@@ -972,6 +1099,8 @@ c loss of O2 by remineralization
 #endif /* DARWIN_ALLOW_CARBON */
 
       gTr(iDIC )=gTr(iDIC ) + reminDOC + disscPIC
+Cejz with nitrifiers, consumption of NO2 and NH4 is accounted for as uptake
+Cejz if knita and knitb are set to 0, then this will not add anything
       gTr(iNH4 )=gTr(iNH4 ) + reminDON - prodNO2
       gTr(iNO2 )=gTr(iNO2 ) + prodNO2 - prodNO3
       gTr(iNO3 )=gTr(iNO3 ) + prodNO3
