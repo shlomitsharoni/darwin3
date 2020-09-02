@@ -917,7 +917,7 @@ Cez       Max growth rate is based on max uptake of NH4
           uptakePO4 = uptakeDIC*R_PC(j)
           uptakeFeT = uptakeDIC*R_FeC(j)
           uptakeO2 = isAerobic(j)*growth/yieldO2(j)
-          resptoNO2 = growth*(1/yield(j) - 1)
+          resptoNO2 = growth*(1/yield(j) - R_NC(j))
 
 Cez     NO2-oxidizing chemoautotrophs:
         ELSEIF (bactType(j) .EQ. 5) THEN
@@ -936,7 +936,7 @@ Cez       Max growth rate is based on max uptake of NO2
           uptakeO2 = isAerobic(j)*growth/yieldO2(j)
 Cez simplification as in Zakem 2018: really biomass N is from NH4 or DON
 Cez but makes no quantitative diff since 1/yield = 333
-          resptoNO3 = growth*(1/yield(j) - 1)
+          resptoNO3 = growth*(1/yield(j) - R_NC(j))
 
 Cejz end add bactType 3 - 5
         ENDIF
