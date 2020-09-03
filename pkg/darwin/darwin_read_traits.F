@@ -283,6 +283,12 @@ C     check types are within type ranges
           CALL PRINT_ERROR( msgBuf , 1)
           STOP 'ABNORMAL END: S/R DARWIN_READTRAITS'
         ENDIF
+        IF (bactType(jp).GE.4 .AND. isDenit(jp).NE.0) THEN
+          WRITE(msgBuf,'(2A,I4)') 'DARWIN_READTRAITS: ERROR: ',
+     &    'bactType 4 and 5 must be aerobic: ', jp
+          CALL PRINT_ERROR( msgBuf , 1)
+          STOP 'ABNORMAL END: S/R DARWIN_READTRAITS'
+        ENDIF
        ELSE
         IF (isAerobic(jp).NE.0) THEN
           WRITE(msgBuf,'(2A,I4)') 'DARWIN_READTRAITS: ERROR: ',
