@@ -669,9 +669,9 @@ C=======================================================================
         consumFeT  = consumFeT  + uptakeFeT
 
         diags(iPP) = diags(iPP) + growth
-        IF (j .LE. nPPplank) THEN
-          diags(iPPplank+j-1) = diags(iPPplank+j-1) + growth
-        ENDIF
+#ifdef DARWIN_DIAG_PERTYPE
+        diags(iPPplank+j-1) = diags(iPPplank+j-1) + growth
+#endif
         IF (diazo(j) .GT. 0.0 _d 0) THEN
          diags(iNfix)=diags(iNfix)+uptakeN-uptakeNH4-uptakeNO2-uptakeNO3
         ENDIF
@@ -809,9 +809,9 @@ C         DOC respired to DIC
 
         ENDIF
 
-        IF (j .LE. nPPplank) THEN
-          diags(iPPplank+j-1) = diags(iPPplank+j-1) + growth
-        ENDIF
+#ifdef DARWIN_DIAG_PERTYPE
+        diags(iPPplank+j-1) = diags(iPPplank+j-1) + growth
+#endif
 
         gTr(ic+j-1)=gTr(ic+j-1) + growth
 
@@ -1023,10 +1023,13 @@ C     DOC is created by #4 PA-assoc solubilization and consumed by #5
 #endif /* DARWIN_ALLOW_CDOM */
 
       diags(iConsDIN) = consumNH4 + consumNO2 + consumNO3
+      diags(iConsNO3) = consumNO3
+      diags(iConsNO2) = consumNO2
+      diags(iConsNH4) = consumNH4
       diags(iConsPO4) = consumPO4
       diags(iConsSi)  = consumSiO2
       diags(iConsFe)  = consumFeT
-
+     
 C==== grazing ==========================================================
 
       DO j=1,nplank
@@ -1256,9 +1259,14 @@ C==== tendencies =======================================================
       ENDIF
       ENDDO
 
-      DO jp = 1, nGRplank
+#ifdef DARWIN_DIAG_PERTYPE
+      DO jp = 1, nplank
         diags(iGRplank+jp-1) = preygraz(jp)
       ENDDO
+      DO jz = 1, nplank
+        diags(iGrGn+jz-1) = predgrazc(jz)
+      ENDDO
+#endif
 
 C==== mortality ========================================================
       exude_DOC  = 0.0 _d 0
