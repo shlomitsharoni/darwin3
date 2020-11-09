@@ -61,7 +61,6 @@ C !LOCAL VARIABLES: ====================================================
 C Number of iterations for pCO2 solvers...
 C Solubility relation coefficients
       _RL SchmidtNoDIC(1-OLx:sNx+OLx,1-OLy:sNy+OLy)
-      _RL pCO2sat(1-OLx:sNx+OLx,1-OLy:sNy+OLy)
       _RL Kwexch(1-OLx:sNx+OLx,1-OLy:sNy+OLy)
       _RL Kwexch0(1-OLx:sNx+OLx,1-OLy:sNy+OLy)
       _RL pisvel0(1-OLx:sNx+OLx,1-OLy:sNy+OLy)
@@ -274,7 +273,7 @@ c make sure Schmidt number is not negative (will happen if temp>39C)
 
 C Determine surface flux (FDIC)
 C first correct pCO2at for surface atmos pressure
-         pCO2sat(i,j) = AtmosP(i,j,bi,bj)*AtmospCO2(i,j,bi,bj)
+         apCO2Sat(i,j,bi,bj) = AtmosP(i,j,bi,bj)*AtmospCO2(i,j,bi,bj)
 
 C then account for Schmidt number
          Kwexch(i,j) = Kwexch0(i,j)
@@ -283,7 +282,7 @@ C then account for Schmidt number
 c Flux = kw*rho*(ff*pCO2atm-k0*FugFac*pCO2ocean)
          FluxCO2(i,j,bi,bj) =
      &          Kwexch(i,j)*(
-     &            ff(i,j,bi,bj)*pCO2sat(i,j) -
+     &            ff(i,j,bi,bj)*apCO2Sat(i,j,bi,bj) -
      &            pCO2(i,j,ks,bi,bj)*fugf(i,j,bi,bj)*ak0(i,j,bi,bj) )
         ELSE
          FluxCO2(i,j,bi,bj) = 0. _d 0
