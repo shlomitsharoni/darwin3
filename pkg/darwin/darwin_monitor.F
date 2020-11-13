@@ -121,6 +121,15 @@ C       Print some statistics about input forcing fields
         CALL MON_WRITESTATS_RL( 1, atmospCO2, 'atmospCO2',
      &           maskInC, maskInC, rA , drF, dummyRL, myThid )
 
+        CALL MON_WRITESTATS_RL( 1, DOCrunoff, 'DOCrunoff',
+     &           maskInC, maskInC, rA , drF, dummyRL, myThid )
+
+        CALL MON_WRITESTATS_RL( 1, DONrunoff, 'DONrunoff',
+     &           maskInC, maskInC, rA , drF, dummyRL, myThid )
+
+        CALL MON_WRITESTATS_RL( 1, DOPrunoff, 'DOPrunoff',
+     &           maskInC, maskInC, rA , drF, dummyRL, myThid )
+
         IF ( MASTER_CPU_IO(myThid) ) THEN
 C--   only the master thread is allowed to switch On/Off mon_write_stdout
 C     & mon_write_mnc (since it is the only thread that uses those flags):
