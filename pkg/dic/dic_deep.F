@@ -70,7 +70,14 @@ c        ENDDO
 c       ENDDO
 c#endif
 
+#ifndef DIC_ALLOW_3D_PH
+      IF (.NOT.restart) THEN
+        STOP 'DIC_DEEP: need DIC_ALLOW_3D_PH'
+      ENDIF
+#endif
+
       DO k=1,Nr
+
 C =================================================================
 C determine inorganic carbon chem coefficients
        DO j=jMin,jMax
@@ -156,6 +163,11 @@ C call AHINI_FOR_AT to get better initial guess of pH
      I           bt(i,j,bi,bj),
      O           pHlocal(i,j),
      I           i,j,k,bi,bj,myIter,myThid )
+#ifdef DIC_ALLOW_3D_PH
+              ELSE
+C              restore from previous time step
+               pHlocal(i,j) = pHC(i,j,k,bi,bj)
+#endif
               ENDIF
 
 #ifdef ALLOW_DEBUG
@@ -188,6 +200,10 @@ Cmick - SO NOW WE ITERATE, UPDATING THE ESTIMATE OF pH and CO3--
 Cmick - SINCE WE CALL THIS FOR DEEP OCEAN INFREQUENTLY (MONTHLY?)
 CMIKC - CAN AFFORD TO MAKE SEVERAL ITERATIONS...
               ELSE
+#ifdef DIC_ALLOW_3D_PH
+C              restore from previous time step
+               pHlocal(i,j) = pHC(i,j,k,bi,bj)
+#endif
                CO3itermax = 1
               ENDIF
               DO CO3iter = 1, CO3itermax
@@ -212,6 +228,10 @@ CMIKC - CAN AFFORD TO MAKE SEVERAL ITERATIONS...
             pCO2local(i,j) = 0. _d 0
             carbonate(i,j) = 0. _d 0
           ENDIF
+#ifdef DIC_ALLOW_3D_PH
+C         store for next time step
+          pHC(i,j,k,bi,bj) = pHlocal(i,j)
+#endif
 
 C calcite saturation -- needs to be inside k loop
 #ifdef DIC_BIOTIC
