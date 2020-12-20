@@ -18,18 +18,15 @@ C     darwin_chlInitBalanced :: Initialize Chlorophyll to a balanced value follo
 C     darwin_haveSurfPAR     ::
 C     darwin_useSEAICE       :: whether to use ice area from seaice pkg
 C     darwin_useQsw          :: whether to use model shortwave radiation
-C     darwin_useEXFwind      :: whether to use wind speed from exf package
       COMMON/darwin_forcing_params_l/
      &    darwin_chlInitBalanced,
      &    darwin_haveSurfPAR,
      &    darwin_useSEAICE,
-     &    darwin_useQsw,
-     &    darwin_useEXFwind
+     &    darwin_useQsw
       LOGICAL darwin_chlInitBalanced
       LOGICAL darwin_haveSurfPAR
       LOGICAL darwin_useSEAICE
       LOGICAL darwin_useQsw
-      LOGICAL darwin_useEXFwind
 
 C--   COMMON/darwin_forcing_params_i/ darwin parameters related to forcing
 C     darwin_chlIter0 :: Iteration number when to initialize Chlorophyll
@@ -42,77 +39,6 @@ C     rad2deg ::
       COMMON /DARWIN_CONSTANTS_r/
      &    rad2deg
       _RL rad2deg
-
-#ifdef DARWIN_ALLOW_CARBON
-C--   COMMON /CARBON_CONSTANTS_r/ Coefficients for DIC chemistry
-C     Pa2Atm :: Convert pressure in Pascal to atm
-C     ptr2mol :: convert ptracers (in mmol/m3) to mol/m3
-C-
-C     sca1 :: Schmidt no. coefficient for CO2
-C     sca2 :: Schmidt no. coefficient for CO2
-C     sca3 :: Schmidt no. coefficient for CO2
-C     sca4 :: Schmidt no. coefficient for CO2
-C-
-C     sox1 :: [] Schmidt no. coefficient for O2 [Keeling et al, GBC, 12, 141, (1998)]
-C     sox2 :: [] Schmidt no. coefficient for O2 [Keeling et al, GBC, 12, 141, (1998)]
-C     sox3 :: [] Schmidt no. coefficient for O2 [Keeling et al, GBC, 12, 141, (1998)]
-C     sox4 :: [] Schmidt no. coefficient for O2 [Keeling et al, GBC, 12, 141, (1998)]
-C-
-C     oA0 :: Coefficient for determining saturation O2
-C     oA1 :: Coefficient for determining saturation O2
-C     oA2 :: Coefficient for determining saturation O2
-C     oA3 :: Coefficient for determining saturation O2
-C     oA4 :: Coefficient for determining saturation O2
-C     oA5 :: Coefficient for determining saturation O2
-C     oB0 :: Coefficient for determining saturation O2
-C     oB1 :: Coefficient for determining saturation O2
-C     oB2 :: Coefficient for determining saturation O2
-C     oB3 :: Coefficient for determining saturation O2
-C     oC0 :: Coefficient for determining saturation O2
-      COMMON /CARBON_CONSTANTS_r/
-     &    Pa2Atm,
-     &    ptr2mol,
-     &    sca1,
-     &    sca2,
-     &    sca3,
-     &    sca4,
-     &    sox1,
-     &    sox2,
-     &    sox3,
-     &    sox4,
-     &    oA0,
-     &    oA1,
-     &    oA2,
-     &    oA3,
-     &    oA4,
-     &    oA5,
-     &    oB0,
-     &    oB1,
-     &    oB2,
-     &    oB3,
-     &    oC0
-      _RL Pa2Atm
-      _RL ptr2mol
-      _RL sca1
-      _RL sca2
-      _RL sca3
-      _RL sca4
-      _RL sox1
-      _RL sox2
-      _RL sox3
-      _RL sox4
-      _RL oA0
-      _RL oA1
-      _RL oA2
-      _RL oA3
-      _RL oA4
-      _RL oA5
-      _RL oB0
-      _RL oB1
-      _RL oB2
-      _RL oB3
-      _RL oC0
-#endif
 
 C     COMMON /DARWIN_PARAMS_c/ General parameters (same for all plankton)
 C     darwin_pickupSuff :: pickup suffix for darwin; set to ' ' to disable reading at PTRACERS_Iter0
@@ -198,31 +124,6 @@ C
 C- Carbon chemistry parameters
 C     R_OP              :: [mmol O2 / mmol P] O:P ratio for respiration and consumption
 C     R_OC              :: [mmol O2 / mmol C] NOT USED
-C     m3perkg           :: [m3/kg]        constant for converting per kg to per m^3
-C     surfSaltMinInit   :: [ppt]          limits for carbon solver input at initialization
-C     surfSaltMaxInit   :: [ppt]          ...
-C     surfTempMinInit   :: [degrees C]
-C     surfTempMaxInit   :: [degrees C]
-C     surfDICMinInit    :: [mmol C m^-3]
-C     surfDICMaxInit    :: [mmol C m^-3]
-C     surfALKMinInit    :: [meq m^-3]
-C     surfALKMaxInit    :: [meq m^-3]
-C     surfPO4MinInit    :: [mmol P m^-3]
-C     surfPO4MaxInit    :: [mmol P m^-3]
-C     surfSiMinInit     :: [mmol Si m^-3]
-C     surfSiMaxInit     :: [mmol Si m^-3]
-C     surfSaltMin       :: [ppt]           limits for carbon solver input during run
-C     surfSaltMax       :: [ppt]           ...
-C     surfTempMin       :: [degrees C]
-C     surfTempMax       :: [degrees C]
-C     surfDICMin        :: [mmol C m^-3]
-C     surfDICMax        :: [mmol C m^-3]
-C     surfALKMin        :: [meq m^-3]
-C     surfALKMax        :: [meq m^-3]
-C     surfPO4Min        :: [mmol P m^-3]
-C     surfPO4Max        :: [mmol P m^-3]
-C     surfSiMin         :: [mmol Si m^-3]
-C     surfSiMax         :: [mmol Si m^-3]
 C
 C     diaz_ini_fac      :: reduce tracer concentrations by this factor on initialization
 C
@@ -304,34 +205,9 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    wSi_sink,
      &    wPIC_sink,
      &    Kdissc,
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
      &    R_OP,
      &    R_OC,
-     &    m3perkg,
-     &    surfSaltMinInit,
-     &    surfSaltMaxInit,
-     &    surfTempMinInit,
-     &    surfTempMaxInit,
-     &    surfDICMinInit,
-     &    surfDICMaxInit,
-     &    surfALKMinInit,
-     &    surfALKMaxInit,
-     &    surfPO4MinInit,
-     &    surfPO4MaxInit,
-     &    surfSiMinInit,
-     &    surfSiMaxInit,
-     &    surfSaltMin,
-     &    surfSaltMax,
-     &    surfTempMin,
-     &    surfTempMax,
-     &    surfDICMin,
-     &    surfDICMax,
-     &    surfALKMin,
-     &    surfALKMax,
-     &    surfPO4Min,
-     &    surfPO4Max,
-     &    surfSiMin,
-     &    surfSiMax,
 #endif
      &    diaz_ini_fac,
      &    O2crit,
@@ -404,34 +280,9 @@ C     &    yono2,
       _RL wSi_sink
       _RL wPIC_sink
       _RL Kdissc
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       _RL R_OP
       _RL R_OC
-      _RL m3perkg
-      _RL surfSaltMinInit
-      _RL surfSaltMaxInit
-      _RL surfTempMinInit
-      _RL surfTempMaxInit
-      _RL surfDICMinInit
-      _RL surfDICMaxInit
-      _RL surfALKMinInit
-      _RL surfALKMaxInit
-      _RL surfPO4MinInit
-      _RL surfPO4MaxInit
-      _RL surfSiMinInit
-      _RL surfSiMaxInit
-      _RL surfSaltMin
-      _RL surfSaltMax
-      _RL surfTempMin
-      _RL surfTempMax
-      _RL surfDICMin
-      _RL surfDICMax
-      _RL surfALKMin
-      _RL surfALKMax
-      _RL surfPO4Min
-      _RL surfPO4Max
-      _RL surfSiMin
-      _RL surfSiMax
 #endif
       _RL diaz_ini_fac
       _RL O2crit

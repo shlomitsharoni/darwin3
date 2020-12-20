@@ -54,7 +54,7 @@ C these cannot be modified for now
       PARAMETER (iPOFe  =iPOP +1)
       PARAMETER (iPOSi  =iPOFe+1)
       PARAMETER (iPIC   =iPOSi+1)
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       INTEGER iALK
       INTEGER iO2
       PARAMETER (iALK   =iPIC +1)

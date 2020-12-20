@@ -30,7 +30,7 @@ C============== Local variables ============================================
       _RL tmptotN
       _RL tmptotSi
       _RL tmptotFe
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       _RL tmptotA
       _RL tmptotO
 #endif
@@ -46,7 +46,7 @@ c
       tmptotN = 0. _d 0
       tmptotFe = 0. _d 0
       tmptotSi = 0. _d 0
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       tmptotA = 0. _d 0
       tmptotO = 0. _d 0
 #endif
@@ -143,7 +143,7 @@ c Silica budget
 #endif
           ENDDO
 c------------------------------------------------------------
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
 c alkalinity budget !!!!! NOT FULL BUDGET!!!!!
           tmptotA=tmptotA+Ptracer(i,j,k,bi,bj,iALK)*vol
 c oxygem budget !!!!!!!! NOT FULL BUDGET !!!!!!!!!!!
@@ -164,7 +164,7 @@ c oxygem budget !!!!!!!! NOT FULL BUDGET !!!!!!!!!!!
       _GLOBAL_SUM_RL(tmptotFe,myThid)
       _GLOBAL_SUM_RL(tmptotSi,myThid)
       _GLOBAL_SUM_RL(voltot,myThid)
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       _GLOBAL_SUM_RL(tmptotA,myThid)
       _GLOBAL_SUM_RL(tmptotO,myThid)
 #endif
@@ -178,7 +178,7 @@ c oxygem budget !!!!!!!! NOT FULL BUDGET !!!!!!!!!!!
      &        tmptotN/voltot, tmptotNfix/voltot, tmptotNdenit/voltot
         WRITE(DAR_cons_Fe_unit,*), myIter, tmptotFe, tmptotFe/voltot
         WRITE(DAR_cons_Si_unit,*), myIter, tmptotSi, tmptotSi/voltot
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
         WRITE(DAR_cons_A_unit,*), myIter, tmptotA, tmptotA/voltot
         WRITE(DAR_cons_O_unit,*), myIter, tmptotO, tmptotO/voltot
 #endif

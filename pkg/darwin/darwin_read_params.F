@@ -20,31 +20,6 @@
       NAMELIST/DARWIN_CONSTANTS/
      &    rad2deg
 
-#ifdef DARWIN_ALLOW_CARBON
-      NAMELIST/CARBON_CONSTANTS/
-     &    Pa2Atm,
-     &    ptr2mol,
-     &    sca1,
-     &    sca2,
-     &    sca3,
-     &    sca4,
-     &    sox1,
-     &    sox2,
-     &    sox3,
-     &    sox4,
-     &    oA0,
-     &    oA1,
-     &    oA2,
-     &    oA3,
-     &    oA4,
-     &    oA5,
-     &    oB0,
-     &    oB1,
-     &    oB2,
-     &    oB3,
-     &    oC0
-#endif
-
       NAMELIST/DARWIN_PARAMS/
      &    darwin_seed,
      &    darwin_strict_check,
@@ -97,34 +72,9 @@
      &    wSi_sink,
      &    wPIC_sink,
      &    Kdissc,
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
      &    R_OP,
      &    R_OC,
-     &    m3perkg,
-     &    surfSaltMinInit,
-     &    surfSaltMaxInit,
-     &    surfTempMinInit,
-     &    surfTempMaxInit,
-     &    surfDICMinInit,
-     &    surfDICMaxInit,
-     &    surfALKMinInit,
-     &    surfALKMaxInit,
-     &    surfPO4MinInit,
-     &    surfPO4MaxInit,
-     &    surfSiMinInit,
-     &    surfSiMaxInit,
-     &    surfSaltMin,
-     &    surfSaltMax,
-     &    surfTempMin,
-     &    surfTempMax,
-     &    surfDICMin,
-     &    surfDICMax,
-     &    surfALKMin,
-     &    surfALKMax,
-     &    surfPO4Min,
-     &    surfPO4Max,
-     &    surfSiMin,
-     &    surfSiMax,
 #endif
      &    diaz_ini_fac,
      &    O2crit,
@@ -241,34 +191,6 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       rad2deg = 180 _d 0 / PI
 
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-C     CARBON_CONSTANTS
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-#ifdef DARWIN_ALLOW_CARBON
-      Pa2Atm = 1.01325 _d 5
-      ptr2mol = 1.0 _d -3
-      sca1 = 2073.1 _d 0
-      sca2 = -125.62 _d 0
-      sca3 = 3.6276 _d 0
-      sca4 = -0.043219 _d 0
-      sox1 = 1638.0 _d 0
-      sox2 = -81.83 _d 0
-      sox3 = 1.483 _d 0
-      sox4 = -0.008004 _d 0
-      oA0 = 2.00907 _d 0
-      oA1 = 3.22014 _d 0
-      oA2 = 4.05010 _d 0
-      oA3 = 4.94457 _d 0
-      oA4 = -2.56847 _d -1
-      oA5 = 3.88767 _d 0
-      oB0 = -6.24523 _d -3
-      oB1 = -7.37614 _d -3
-      oB2 = -1.03410 _d -2
-      oB3 = -8.17083 _d -3
-      oC0 = -4.88682 _d -7
-#endif
-
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C     DARWIN_PARAMS
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
@@ -323,34 +245,9 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       wSi_sink = wC_sink
       wPIC_sink = 15 _d 0/pday
       Kdissc = 1 _d 0/(300 _d 0*pday)
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       R_OP = 170 _d 0
       R_OC = 170 _d 0/120.0 _d 0
-      m3perkg = 1 _d 0 / 1024.5 _d 0
-      surfSaltMinInit = 4.0 _d 0
-      surfSaltMaxInit = 50.0 _d 0
-      surfTempMinInit = -4.0 _d 0
-      surfTempMaxInit = 39.0 _d 0
-      surfDICMinInit = 10.0 _d 0
-      surfDICMaxInit = 4000.0 _d 0
-      surfALKMinInit = 10.0 _d 0
-      surfALKMaxInit = 4000.0 _d 0
-      surfPO4MinInit = 1.0 _d -10
-      surfPO4MaxInit = 10.0 _d 0
-      surfSiMinInit = 1.0 _d -8
-      surfSiMaxInit = 500.0 _d 0
-      surfSaltMin = 4.0 _d 0
-      surfSaltMax = 50.0 _d 0
-      surfTempMin = -4.0 _d 0
-      surfTempMax = 39.0 _d 0
-      surfDICMin = 400.0 _d 0
-      surfDICMax = 4000.0 _d 0
-      surfALKMin = 400.0 _d 0
-      surfALKMax = 4000.0 _d 0
-      surfPO4Min = 1.0 _d -10
-      surfPO4Max = 10.0 _d 0
-      surfSiMin = 1.0 _d -8
-      surfSiMax = 500.0 _d 0
 #endif
       diaz_ini_fac = 1 _d 0
 C     O2crit from Lipschultz et al 1990, DSR 37, 1513-1541:
@@ -469,9 +366,6 @@ C     log all parameters to a namelist file
 
       IF ( oUnit .GE. 0 ) THEN
        WRITE(UNIT=oUnit, NML=DARWIN_CONSTANTS)
-#ifdef DARWIN_ALLOW_CARBON
-       WRITE(UNIT=oUnit, NML=CARBON_CONSTANTS)
-#endif
        WRITE(UNIT=oUnit, NML=DARWIN_PARAMS)
 #ifdef DARWIN_ALLOW_CDOM
        WRITE(UNIT=oUnit, NML=DARWIN_CDOM_PARAMS)

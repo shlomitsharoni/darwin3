@@ -82,7 +82,7 @@ c !LOCAL VARIABLES: ====================================================
       _RL POP
       _RL POSi
       _RL POFe
-      _RL pIC
+      _RL PIC
       _RL O2
 
       _RL X(nplank)
@@ -225,8 +225,10 @@ c !LOCAL VARIABLES: ====================================================
       _RL degrCDOM_DOFe
 #endif
 
+#ifdef ALLOW_DIC
 #ifdef DARWIN_ALLOW_DENIT
       _RL denit, denitNH4
+#endif
 #endif
 
 C for grazing
@@ -304,7 +306,7 @@ C==== make all bio fields non-negative and compute quotas ==============
       POP  = MAX(0., Ptr(iPOP))
       POSi = MAX(0., Ptr(iPOSi))
       POFe = MAX(0., Ptr(iPOFe))
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       O2   = MAX(0., Ptr(iO2))
 #endif
 #ifdef DARWIN_ALLOW_CDOM
@@ -893,7 +895,7 @@ C if running with bacteria
       reminPOSi = reminPOSi + respPOSi
       reminPOFe = reminPOFe + respPOFe
 
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       consumO2  = consumO2  + respDOP*R_OP
 #ifndef DARWIN_ALLOW_CDOM
       consumO2  = consumO2  + respPOP*R_OP
@@ -924,6 +926,7 @@ c degradation of  CDOM - high when bleached by light
       degrCDOM_DOFe = R_FeP_CDOM * degrCDOM_DOP
 #endif
 
+#ifdef ALLOW_DIC
 #ifdef DARWIN_ALLOW_DENIT
       IF (O2 .LT. O2crit .AND. NO3 .LT. NO3crit) THEN
         consumDOC = 0. _d 0
@@ -955,10 +958,11 @@ c degradation of  CDOM - high when bleached by light
 #endif
       ENDIF
 #endif /* DARWIN_ALLOW_DENIT */
+#endif /* ALLOW_DIC */
 
 C==== apply tendencies =================================================
 
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
 c production of O2 by photosynthesis
       gTr(iO2  )=gTr(iO2  ) + R_OP*consumPO4
 c loss of O2 by remineralization
@@ -968,13 +972,14 @@ c loss of O2 by remineralization
 
       gTr(iALK)=gTr(iALK) - (prodNO3 - consumNO3)
      &                    - 2.0 _d 0*(consumDIC_PIC - disscPIC)
-#endif /* DARWIN_ALLOW_CARBON */
+#endif /* ALLOW_DIC */
 
       gTr(iDIC )=gTr(iDIC ) + reminDOC + disscPIC
       gTr(iNH4 )=gTr(iNH4 ) + reminDON - prodNO2
       gTr(iNO2 )=gTr(iNO2 ) + prodNO2 - prodNO3
       gTr(iNO3 )=gTr(iNO3 ) + prodNO3
       diags(iDenitN) = 0.0
+#ifdef ALLOW_DIC
 #ifdef DARWIN_ALLOW_DENIT
       IF (O2 .LT. O2crit) THEN
         denitNH4 = reminDON
@@ -990,6 +995,7 @@ c loss of O2 by remineralization
         diags(iDenitN) = denitNH4 + denit_NO3/denit_np*denit
       ENDIF
 #endif /* DARWIN_ALLOW_DENIT */
+#endif /* ALLOW_DIC */
 
       gTr(iPO4 )=gTr(iPO4 ) + reminDOP
       gTr(iFeT )=gTr(iFeT ) + reminDOFe
@@ -1182,7 +1188,7 @@ C     end predator loop
           graz2OP  = graz2OP  + preygraz(jp)*Qp (jp)
           graz2POSi = graz2POSi + preygraz(jp)*Qsi(jp)
           graz2OFe = graz2OFe + preygraz(jp)*Qfe(jp)
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
           graz2PIC = graz2PIC + preygraz(jp)*R_PICPOC(jp)
 #endif
 
@@ -1204,7 +1210,7 @@ C==== tendencies =======================================================
       gTr(iPOP )=gTr(iPOP ) + graz2POP
       gTr(iPOSi)=gTr(iPOSi) + graz2POSi
       gTr(iPOFe)=gTr(iPOFe) + graz2POFe
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       gTr(iPIC )=gTr(iPIC ) + graz2PIC
 #endif
 #ifdef DARWIN_ALLOW_CDOM

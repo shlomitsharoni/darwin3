@@ -36,7 +36,7 @@ CEOP
 
 #ifdef ALLOW_DARWIN
 C add more ALLOWs here for other fields in pickup
-#if defined(DARWIN_ALLOW_CARBON) || (defined(DARWIN_ALLOW_GEIDER) && !defined(DARWIN_ALLOW_CHLQUOTA))
+#if (defined(DARWIN_ALLOW_GEIDER) && !defined(DARWIN_ALLOW_CHLQUOTA))
 
 C     !LOCAL VARIABLES:
 C     == Local variables ==
@@ -55,13 +55,6 @@ c     IF ( DARWIN_pickup_write_mdsio ) THEN
 
         ifld = 0
         irec = 0
-
-#ifdef DARWIN_ALLOW_CARBON
-        ifld = ifld + 1
-        irec = irec - 1
-        CALL WRITE_REC_3D_RL( fn, prec, nR, pH, irec, myIter, myThid )
-        IF (ifld.LE.listDim) wrFldList(ifld) = 'pH'
-#endif
 
 #if defined(DARWIN_ALLOW_GEIDER) && !defined(DARWIN_ALLOW_CHLQUOTA)
 #ifdef ALLOW_RADTRANS
