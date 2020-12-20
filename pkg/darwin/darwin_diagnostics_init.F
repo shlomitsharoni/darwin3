@@ -316,35 +316,7 @@ C-      use units & names from data.ptracers :
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
-#ifdef DARWIN_ALLOW_CARBON
-      WRITE(diagName,'(A)')'pH'
-      WRITE(diagTitle,'(A)')'pH'
-      diagUnits = '1               '
-      diagCode  = 'SMR     MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'pCO2'
-      WRITE(diagTitle,'(A)')'Partial Pressure of CO2'
-      diagUnits = 'atm             '
-      diagCode  = 'SMRP    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'fugfCO2'
-      WRITE(diagTitle,'(A)')'Fugacity factor of CO2 (atm)'
-      diagUnits = 'atm             '
-      diagCode  = 'SM P    L1      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'fluxCO2'
-      WRITE(diagTitle,'(A)')'Flux of CO2 - air-sea exch'
-      diagUnits = 'mmol C/m2/s     '
-      diagCode  = 'SM      L1      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
+#ifdef ALLOW_DIC
       WRITE(diagName,'(A)')'gDICsurf'
       WRITE(diagTitle,'(A)')
      &            'Tendency of DIC due to air-sea exch + oldvirt.flux'
@@ -366,7 +338,7 @@ C-      use units & names from data.ptracers :
       diagCode  = 'SM      L1      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-#endif /* DARWIN_ALLOW_CARBON */
+#endif /* ALLOW_DIC */
 
 #ifdef ALLOW_EXF
       WRITE(diagName,'(A)')'surfPAR'
@@ -386,20 +358,6 @@ C-      use units & names from data.ptracers :
       WRITE(diagName,'(A)')'DARice'
       WRITE(diagTitle,'(A)')'ice area fraction'
       diagUnits = 'm^2/m^2         '
-      diagCode  = 'SM P    L1      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'DARwind'
-      WRITE(diagTitle,'(A)')'wind speed used for carbon exchange'
-      diagUnits = 'm/s             '
-      diagCode  = 'SM P    L1      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'surfpCO2'
-      WRITE(diagTitle,'(A)')'surface pCO2'
-      diagUnits = 'mol/mol         '
       diagCode  = 'SM P    L1      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )

@@ -42,18 +42,6 @@ c--   read forcing fields from files and temporal interpolation
 
       CALL DARWIN_EXF_LOAD(myTime, myIter, myThid)
 
-      IF (DARWIN_useEXFwind) THEN
-       DO bj=myByLo(mythid),myByHi(myThid)
-        DO bi=myBxLo(mythid),myBxHi(myThid)
-         DO j=1-OLy,sNy+OLy
-          DO i=1-OLx,sNx+OLx
-           windSpeed(i,j,bi,bj) = wspeed(i,j,bi,bj)
-          ENDDO
-         ENDDO
-        ENDDO
-       ENDDO
-      ENDIF
-
       CALL DARWIN_MONITOR(myTime, myIter, myThid)
 
 #ifdef ALLOW_DIAGNOSTICS
@@ -61,8 +49,6 @@ c--   read forcing fields from files and temporal interpolation
        CALL DIAGNOSTICS_FILL(surfPAR,'surfPAR ',1,1,0,0,0,myThid)
        CALL DIAGNOSTICS_FILL(inputFe,'surfiron',0,1,0,0,0,myThid)
        CALL DIAGNOSTICS_FILL(iceFrac,'DARice  ',0,1,0,0,0,myThid)
-       CALL DIAGNOSTICS_FILL(windSpeed,'DARwind ',0,1,0,0,0,myThid)
-       CALL DIAGNOSTICS_FILL(atmospCO2,'surfpCO2',0,1,0,0,0,myThid)
       ENDIF
 #endif
 

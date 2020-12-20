@@ -51,12 +51,9 @@ CEOP
 C !LOCAL VARIABLES: ====================================================
       CHARACTER*(MAX_LEN_MBUF) msgBuf
       LOGICAL darwin_haveIce
-      LOGICAL darwin_haveWind
-      LOGICAL darwin_havepCO2
       INTEGER j, errCount
 
       NAMELIST/darwin_forcing_params/
-     &    darwin_useEXFwind,
      &    darwin_useQsw,
      &    darwin_useSEAICE,
 C
@@ -94,31 +91,7 @@ C
      &    ice_exfremo_intercept,
      &    ice_exfremo_slope,
      &    icemask,
-     &    darwin_inscal_ice,
-C
-     &    windfile,
-     &    windperiod,
-     &    windRepCycle,
-     &    windStartTime,
-     &    windstartdate1,
-     &    windstartdate2,
-     &    windconst,
-     &    wind_exfremo_intercept,
-     &    wind_exfremo_slope,
-     &    windmask,
-     &    darwin_inscal_wind,
-C
-     &    pCO2file,
-     &    pCO2period,
-     &    pCO2RepCycle,
-     &    pCO2StartTime,
-     &    pCO2startdate1,
-     &    pCO2startdate2,
-     &    pCO2const,
-     &    pCO2_exfremo_intercept,
-     &    pCO2_exfremo_slope,
-     &    pCO2mask,
-     &    darwin_inscal_pCO2
+     &    darwin_inscal_ice
 
 #ifdef USE_EXF_INTERPOLATION
       NAMELIST/darwin_interp_params/
@@ -145,28 +118,11 @@ C
      &    ice_nlat,
      &    ice_lon_inc,
      &    ice_interpMethod,
-     &    ice_lat_inc,
-C
-     &    wind_lon0,
-     &    wind_lat0,
-     &    wind_nlon,
-     &    wind_nlat,
-     &    wind_lon_inc,
-     &    wind_interpMethod,
-     &    wind_lat_inc,
-C
-     &    pCO2_lon0,
-     &    pCO2_lat0,
-     &    pCO2_nlon,
-     &    pCO2_nlat,
-     &    pCO2_lon_inc,
-     &    pCO2_interpMethod,
-     &    pCO2_lat_inc
+     &    ice_lat_inc
 #endif
 
 C Open and read the data.darwin file
 
-      darwin_useEXFwind = .FALSE.
       darwin_useQsw = .FALSE.
 
       PARfile = ' '
@@ -208,32 +164,6 @@ C Open and read the data.darwin file
 
       darwin_inscal_ice    =  1. _d 0
 
-      windfile = ' '
-      windperiod             = 0.0 _d 0
-      windRepCycle           = repeatPeriod
-      windStartTime          = UNSET_RL
-      windstartdate1         = 0
-      windstartdate2         = 0
-      windconst              = UNSET_RL
-      wind_exfremo_intercept = 0.0 _d 0
-      wind_exfremo_slope     = 0.0 _d 0
-      windmask = 'c'
-
-      darwin_inscal_wind    =  1. _d 0
-
-      pCO2file = ' '
-      pCO2period             = 0.0 _d 0
-      pCO2RepCycle           = repeatPeriod
-      pCO2StartTime          = UNSET_RL
-      pCO2startdate1         = 0
-      pCO2startdate2         = 0
-      pCO2const              = UNSET_RL
-      pCO2_exfremo_intercept = 0.0 _d 0
-      pCO2_exfremo_slope     = 0.0 _d 0
-      pCO2mask = 'c'
-
-      darwin_inscal_pCO2    =  1. _d 0
-
 #ifdef USE_EXF_INTERPOLATION
       PAR_lon0 = inp_lon0
       PAR_lat0 = inp_lat0
@@ -256,26 +186,10 @@ C Open and read the data.darwin file
       ice_lon_inc = inp_dLon
       ice_interpMethod  = 1
 
-      wind_lon0 = inp_lon0
-      wind_lat0 = inp_lat0
-      wind_nlon = inp_gNx
-      wind_nlat = inp_gNy
-      wind_lon_inc = inp_dLon
-      wind_interpMethod  = 1
-
-      pCO2_lon0 = inp_lon0
-      pCO2_lat0 = inp_lat0
-      pCO2_nlon = inp_gNx
-      pCO2_nlat = inp_gNy
-      pCO2_lon_inc = inp_dLon
-      pCO2_interpMethod  = 1
-
       DO j=1,MAX_LAT_INC
         PAR_lat_inc(j) = inp_dLat(j)
         iron_lat_inc(j) = inp_dLat(j)
         ice_lat_inc(j) = inp_dLat(j)
-        wind_lat_inc(j) = inp_dLat(j)
-        pCO2_lat_inc(j) = inp_dLat(j)
       ENDDO
 #endif /* USE_EXF_INTERPOLATION */
 
@@ -283,7 +197,6 @@ C ======================================================================
 
       PARconst = UNSET_RL
       iceconst = UNSET_RL
-      windconst = UNSET_RL
 
       READ(UNIT=iUnit, NML=darwin_forcing_params)
 #ifdef USE_EXF_INTERPOLATION
@@ -301,16 +214,6 @@ C set alternate forcing sources
       DARWIN_haveIce = iceFile.NE.' ' .OR. iceconst.NE.UNSET_RL
       IF (iceconst.EQ.UNSET_RL) THEN
         iceconst = 0 _d 0
-      ENDIF
-
-      DARWIN_haveWind = windFile.NE.' ' .OR. windconst.NE.UNSET_RL
-      IF (windconst.EQ.UNSET_RL) THEN
-        windconst = 5 _d 0
-      ENDIF
-
-      DARWIN_havepCO2 = pCO2File.NE.' ' .OR. pCO2const.NE.UNSET_RL
-      IF (pCO2const.EQ.UNSET_RL) THEN
-        pCO2const = 278 _d -6
       ENDIF
 
       IF (DARWIN_haveSurfPAR .AND. DARWIN_useQsw) THEN
@@ -331,31 +234,6 @@ C set alternate forcing sources
       IF (useSEAICE .AND. .NOT. DARWIN_useSEAICE) THEN
         WRITE(msgBuf,'(2A)') '** WARNING ** DARWIN_EXF_READPARMS: ',
      &    'iceFile or iceconst set, not using ice area from seaice pkg'
-        CALL PRINT_MESSAGE( msgBuf, errorMessageUnit,
-     &                      SQUEEZE_RIGHT, myThid )
-      ENDIF
-#endif
-
-      IF (DARWIN_haveWind .AND. DARWIN_useEXFwind) THEN
-        WRITE(msgBuf,'(2A)') 'DARWIN_EXF_READPARMS: ',
-     &    'cannot set both windFile/windconst and darwin_useEXFwind'
-       CALL PRINT_ERROR( msgBuf, myThid )
-       STOP 'ABNORMAL END: DARWIN_EXF_READPARMS: inconsistent wind forc'
-      ENDIF
-
-#ifdef DARWIN_ALLOW_CARBON
-      IF (.NOT.DARWIN_haveWind .AND. .NOT.DARWIN_useEXFwind) THEN
-        WRITE(msgBuf,'(2A,F7.3,A)')
-     &    '** WARNING ** DARWIN_EXF_READPARMS: ',
-     &    'default constant wind speed ',windconst,' m/s is used'
-        CALL PRINT_MESSAGE( msgBuf, errorMessageUnit,
-     &                      SQUEEZE_RIGHT, myThid )
-      ENDIF
-
-      IF (.NOT.DARWIN_havepCO2) THEN
-        WRITE(msgBuf,'(2A,E12.6,A)')
-     &    '** WARNING ** DARWIN_EXF_READPARMS: ',
-     &    'default pCO2 of ',pCO2const,' atm is used'
         CALL PRINT_MESSAGE( msgBuf, errorMessageUnit,
      &                      SQUEEZE_RIGHT, myThid )
       ENDIF
@@ -412,18 +290,6 @@ C     warn if darwin and radtrans ice forcing are different
        IF ( iceRepCycle.NE.0. ) THEN
         WRITE(msgBuf,'(2A)') 'DARWIN_EXF_READPARMS: The use of ',
      &       'useExfYearlyFields AND iceRepCycle is not implemented'
-        CALL PRINT_ERROR( msgBuf, myThid )
-        errCount = errCount + 1
-       ENDIF
-       IF ( windRepCycle.NE.0. ) THEN
-        WRITE(msgBuf,'(2A)') 'DARWIN_EXF_READPARMS: The use of ',
-     &       'useExfYearlyFields AND windRepCycle is not implemented'
-        CALL PRINT_ERROR( msgBuf, myThid )
-        errCount = errCount + 1
-       ENDIF
-       IF ( pCO2RepCycle.NE.0. ) THEN
-        WRITE(msgBuf,'(2A)') 'DARWIN_EXF_READPARMS: The use of ',
-     &       'useExfYearlyFields AND pCO2RepCycle is not implemented'
         CALL PRINT_ERROR( msgBuf, myThid )
         errCount = errCount + 1
        ENDIF

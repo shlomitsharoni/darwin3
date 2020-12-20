@@ -33,20 +33,14 @@ C enable chlorophyll quotas for all phototrophs
 C enable a dynamic CDOM tracer
 #undef  DARWIN_ALLOW_CDOM
 
-C enable air-sea carbon exchange and Alk and O2 tracers
-#undef  DARWIN_ALLOW_CARBON
-
 
 C optional bits
 
-C enable denitrification code
+C enable denitrification code (requires dic pkg)
 #undef  DARWIN_ALLOW_DENIT
 
 C enable separate exudation of individual elements
 #undef  DARWIN_ALLOW_EXUDE
-
-C enable old virtualflux code for DIC and Alk
-#undef  ALLOW_OLD_VIRTUALFLUX
 
 C reduce nitrate uptake by iron limitation factor
 #undef DARWIN_NITRATE_FELIMIT

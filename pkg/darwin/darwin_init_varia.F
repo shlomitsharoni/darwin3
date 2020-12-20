@@ -39,30 +39,6 @@ C     !LOCAL VARIABLES:
 
       CALL DARWIN_EXF_INIT_VARIA(myThid)
 
-      IF (DARWIN_useEXFwind) THEN
-       DO bj=myByLo(mythid),myByHi(myThid)
-        DO bi=myBxLo(mythid),myBxHi(myThid)
-         DO j=1-OLy,sNy+OLy
-          DO i=1-OLx,sNx+OLx
-           windSpeed(i,j,bi,bj) = wspeed(i,j,bi,bj)
-          ENDDO
-         ENDDO
-        ENDDO
-       ENDDO
-      ENDIF
-
-#ifdef DARWIN_ALLOW_CARBON
-      DO bj=myByLo(mythid),myByHi(myThid)
-       DO bi=myBxLo(mythid),myBxHi(myThid)
-        DO j=1-OLy,sNy+OLy
-         DO i=1-OLx,sNx+OLx
-          AtmosP(i,j,bi,bj) = 1.0 _d 0
-         ENDDO
-        ENDDO
-       ENDDO
-      ENDDO
-#endif
-
 #ifndef DARWIN_ALLOW_CHLQUOTA
       chlPrev = 0.0 _d 0
 #endif
@@ -152,7 +128,7 @@ C      use current time for insol
        open(DAR_cons_Fe_unit,file='darwin_cons_Fe.txt',status='unknown')
        CALL MDSFINDUNIT( DAR_cons_si_unit, mythid )
        open(DAR_cons_Si_unit,file='darwin_cons_Si.txt',status='unknown')
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
        CALL MDSFINDUNIT( DAR_cons_a_unit, mythid )
        open(DAR_cons_A_unit,file='darwin_cons_A.txt',status='unknown')
        CALL MDSFINDUNIT( DAR_cons_o_unit, mythid )

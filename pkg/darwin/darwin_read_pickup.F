@@ -27,7 +27,7 @@ C     myThid            :: thread number
       INTEGER myThid
 
 #ifdef ALLOW_DARWIN
-#if defined(DARWIN_ALLOW_CARBON) || (defined(DARWIN_ALLOW_GEIDER) && !defined(DARWIN_ALLOW_CHLQUOTA))
+#if (defined(DARWIN_ALLOW_GEIDER) && !defined(DARWIN_ALLOW_CHLQUOTA))
 
 C     !LOCAL VARIABLES:
 C     fn          :: character buffer for creating filename
@@ -121,10 +121,6 @@ C---   Old way to read pickup not supported
 C---   New way to read DARWIN pickup:
         nj = 0
 C---    read DARWIN 3-D fields for restart
-#ifdef DARWIN_ALLOW_CARBON
-        fldName = 'pH'
-        CALL READ_MFLDS_3D_RL( fldName, pH, nj, fp, Nr, myIter, myThid )
-#endif
 #if defined(DARWIN_ALLOW_GEIDER) && !defined(DARWIN_ALLOW_CHLQUOTA)
 #ifdef ALLOW_RADTRANS
         DO np = 1, nPhoto
@@ -164,9 +160,6 @@ C--    Check for missing fields:
        ENDIF
 
 C--    Update overlap regions:
-#ifdef DARWIN_ALLOW_CARBON
-        CALL EXCH_3D_RL( pH, 1, myThid )
-#endif
 #if defined(DARWIN_ALLOW_GEIDER) && !defined(DARWIN_ALLOW_CHLQUOTA)
 #ifdef ALLOW_RADTRANS
         DO np = 1, nPhoto

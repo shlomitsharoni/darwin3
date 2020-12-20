@@ -80,41 +80,11 @@ c--   read forcing fields from files and temporal interpolation
 #endif
      &     mytime, myiter, mythid )
 
-       call exf_set_fld(
-     &     'wind', windfile, windmask,
-     &     windStartTime, windperiod, windRepCycle,
-     &     darwin_inscal_wind,
-     &     wind_exfremo_intercept, wind_exfremo_slope,
-     &     windSpeed, wind0, wind1,
-#ifdef USE_EXF_INTERPOLATION
-     &     wind_lon0, wind_lon_inc,
-     &     wind_lat0, wind_lat_inc,
-     &     wind_nlon, wind_nlat, xC, yC, wind_interpMethod,
-#endif
-     &     mytime, myiter, mythid )
-
-       call exf_set_fld(
-     &     'pCO2', pCO2file, pCO2mask,
-     &     pCO2StartTime, pCO2period, pCO2RepCycle,
-     &     darwin_inscal_pCO2,
-     &     pCO2_exfremo_intercept, pCO2_exfremo_slope,
-     &     atmospCO2, pCO20, pCO21,
-#ifdef USE_EXF_INTERPOLATION
-     &     pCO2_lon0, pCO2_lon_inc,
-     &     pCO2_lat0, pCO2_lat_inc,
-     &     pCO2_nlon, pCO2_nlat, xC, yC, pCO2_interpMethod,
-#endif
-     &     mytime, myiter, mythid )
-
         _EXCH_XY_RL( surfPAR, myThid )
 
         _EXCH_XY_RL( inputFe, myThid )
 
         _EXCH_XY_RL( iceFrac, myThid )
-
-        _EXCH_XY_RL( windSpeed, myThid )
-
-        _EXCH_XY_RL( atmospCO2, myThid )
       ENDIF
 
 #endif /* ALLOW_EXF */

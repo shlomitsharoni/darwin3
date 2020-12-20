@@ -73,28 +73,6 @@ C     errCount  :: error counter
      I                           myThid )
       ENDIF
 
-      IF ( windfile .NE. ' ' ) THEN
-# ifdef ALLOW_DEBUG
-       IF (debugMode) CALL DEBUG_CALL('GETFFIELD_START wind',myThid)
-# endif
-       CALL EXF_GETFFIELD_START( useExfYearlyFields,
-     I                           'darwin', 'wind', windperiod,
-     I                           windstartdate1, windstartdate2,
-     U                           windStartTime, errCount,
-     I                           myThid )
-      ENDIF
-
-      IF ( pCO2file .NE. ' ' ) THEN
-# ifdef ALLOW_DEBUG
-       IF (debugMode) CALL DEBUG_CALL('GETFFIELD_START pCO2',myThid)
-# endif
-       CALL EXF_GETFFIELD_START( useExfYearlyFields,
-     I                           'darwin', 'pCO2', pCO2period,
-     I                           pCO2startdate1, pCO2startdate2,
-     U                           pCO2StartTime, errCount,
-     I                           myThid )
-      ENDIF
-
       IF ( errCount.GE.1 ) THEN
        WRITE(msgBuf,'(A,I3,A)')
      &     'DARWIN_EXF_INIT_FIXED: detected', errCount,' fatal error(s)'

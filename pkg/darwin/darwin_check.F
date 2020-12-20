@@ -71,10 +71,10 @@ CCOG]]]
       INTEGER i_POFe
       INTEGER i_POSi
       INTEGER i_PIC
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       INTEGER i_ALK
 #endif
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       INTEGER i_O2
 #endif
 #ifdef DARWIN_ALLOW_CDOM
@@ -96,7 +96,7 @@ CCOG]]]
 #ifdef DARWIN_ALLOW_CHLQUOTA
       INTEGER i_Chl, e_Chl
 #endif
-CCOG[[[end]]] (checksum: fda07ee4b9e30b0d4919bee98d030025)
+CCOG[[[end]]] (checksum: a8237b27577935cab807eb64f30c6a62)
       INTEGER n_DARWIN
 
       NAMELIST/DARWIN_INDICES/
@@ -126,10 +126,10 @@ CCOG]]]
      &    i_POFe,
      &    i_POSi,
      &    i_PIC,
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
      &    i_ALK,
 #endif
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
      &    i_O2,
 #endif
 #ifdef DARWIN_ALLOW_CDOM
@@ -151,7 +151,7 @@ CCOG]]]
 #ifdef DARWIN_ALLOW_CHLQUOTA
      &    i_Chl, e_Chl,
 #endif
-CCOG[[[end]]] (checksum: f12561ee0f9d111c504373bd03e7b7fb)
+CCOG[[[end]]] (checksum: 530aa7ec3ed70cf503ed465e1a9d2baa)
      &    n_DARWIN
 
       _BEGIN_MASTER(myThid)
@@ -185,10 +185,10 @@ CCOG]]]
        i_POFe = iPOFe
        i_POSi = iPOSi
        i_PIC = iPIC
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
        i_ALK = iALK
 #endif
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
        i_O2 = iO2
 #endif
 #ifdef DARWIN_ALLOW_CDOM
@@ -217,7 +217,7 @@ CCOG]]]
        i_Chl = iChl
        e_Chl = eChl
 #endif
-CCOG[[[end]]] (checksum: 216985aa5ad9c0682720271669178696)
+CCOG[[[end]]] (checksum: 6381418b7cc82281a666d95120e418d1)
        n_DARWIN = nDARWIN
 
        CALL MDSFINDUNIT( oUnit, mythid )
@@ -391,14 +391,14 @@ CCOG]]]
       CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
      &                   SQUEEZE_RIGHT,myThid)
 
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
      &  iALK   ,'ALK       ', PTRACERS_names(iALK   )
       CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
      &                   SQUEEZE_RIGHT,myThid)
 #endif
 
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       WRITE(msgBuf,'(A,I4,X,A,A32)') 'DARWIN_CHECK: ',
      &  iO2    ,'O2        ', PTRACERS_names(iO2    )
       CALL PRINT_MESSAGE(msgBuf,standardMessageUnit,
@@ -472,7 +472,7 @@ CCOG]]]
      &                     SQUEEZE_RIGHT,myThid)
       ENDDO
 #endif
-CCOG[[[end]]] (checksum: 74ce65a9bf6ddd1b59465e34262c2cff)
+CCOG[[[end]]] (checksum: 7bf2c00d62ad61b488097537c2f67d77)
 
       _END_MASTER(myThid)
 

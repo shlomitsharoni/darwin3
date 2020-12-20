@@ -39,7 +39,7 @@ C !LOCAL VARIABLES: ====================================================
       _RL totflxN
       _RL totflxFe
       _RL totflxSi
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       _RL totflxA
       _RL totflxO
 #endif
@@ -52,7 +52,7 @@ C !LOCAL VARIABLES: ====================================================
       totflxN = 0. _d 0
       totflxFe = 0. _d 0
       totflxSi = 0. _d 0
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       totflxA = 0. _d 0
       totflxO = 0. _d 0
 #endif
@@ -136,7 +136,7 @@ c Silica budget
 #endif
       ENDDO
 c------------------------------------------------------------
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
 c alkalinity budget !!!!! NOT FULL BUDGET!!!!!
       totflxA=totflxA+totSurfCorPtr(iALK)
 c oxygem budget !!!!!!!! NOT FULL BUDGET !!!!!!!!!!!
@@ -167,7 +167,7 @@ C     mean tracer change
       totflxP  = ptracers_dTLev(1)*totflxP /voltot
       totflxFe = ptracers_dTLev(1)*totflxFe/voltot
       totflxSi = ptracers_dTLev(1)*totflxSi/voltot
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
       totflxA  = ptracers_dTLev(1)*totflxA /voltot
       totflxO  = ptracers_dTLev(1)*totflxO /voltot
 #endif
@@ -188,7 +188,7 @@ C     add neglected flux to tracer globally
      &                               totflxFe*maskC(i,j,k,bi,bj)
            Ptracer(i,j,k,bi,bj,iSiO2)=Ptracer(i,j,k,bi,bj,iSiO2)+
      &                               totflxSi*maskC(i,j,k,bi,bj)
-#ifdef DARWIN_ALLOW_CARBON
+#ifdef ALLOW_DIC
            Ptracer(i,j,k,bi,bj,iALK)=Ptracer(i,j,k,bi,bj,iALK)+
      &                               totflxA*maskC(i,j,k,bi,bj)
            Ptracer(i,j,k,bi,bj,iO2 )=Ptracer(i,j,k,bi,bj,iO2 )+
