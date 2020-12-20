@@ -57,9 +57,17 @@ C  SURO :: tendency of O2 due to air-sea exchange
 
 #ifdef ALLOW_DIC
 
+#ifdef ALLOW_DIAGNOSTICS
+C     !FUNCTIONS:
+      LOGICAL  DIAGNOSTICS_IS_ON
+      EXTERNAL DIAGNOSTICS_IS_ON
+#endif
+
 C !LOCAL VARIABLES: ====================================================
 C  i,j :: loop indices
       INTEGER i,j
+      INTEGER nDeepStep
+      LOGICAL restart
 CEOP
 
 #ifdef ALLOW_DEBUG
@@ -107,6 +115,35 @@ C oxygen air-sea interaction
      I                       ptr2mM,
      I                       bi, bj, iMin, iMax, jMin, jMax,
      I                       myIter, myTime, myThid )
+      ENDIF
+
+C     don't compute deep pH, etc by default
+      nDeepStep = 0
+#ifdef CAR_DISS
+C     for calcite saturation, compute every 3600 time steps
+      nDeepStep = 3600
+#endif
+#ifdef ALLOW_DIAGNOSTICS
+C     for 3d pH and pCO2 diagnostics, compute every time step
+      IF (useDiagnostics) THEN
+       IF (DIAGNOSTICS_IS_ON('DICPHAVC',myThid) .OR.
+     &     DIAGNOSTICS_IS_ON('DICPCO2C',myThid)) THEN
+        nDeepStep = 1
+       ENDIF
+      ENDIF
+#endif
+      IF(nDeepStep .GT. 0 .AND. (myIter .LT. (nIter0+5) .OR.
+     &                        MOD(myIter,MAX(1,nDeepStep)) .EQ. 0))THEN
+#ifdef ALLOW_DEBUG
+       IF (debugMode) CALL DEBUG_CALL('CALCITE_SATURATION',myThid)
+#endif
+C      if not computed every time step, need to restart solver
+       restart = nDeepStep .GT. 1
+       CALL DIC_DEEP(
+     I                iDIC, iALK, iPO4, iSi,
+     I                ptr2mM, restart,
+     I                bi, bj, iMin, iMax, jMin, jMax,
+     I                myIter, myTime, myThid )
       ENDIF
 
 #ifdef ALLOW_DEBUG
