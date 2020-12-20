@@ -206,6 +206,9 @@ C carbon air-sea interaction
      &                          myIter, myTime, myThid )
 #endif
 #endif
+
+          CALL DIC_MONITOR( myTime, myIter, myThid )
+
 # ifndef ALLOW_AUTODIFF
         ENDIF
 # endif /* ALLOW_AUTODIFF */
