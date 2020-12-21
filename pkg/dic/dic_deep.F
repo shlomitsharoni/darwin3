@@ -250,9 +250,16 @@ C      end i,j loops
         ENDDO
        ENDDO
 
+#ifdef ALLOW_DIAGNOSTICS
+        IF ( useDiagnostics ) THEN
+         CALL DIAGNOSTICS_FILL(pHlocal  ,'DICPHAVC',k,1,2,bi,bj,myThid)
+         CALL DIAGNOSTICS_FILL(pCO2local,'DICPCO2C',k,1,2,bi,bj,myThid)
+        ENDIF
+#endif /* ALLOW_DIAGNOSTICS */
 
 C     end k loop
       ENDDO
+
 #endif /* ALLOW_DIC */
 
       RETURN
