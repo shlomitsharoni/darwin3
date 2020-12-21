@@ -1,4 +1,7 @@
 #include "DIC_OPTIONS.h"
+#ifdef ALLOW_EXF
+#include "EXF_OPTIONS.h"
+#endif
 
 CBOP
 C !ROUTINE: DIC_FIELDS_UPDATE
@@ -28,6 +31,9 @@ C !USES: ===============================================================
 # include "CPL_PARAMS.h"
 # include "OCNCPL.h"
 #endif /* ALLOW_OCN_COMPON_INTERF */
+#ifdef ALLOW_EXF
+#include "EXF_FIELDS.h"
+#endif
 
 C !INPUT PARAMETERS: ===================================================
 C     bi, bj       :: tile indices
@@ -42,7 +48,7 @@ C     myThid       :: my Thread Id number
 #ifdef ALLOW_DIC
 
 c !LOCAL VARIABLES: ===================================================
-#if defined(ALLOW_THSICE) || defined(ALLOW_SEAICE) || defined(COMPONENT_MODULE)
+#if defined(ALLOW_THSICE) || defined(ALLOW_SEAICE) || defined(COMPONENT_MODULE) || defined(EXF_SEAICE_FRACTION)
       INTEGER i, j
 #endif
 c     CHARACTER*(MAX_LEN_MBUF) msgBuf
@@ -74,6 +80,16 @@ CEOP
            ENDDO
          ENDIF
 #endif /* ALLOW_OCN_COMPON_INTERF */
+        ELSEIF ( useEXF ) THEN
+#ifdef ALLOW_EXF
+#ifdef EXF_SEAICE_FRACTION
+           DO j=1-OLy,sNy+OLy
+            DO i=1-OLx,sNx+OLx
+             fIce(i,j,bi,bj) = exf_iceFraction(i,j,bi,bj)
+            ENDDO
+           ENDDO
+#endif /* EXF_SEAICE_FRACTION */
+#endif /* ALLOW_EXF */
         ENDIF
 
 #ifdef ALLOW_OCN_COMPON_INTERF

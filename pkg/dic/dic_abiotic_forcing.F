@@ -74,7 +74,7 @@ CEOP
       IF (debugMode) CALL DEBUG_ENTER('DIC_ABIOTIC_FORCING',myThid)
 #endif
 
-      IF ( useThSIce .OR. useSEAICE .OR. useCoupler ) THEN
+      IF ( useThSIce .OR. useSEAICE .OR. useCoupler .OR. useEXF ) THEN
 #ifdef ALLOW_DEBUG
         IF (debugMode) CALL DEBUG_CALL('DIC_FIELDS_UPDATE',myThid)
 #endif
