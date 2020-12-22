@@ -41,9 +41,7 @@ C !USES: ===============================================================
 #ifdef ALLOW_DARWIN
 # include "DARWIN_SIZE.h"
 # include "DARWIN_INDICES.h"
-# include "DARWIN_FLUX.h"
-#endif
-#ifdef ALLOW_DIC
+#elif defined(ALLOW_DIC)
 # include "DIC_INDICES.h"
 #endif
 
@@ -121,20 +119,6 @@ c find global surface averages
       ENDIF
 # endif /* ALLOW_AUTODIFF */
 #endif /* ALLOW_DIC */
-#ifdef ALLOW_DARWIN
-c     IF ( useDARWIN ) THEN
-c find global surface averages
-       gsm_s = 0. _d 0
-       gsm_dic = 0. _d 0
-       gsm_alk = 0. _d 0
-       CALL GCHEM_SURFMEAN(salt,gsm_s,myThid)
-       CALL GCHEM_SURFMEAN(
-     &             pTracer(1-OLx,1-OLy,1,1,1,iDIC), gsm_dic, myThid )
-       print*,'mean surface dic', gsm_dic,gsm_s
-       CALL GCHEM_SURFMEAN(
-     &             pTracer(1-OLx,1-OLy,1,1,1,iALK), gsm_alk, myThid )
-c     ENDIF
-#endif
 ccccccccccccccccccccccccccccccccccccccccccc
 #endif /* ALLOW_OLD_VIRTUALFLUX */
 
@@ -292,6 +276,7 @@ C array because of last (iPtr) index
 #endif
           CALL TIMER_START('DARWIN_FORCING [GCHEM_FORCING_SEP]',myThid)
           CALL DARWIN_FORCING(  pTracer(1-OLx,1-OLy,1,1,1,1),
+     &                          SURC, SURA, SURO,
      &                          bi, bj, iMin, iMax, jMin, jMax,
      &                          myIter, myTime, myThid )
           CALL TIMER_STOP ('DARWIN_FORCING [GCHEM_FORCING_SEP]',myThid)
@@ -324,7 +309,6 @@ C--   end bi,bj loops.
 #ifdef ALLOW_DARWIN
       IF ( useDARWIN ) THEN
          CALL DARWIN_CONS( myIter, myTime, myThid )
-         CALL DARWIN_ATMOS( myTime, myIter, myThid )
       ENDIF
 #endif /* ALLOW_DARWIN */
 

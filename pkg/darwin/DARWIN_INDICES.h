@@ -109,5 +109,7 @@ C these cannot be modified for now
 #endif
       PARAMETER (nDarwin=eChl)
 
+      _RL ptr2mM
+      PARAMETER (ptr2mM=1 _d -3)
 CEOP
 #endif /* ALLOW_DARWIN */

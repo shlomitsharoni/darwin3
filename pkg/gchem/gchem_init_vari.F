@@ -25,7 +25,10 @@ C !USES: ===============================================================
 #include "GCHEM.h"
 #include "GCHEM_SIZE.h"
 #include "GCHEM_FIELDS.h"
-#ifdef ALLOW_DIC
+#ifdef ALLOW_DARWIN
+# include "DARWIN_SIZE.h"
+# include "DARWIN_INDICES.h"
+#elif defined(ALLOW_DIC)
 # include "DIC_INDICES.h"
 #endif
 
