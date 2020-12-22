@@ -48,7 +48,13 @@ C--   Initialise
 C--   Register GCHEM tracers: start with those using Separate Forcing
 C                             and finish with those using gchem-tendency
 
-#ifdef ALLOW_DIC
+#ifdef ALLOW_DARWIN
+      IF ( useDARWIN ) THEN
+        CALL DARWIN_TR_REGISTER(
+     U                 gchem_Tracer_num, gchem_sepFTr_num,
+     I                 myThid )
+      ENDIF
+#elif defined(ALLOW_DIC)
       IF ( useDIC ) THEN
         CALL DIC_TR_REGISTER(
      U              gchem_Tracer_num, gchem_sepFTr_num,
@@ -60,13 +66,6 @@ C                             and finish with those using gchem-tendency
         CALL BLING_TR_REGISTER(
      U                gchem_Tracer_num, gchem_sepFTr_num,
      I                myThid )
-      ENDIF
-#endif
-#ifdef ALLOW_DARWIN
-      IF ( useDARWIN ) THEN
-        CALL DARWIN_TR_REGISTER(
-     U                 gchem_Tracer_num, gchem_sepFTr_num,
-     I                 myThid )
       ENDIF
 #endif
 

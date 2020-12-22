@@ -106,13 +106,15 @@ C     GCHEM cannot run BLING and DARWIN together
         errCount = errCount + 1
       ENDIF
 
-C     GCHEM cannot run DARWIN and DIC together
+#if defined(ALLOW_DARWIN) && defined(ALLOW_DIC) && defined(DIC_BIOTIC)
+C     GCHEM cannot run DARWIN and biotic DIC together
       IF ( useDARWIN .AND. useDIC ) THEN
         WRITE(msgBuf,'(A)')
-     &       'useDARWIN and useDIC cannot both be .TRUE.'
+     &       'cannot use DARWIN and DIC with DIC_BIOTIC together.'
         CALL PRINT_ERROR( msgBuf, myThid )
         errCount = errCount + 1
       ENDIF
+#endif
 
       nb_tendTr = gchem_Tracer_num - gchem_sepFTr_num
       IF ( nb_tendTr.GT.GCHEM_tendTr_num ) THEN

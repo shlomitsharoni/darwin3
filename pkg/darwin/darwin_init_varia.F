@@ -140,10 +140,6 @@ C      use current time for insol
        ENDDO
       ENDIF
 
-#ifdef DARWIN_ALLOW_CARBON
-      CALL DARWIN_SURFFORCING_INIT( myThid )
-#endif
-
 #ifdef DARWIN_ALLOW_CONS
       IF ( myProcId.EQ.0 .AND. myThid.EQ.1 ) THEN
        CALL MDSFINDUNIT( DAR_cons_c_unit, mythid )

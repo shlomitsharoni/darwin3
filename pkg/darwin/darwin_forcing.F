@@ -10,6 +10,7 @@ CBOP
 C !ROUTINE: DARWIN_FORCING
 C !INTERFACE: ==========================================================
       SUBROUTINE DARWIN_FORCING( Ptrdummy,
+     I                        gDIC, gALK, gO2,
      I                        bi, bj, iMin, iMax, jMin, jMax,
      I                        myIter, myTime, myThid )
 
@@ -48,6 +49,9 @@ C  Ptrdummy             :: dummy for darwin2 compatibility
 C  myThid               :: thread number
       _RL Ptrdummy(*)
       _RL myTime
+      _RL gDIC(1-OLx:sNx+OLx, 1-OLy:sNy+OLy)
+      _RL gALK(1-OLx:sNx+OLx, 1-OLy:sNy+OLy)
+      _RL gO2(1-OLx:sNx+OLx, 1-OLy:sNy+OLy)
       INTEGER iMin, iMax, jMin, jMax, bi, bj, myIter, myThid
 CEOP
 
@@ -65,9 +69,6 @@ C  k                    :: vertical level
       _RL gPtr(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr, nDarwin)
       _RL PAR(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr, nlam)
       _RL diags(1-OLx:sNx+OLx,1-OLy:sNy+OLy, Nr, darwin_nDiag)
-      _RL gDIC(1-OLx:sNx+OLx, 1-OLy:sNy+OLy)
-      _RL gALK(1-OLx:sNx+OLx, 1-OLy:sNy+OLy)
-      _RL gO2(1-OLx:sNx+OLx, 1-OLy:sNy+OLy)
       _RL surfFe(1-OLx:sNx+OLx, 1-OLy:sNy+OLy)
       _RL freeFe(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr)
       _RL scv,scav_poc
@@ -134,13 +135,6 @@ c      ENDIF
 
 C === dic ==============================================================
 #ifdef DARWIN_ALLOW_CARBON
-C carbon air-sea interaction
-      CALL TIMER_START('DARWIN_SURFFORCING [DARWIN_FORCING]',myThid)
-      CALL DARWIN_SURFFORCING(
-     O                    gDIC, gALK, gO2,
-     I                    bi,bj,iMin,iMax,jMin,jMax,
-     I                    subTime,myIter,myThid)
-      CALL TIMER_STOP ('DARWIN_SURFFORCING [DARWIN_FORCING]',myThid)
       DO j=jMin,jMax
       DO i=iMin,iMax
         gPtr(i,j,1,iDIC) = gPtr(i,j,1,iDIC) + gDIC(i,j)

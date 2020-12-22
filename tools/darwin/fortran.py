@@ -67,6 +67,7 @@ def readparameters(*files, **kwargs):
                 codeline = m.group(1)
                 codeline = re.sub(r',', ';', codeline)
                 codeline = re.sub(r'\bin\b', 'IN', codeline)
+                codeline = re.sub(r' _d ', 'E', codeline)
                 code += codeline + '\n'
                 try:
                     name,val = m.group(1).split('=')
