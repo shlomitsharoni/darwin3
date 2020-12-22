@@ -43,6 +43,9 @@ C !USES: ===============================================================
 # include "DARWIN_INDICES.h"
 # include "DARWIN_FLUX.h"
 #endif
+#ifdef ALLOW_DIC
+# include "DIC_INDICES.h"
+#endif
 
 C !INPUT PARAMETERS: ===================================================
 C  myThid               :: thread number
@@ -110,10 +113,10 @@ c find global surface averages
        gsm_alk = 0. _d 0
        CALL GCHEM_SURFMEAN(salt,gsm_s,myThid)
        CALL GCHEM_SURFMEAN(
-     &             pTracer(1-OLx,1-OLy,1,1,1,1), gsm_dic, myThid )
+     &             pTracer(1-OLx,1-OLy,1,1,1,iDIC), gsm_dic, myThid )
        print*,'mean surface dic', gsm_dic,gsm_s
        CALL GCHEM_SURFMEAN(
-     &             pTracer(1-OLx,1-OLy,1,1,1,2), gsm_alk, myThid )
+     &             pTracer(1-OLx,1-OLy,1,1,1,iALK), gsm_alk, myThid )
 # ifndef ALLOW_AUTODIFF
       ENDIF
 # endif /* ALLOW_AUTODIFF */
@@ -165,7 +168,7 @@ C carbon air-sea interaction
 #endif
           CALL DIC_ABIOTIC_FORCING(
      O                       SURC, SURA, SURO,
-     I                       1, 2, 3, 0, 5,
+     I                       iDIC, iALK, iPO4, iSiO2, iO2,
      I                       ptr2mM,
      I                       bi, bj, iMin, iMax, jMin, jMax,
      I                       myIter, myTime, myThid )
