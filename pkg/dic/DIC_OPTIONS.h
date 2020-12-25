@@ -40,6 +40,9 @@ C put back bugs related to Water-Vapour in carbonate chemistry & air-sea fluxes
 C dissolution only below saturation horizon following method by Karsten Friis
 #undef CAR_DISS
 
+C Set silica to 0.03 for deep pH computations (for diag or CAR_DISS)
+#undef DIC_DEEP_SILICA_TEST
+
 C Include self-shading effect by phytoplankton
 #undef LIGHT_CHL
 

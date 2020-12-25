@@ -85,11 +85,15 @@ C determine inorganic carbon chem coefficients
            ELSE
            locphos(i,j) = 5.1225 _d -4
            ENDIF
+#ifdef DIC_DEEP_SILICA_TEST
+           locsi(i,j) = 0.03 _d 0
+#else
            IF (iSi .GT. 0) THEN
             locsi(i,j) = pTracer(i,j,k,bi,bj,iSi)*ptr2mM
            ELSE
             locsi(i,j) = SILICA(i,j,bi,bj)
            ENDIF
+#endif
            loctemp(i,j) = theta(i,j,k,bi,bj)
            locsalt(i,j) = salt(i,j,k,bi,bj)
            locdic(i,j)  = pTracer(i,j,k,bi,bj,iCO2)*ptr2mM
