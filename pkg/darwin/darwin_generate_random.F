@@ -555,7 +555,7 @@ c..........................................................
 c generate phyto Temperature Function parameters  
 c.......................................................
       phytoTempCoeff(np) = tempcoeff1
-      phytoTempExp1(np) = tempcoeff3
+      phytoTempAe(np) = tempcoeff3
       IF(physize(np) .EQ. 1)then
         phytoTempExp2(np) = tempcoeff2_big
       ELSE
