@@ -164,7 +164,6 @@ C       phytoplanktontype header
            READ(iUnit,'(I4,3F10.0,F20.0,F10.0)')
      &       idummy,asize(i),apsize(i),bsize(i),bbsize(i),asize_mgC(i)
          ENDIF
-         print*,'asize_mgC',i,asize_mgC(i)
          DO WHILE (ios .EQ. 0)
           READ(iUnit,'(I4,3F10.0,F20.0,F10.0)',IOSTAT=ios)
      &                ilambda,ain,apsin,bin,bbin,ain_mgC
