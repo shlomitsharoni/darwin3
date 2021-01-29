@@ -5,6 +5,18 @@
 Nutrient uptake and limitation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+The uptake of dissolved inorganic carbon is
+
+.. math::
+
+   U^{\op{DIC}}_j = P^{\mathrm{C}}_j {c}_j
+         - \op{synthcost}\cdot U^{\mathrm{N}}_j
+
+where the second term is only present with both N and Chl quotas and
+:varlink:`DARWIN_ALLOW_GEIDER`.
+
+Nutrient limitation is computed as follows.
+
 .. math::
 
    \gamma^{\op{nut}}_j = \min(\gamma^{\mathrm{P}}_j, \gamma^{\mathrm{N}}_j, \gamma^{\op{Si}}_j,
@@ -155,7 +167,7 @@ linear limitation
                      \frac{\op{NO}_3}{\op{NO}_3 + k^{\op{NO3}}_j}
                      {{\text{reg}}}^{Q{\mathrm{N}}}_j \cdot
                      f^{{\text{up}}}_j(T) \cdot {c}_j
-                     \cdot \gamma^{\op{\mathit{Q}Fe}}_j
+                     \cdot \gamma^{\op{QFe}}_j
 
 where
 
@@ -195,7 +207,7 @@ Without Fe quota:
 
 .. math:: \gamma^{\op{Fe}}_j = \frac{\op{FeT}}{\op{FeT}+ k^{\op{Fe}}_j}
 
-.. math:: \gamma^{\op{\mathit{Q}Fe}}_j = 1
+.. math:: \gamma^{\op{QFe}}_j = 1
 
 .. math:: U^{\op{Fe}}_j = R^{\op{Fe}:{\mathrm{C}}}_j P^{\mathrm{C}}_j {c}_j
 
@@ -208,11 +220,11 @@ a low iron quota does not directly limit growth,
 .. math:: \gamma^{\op{Fe}}_j = 1
 
 It rather reduced the light available for photosynthesis (see
-:ref:`GeiderGrowth` above),
+:ref:`Growth` above),
 
 .. math::
 
-   \gamma^{\op{\mathit{Q}Fe}}_j = \left[ \frac{1 - Q^{\op{Fe}\min}_j/Q^{\op{Fe}}_j}
+   \gamma^{\op{QFe}}_j = \left[ \frac{1 - Q^{\op{Fe}\min}_j/Q^{\op{Fe}}_j}
                                    {1 - Q^{\op{Fe}\min}_j/Q^{\op{Fe}\max}_j}
                        \right]_0^1
 

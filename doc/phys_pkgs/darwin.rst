@@ -59,7 +59,7 @@ Equations
    :maxdepth: 1
 
    darwin_equations
-   darwin_Geider
+   darwin_growth
    darwin_uptake
    darwin_chl
    darwin_remin
@@ -74,7 +74,7 @@ Equations
    darwin_bacteria
 
 Differences to darwin2
-^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~
 
 -  Particulate/dissolved split of plankton mortality products is not
    allometric or element-dependent as it was in quota.
@@ -801,6 +801,8 @@ If ``darwin_select_kn_allom=2``, the half saturation for
 
 Those of the other elements are again computed by scaling
 :math:`k^{\op{NO3}}_j` with the type’s elemental ratios.
+
+.. _allomSpectra:
 
 Allometric Scaling of absorption and scattering spectra
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''
