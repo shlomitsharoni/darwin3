@@ -37,7 +37,7 @@ ptracers package):
 
 The following abbreviated source terms are described in sections below:
 
-- :math:`U`: uptake, see :ref:`Uptake` and :ref:`Growth`
+- :math:`U`: uptake, see :ref:`Uptake`, :ref:`Growth` and :ref:`Spectral`
 - :math:`M`: mortality, see :ref:`Mortality`
 - :math:`P`: nitrification, see :ref:`Remineralization`
 - :math:`D`: denitrification, see :ref:`Denitrification`
