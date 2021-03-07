@@ -770,41 +770,6 @@ where
 and ``pp_opt`` and ``pp_sig`` are from the above table.
 
 
-Effective half saturation constants
-'''''''''''''''''''''''''''''''''''
-
-If ``DARWIN_effective_ksat=T``, half saturations for non-quota elements
-are computed from quota traits. If ``darwin_select_kn_allom=1`` (now
-deprecated), the half saturation for :math:`\op{NO}_3` is
-computed following Ward et al.,
-
-.. math::
-
-   k^{\op{NO3}}_j \rightarrow \frac{ k^{\op{NO3}}_j
-                              P^{{\mathrm{C}}{\op{m}}}_j Q^{{\mathrm{N}}\min}_j
-                              (Q^{{\mathrm{N}}\max}_j - Q^{{\mathrm{N}}\min}_j) }
-                            { V^{\op{NO3}\max}_j Q^{{\mathrm{N}}\max}_j +
-                              P^{{\mathrm{C}}{\op{m}}}_j Q^{{\mathrm{N}}\min}_j
-                              (Q^{{\mathrm{N}}\max}_j - Q^{{\mathrm{N}}\min}_j) }
-
-and those of the other elements are computed by scaling
-:math:`k^{\op{NO3}}_j` with the type’s elemental ratios. Here,
-:math:`k^{\op{NO3}}_j` on the right-hand side is computed from ``a_kn_NO3``
-and ``b_kn_NO3``.
-
-If ``darwin_select_kn_allom=2``, the half saturation for
-:math:`\op{NO}_3` is computed following Follett et al.,
-
-.. math::
-
-   k^{\op{NO3}}_j \rightarrow k^{\op{NO3}}_j \frac
-                     { P^{{\mathrm{C}}{\op{m}}}_j Q^{{\mathrm{N}}\min}_j }
-                     { V^{\op{NO3}\max}_j }
-
-Those of the other elements are again computed by scaling
-:math:`k^{\op{NO3}}_j` with the type’s elemental ratios.
-
-
 Diagnostics
 ~~~~~~~~~~~
 
