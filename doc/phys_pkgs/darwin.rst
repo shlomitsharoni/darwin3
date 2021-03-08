@@ -60,6 +60,7 @@ Equations
 
    darwin_equations
    darwin_growth
+   darwin_light
    darwin_spectral
    darwin_uptake
    darwin_chl
