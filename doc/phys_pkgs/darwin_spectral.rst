@@ -101,6 +101,7 @@ relevant to spectral light.
    :varlink:`darwin_lambda_aCDOM` & :math:`\lambda_{\op{aCDOM}}`       & 450.0  & nm                   & reference wavelength for CDOM absorption spectra
    :varlink:`darwin_Sdom`         & :math:`S_{\op{DOM}}`               & 0.014  & 1/nm                 & coefficient for CDOM absorption spectra
    :varlink:`darwin_aCDOM_fac`    & :math:`f_{\op{aCDOM}}`             & 0.2    &                      & factor for computing aCDOM from water+Chlorophyll absorption
+   :varlink:`darwin_part_size_P`  & :math:`q^{\op{part}}_{\op{P}}`     & 1E-15  & mmol P / particle    & conversion factor for particle absorption and scattering spectra
 
 .. csv-table:: Spectral light traits
    :delim: &
@@ -129,9 +130,20 @@ section used for each type is selected by :varlink:`aptype`.
    :name: tab_phys_pkg_darwin_spectra
 
    :varlink:`darwin_waterAbsorbFile`    & (I5,F15,F10)             & :math:`\lambda_l`, :math:`a^{\op{w}}_l`, :math:`b^{\op{w}}_l`
-   :varlink:`darwin_particleAbsorbFile` & (I4,F15,F15,F15)         & :math:`\lambda_l`, :math:`a^{\op{part}}_{\op{P}l}`, :math:`b^{\op{part}}_{\op{P}l}`, :math:`b^{\op{part}}_{\op{b}\op{P}l}`
+   :varlink:`darwin_particleAbsorbFile` & (I4,F15,F15,F15)         & :math:`\lambda_l`, :math:`a^{\op{part}}_{l}`, :math:`b^{\op{part}}_{l}`, :math:`b^{\op{part}}_{\op{b}l}`
    :varlink:`darwin_phytoAbsorbFile`    & (I4,F10,F10,F10,F20,F10) & :math:`\lambda_l`, :math:`a^{\op{chl}}_{\op{phy}l}`, :math:`a^{\op{chl}}_{\op{ps}l}`, :math:`b^{\op{C}}_{\op{phy}l}`, :math:`b^{\op{C}}_{\op{b}\op{phy}l}`, :math:`a^{\op{C}}_{\op{phy}l}`
                                         &                          & first line in sec: \*, :math:`d^{\op{a}}`, \*, :math:`d^{\op{b}}`, \*, :math:`d^{\op{aC}}`
+
+Particle spectra are read in units of m\ :sup:`2`/particle and converted to
+m\ :sup:`2`/mmol P using a fixed conversion factor,
+
+.. math::
+
+   a^{\op{part}}_{\op{P}l}       &= a^{\op{part}}_{l}/q^{\op{part}}_{\op{P}}
+
+   b^{\op{part}}_{\op{P}l}       &= b^{\op{part}}_{l}/q^{\op{part}}_{\op{P}}
+
+   b^{\op{part}}_{\op{b}\op{P}l} &= b^{\op{part}}_{\op{b}l}/q^{\op{part}}_{\op{P}}
 
 
 .. _allomSpectra:
