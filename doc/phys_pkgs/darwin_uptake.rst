@@ -291,6 +291,7 @@ Uptake and limitation parameters
    :widths: 13,20,17,15,15,20
    :class: longtable
    :header: Trait, Param, Symbol, Default, Units, Description
+   :name: tab_phys_pkg_darwin_uptake
 
                        & :varlink:`synthcost`      & :varlink:`synthcost`            & 0.0                          & mmol C / mmol N      & cost of biosynthesis
    :varlink:`hasSi`    & :varlink:`grp_hasSi`      & hasSi\ :math:`_j`               & 0                            &                      & 1: uses silica (Diatom), 0: not

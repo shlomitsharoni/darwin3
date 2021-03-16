@@ -101,6 +101,7 @@ relevant to spectral light.
    :varlink:`darwin_lambda_aCDOM` & :math:`\lambda_{\op{aCDOM}}`       & 450.0  & nm                   & reference wavelength for CDOM absorption spectra
    :varlink:`darwin_Sdom`         & :math:`S_{\op{DOM}}`               & 0.014  & 1/nm                 & coefficient for CDOM absorption spectra
    :varlink:`darwin_aCDOM_fac`    & :math:`f_{\op{aCDOM}}`             & 0.2    &                      & factor for computing aCDOM from water+Chlorophyll absorption
+   :varlink:`darwin_part_size_P`  & :math:`q^{\op{part}}_{\op{P}}`     & 1E-15  & mmol P / particle    & conversion factor for particle absorption and scattering spectra
 
 .. csv-table:: Spectral light traits
    :delim: &
@@ -129,9 +130,20 @@ section used for each type is selected by :varlink:`aptype`.
    :name: tab_phys_pkg_darwin_spectra
 
    :varlink:`darwin_waterAbsorbFile`    & (I5,F15,F10)             & :math:`\lambda_l`, :math:`a^{\op{w}}_l`, :math:`b^{\op{w}}_l`
-   :varlink:`darwin_particleAbsorbFile` & (I4,F15,F15,F15)         & :math:`\lambda_l`, :math:`a^{\op{part}}_{\op{P}l}`, :math:`b^{\op{part}}_{\op{P}l}`, :math:`b^{\op{part}}_{\op{b}\op{P}l}`
+   :varlink:`darwin_particleAbsorbFile` & (I4,F15,F15,F15)         & :math:`\lambda_l`, :math:`a^{\op{part}}_{l}`, :math:`b^{\op{part}}_{l}`, :math:`b^{\op{part}}_{\op{b}l}`
    :varlink:`darwin_phytoAbsorbFile`    & (I4,F10,F10,F10,F20,F10) & :math:`\lambda_l`, :math:`a^{\op{chl}}_{\op{phy}l}`, :math:`a^{\op{chl}}_{\op{ps}l}`, :math:`b^{\op{C}}_{\op{phy}l}`, :math:`b^{\op{C}}_{\op{b}\op{phy}l}`, :math:`a^{\op{C}}_{\op{phy}l}`
                                         &                          & first line in sec: \*, :math:`d^{\op{a}}`, \*, :math:`d^{\op{b}}`, \*, :math:`d^{\op{aC}}`
+
+Particle spectra are read in units of m\ :sup:`2`/particle and converted to
+m\ :sup:`2`/mmol P using a fixed conversion factor,
+
+.. math::
+
+   a^{\op{part}}_{\op{P}l}       &= a^{\op{part}}_{l}/q^{\op{part}}_{\op{P}}
+
+   b^{\op{part}}_{\op{P}l}       &= b^{\op{part}}_{l}/q^{\op{part}}_{\op{P}}
+
+   b^{\op{part}}_{\op{b}\op{P}l} &= b^{\op{part}}_{\op{b}l}/q^{\op{part}}_{\op{P}}
 
 
 .. _allomSpectra:
@@ -140,13 +152,13 @@ Allometric scaling of absorption and scattering spectra
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 If :varlink:`darwin_allomSpectra` is set to .TRUE., read-in absorption and
-scattering spectra for each optical type :math:`i` are scaled according to size
-before being assigned to a specific plankton type :math:`j` following
-:cite:`dutkiewicz:2020`.  Reference sizes for absorption and scattering are
-read in as effective spherical diameters, :math:`d^{\op{a}}_i`,
-:math:`d^{\op{aC}}_i`, :math:`d^{\op{b}}_i`, and converted to volumes,
-:math:`V^{\op{a}}_i`, :math:`V^{\op{aC}}_i`, :math:`V^{\op{b}}_i` via
-:math:`V=\frac{\pi}{6}d^3`.
+scattering spectra for each optical type :math:`i` (:varlink:`aptype`) are
+scaled according to size before being assigned to a specific model plankton
+type :math:`j` following :cite:`dutkiewicz:2020`.  Reference sizes for
+absorption and scattering are read in as effective spherical diameters,
+:math:`d^{\op{a}}_i`, :math:`d^{\op{aC}}_i`, :math:`d^{\op{b}}_i`, and
+converted to volumes, :math:`V^{\op{a}}_i`, :math:`V^{\op{aC}}_i`,
+:math:`V^{\op{b}}_i` via :math:`V=\frac{\pi}{6}d^3`.
 
 Absorption
 ++++++++++
@@ -156,11 +168,11 @@ Read-in absorption spectra, :math:`a^{\op{meas}}_i`, are scaled in terms of volu
 .. math::
 
       a_j(\lambda) &= a^{\op{meas}}_i(\lambda) \cdot
-                      (V_j/V^{\op{a}}_i)^{s^{\op{a}}_i}
+                      (V_j/V^{\op{a}}_i)^{s^{\op{a}}}
       \;,
 
       a^{\op{ps}}_j(\lambda) &= a^{\op{ps\ meas}}_i(\lambda) \cdot
-                                (V_j/V^{\op{a}}_i)^{s^{\op{a}}_i}
+                                (V_j/V^{\op{a}}_i)^{s^{\op{a}}}
       \;.
 
 Carbon-specific absorption is scaled similarly but with a different reference size,
@@ -168,7 +180,7 @@ Carbon-specific absorption is scaled similarly but with a different reference si
 .. math::
 
       a^{\op{C}}_j(\lambda) = a^{\op{C\,meas}}_i(\lambda) \cdot
-                              (V_j/V^{\op{aC}}_i)^{s^{\op{a}}_i}
+                              (V_j/V^{\op{aC}}_i)^{s^{\op{a}}}
       \;.
 
 Total scattering
@@ -196,9 +208,9 @@ There are 2 slopes for small and large measured cell sizes:
 .. math::
 
    s^{\op{b}}_i(\lambda) = \begin{cases}
-        s^{\op{bl}}_i(\lambda)
+        s^{\op{bl}}(\lambda)
             & \text{if } d^{\op{b}}_i \ge 10^{\ell^{\op{b}}(\lambda)} \\
-        s^{\op{bs}}_i(\lambda)
+        s^{\op{bs}}(\lambda)
             & \text{else.}
      \end{cases}
 
@@ -234,14 +246,14 @@ and compute spectral backscattering from total scattering,
    :class: longtable
    :header: Param, Symbol, Default, Units, Description
 
-   :varlink:`darwin_allomSpectra`      &                                  & .FALSE.  &           & enable/disable allometric scaling of plankton absorption and scattering spectra
-   :varlink:`darwin_aCarCell`          & :math:`a^{\op{C}}_{\op{cell}}`   & 0.109E-9 & mg C/cell & coefficient coefficient for scaling plankton spectra
-   :varlink:`darwin_bCarCell`          & :math:`b^{\op{C}}_{\op{cell}}`   & 0.991    &           & coefficient coefficient for scaling plankton spectra
-   :varlink:`darwin_absorpSlope`       & :math:`s^{\op{a}}_i`             & -0.075   &           & slope for scaled absorption spectra
-   :varlink:`darwin_bbbSlope`          & :math:`s^{\op{bbb}}`             & -1.458   &           & slope for scaled backscattering ratio spectra
-   :varlink:`darwin_scatSwitchSizeLog` & :math:`\ell^{\op{b}}(\lambda)`   & 0        & log(μm)   & log of size for switching slopes
-   :varlink:`darwin_scatSlopeSmall`    & :math:`s^{\op{bs}}_{i}(\lambda)` & 1.5      &           & slope for small plankton
-   :varlink:`darwin_scatSlopeLarge`    & :math:`s^{\op{bl}}_{i}(\lambda)` & 1.5      &           & slope for large plankton
+   :varlink:`darwin_allomSpectra`      &                                & .FALSE.  &           & enable/disable allometric scaling of plankton absorption and scattering spectra
+   :varlink:`darwin_aCarCell`          & :math:`a^{\op{C}}_{\op{cell}}` & 0.109E-9 & mg C/cell & coefficient coefficient for scaling plankton spectra
+   :varlink:`darwin_bCarCell`          & :math:`b^{\op{C}}_{\op{cell}}` & 0.991    &           & coefficient coefficient for scaling plankton spectra
+   :varlink:`darwin_absorpSlope`       & :math:`s^{\op{a}}`             & -0.075   &           & slope for scaled absorption spectra
+   :varlink:`darwin_bbbSlope`          & :math:`s^{\op{bbb}}`           & -1.458   &           & slope for scaled backscattering ratio spectra
+   :varlink:`darwin_scatSwitchSizeLog` & :math:`\ell^{\op{b}}(\lambda)` & 0        & log(μm)   & log of size for switching slopes
+   :varlink:`darwin_scatSlopeSmall`    & :math:`s^{\op{bs}}(\lambda)`   & 1.5      &           & slope for small plankton
+   :varlink:`darwin_scatSlopeLarge`    & :math:`s^{\op{bl}}(\lambda)`   & 1.5      &           & slope for large plankton
 
 
 Photosynthetically Active Radation

@@ -74,6 +74,8 @@ Equations
    darwin_grazing
    darwin_temperature
    darwin_bacteria
+   darwin_sink
+   darwin_linfs
 
 Differences to darwin2
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -380,7 +382,6 @@ General parameters are set in namelist :varlink:`DARWIN_PARAMS`:
    :varlink:`aphy_chl_ave`           & 0.02                  & m\ :sup:`2`/mg Chl               & Chl-specific absorption coefficient
    :varlink:`chl2nmax`               & 3.00                  & mg Chl / mmol N                  & max Chl:N ratio for Chl synthesis following Moore 2002
    :varlink:`synthcost`              & 0.0                   & mmol C / mmol N                  & cost of biosynthesis
-   :varlink:`palat_min`              & 0                     &                                  & min non-zero palatability, smaller :varlink:`palat` are set to 0 (was 1D-4 in quota)
    :varlink:`inhib_graz`             & 1.0                   & (mmol C m\ :sup:`-3`)\ :sup:`-1` & inverse decay scale for grazing inhibition
    :varlink:`inhib_graz_exp`         & 0.0                   &                                  & exponent for grazing inhibition (0 to turn off inhibition)
    :varlink:`hillnumUptake`          & 1.0                   &                                  & exponent for limiting quota uptake in nutrient uptake
@@ -681,6 +682,7 @@ traits and trait parameters. Where :math:`b` is not given, it is set to
                                  & :varlink:`a_bioswim_denom`        & 1             &                                    &
    :varlink:`palat`              & :varlink:`a_ppSig`                & 1             & *see below*
    :varlink:`palat`              & :varlink:`a_ppOpt`                & 1024          & :varlink:`b_ppOpt`                 & 0.00
+   :varlink:`palat`              & :varlink:`palat_min`              & 0.0           &                                    & 
    :varlink:`PCmax`              & :varlink:`a_PCmax`                & 1.00 / day    & :varlink:`b_PCmax`                 & -0.15
                                  & :varlink:`a_PCmax_denom`          & 1             &                                    &
    :varlink:`qcarbon`            & :varlink:`a_qcarbon`              & 1.80D-11      & :varlink:`b_qcarbon`               & 0.94
