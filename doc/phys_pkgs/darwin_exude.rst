@@ -14,11 +14,11 @@ with
 
 and fed into organic matter pools, e.g.,
 
-.. math:: \partial_t\op{DOP}= \dots + \sum_j (1 - f^{\exp}_j) E^{\mathrm{P}}_j
+.. math:: \partial_t\op{DOP}= \dots + \sum_j (1 - f^{\exp\op{exude}}_j) E^{\mathrm{P}}_j
 
 and
 
-.. math:: \partial_t\op{POP}= \dots + \sum_j f^{\exp}_j E^{\mathrm{P}}_j
+.. math:: \partial_t\op{POP}= \dots + \sum_j f^{\exp\op{exude}}_j E^{\mathrm{P}}_j
 
 (Maybe should NOT use :math:`{c}_j^{\min}` in this case, or have a
 separate one for each quota?)
