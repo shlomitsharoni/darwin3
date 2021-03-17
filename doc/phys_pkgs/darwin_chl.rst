@@ -16,7 +16,7 @@ where
 
    \rho^{\op{Chl}}_j = \begin{cases}
        \op{Chl\text{:}n}^{\max}_j
-         \frac{P^{\mathrm{C}}_j}
+         \dfrac{P^{\mathrm{C}}_j}
               {\langle\alpha I\rangle_j \cdot \op{Chl\text{:}C}_j}
        & \text{if } \langle\alpha I\rangle_j \cdot \op{Chl\text{:}C}_j > 0, \\
        \op{Chl\text{:}n}^{\max}_j
@@ -39,7 +39,7 @@ where
 .. math::
 
    \rho^{\op{Chl}}_j = \begin{cases}
-       \op{Chl\text{:}C}^{\max}_j \frac{P^{\mathrm{C}}_j}
+       \op{Chl\text{:}C}^{\max}_j \dfrac{P^{\mathrm{C}}_j}
        {\langle\alpha I\rangle_j \op{Chl\text{:}C}^{{{\text{acclim}}}}_j}
        & \text{if } \langle\alpha I\rangle_j > 0
          \text{ and } \op{Chl\text{:}C}^{{{\text{acclim}}}}_j > 0, \\
@@ -52,6 +52,10 @@ where
 
    S^{\op{Chl}}_j = \op{Chl\text{:}C}_j^{\op{acclim}} \cdot P^{\mathrm{C}}_j {c}_j
                 + \tau^{\op{acclim}}_j (\op{Chl\text{:}C}_j^{\op{acclim}} - \op{Chl\text{:}C}_j) {c}_j
+
+The acclimated chlorophyll-c ratio, :math:`\op{Chl\text{:}C}_j^{\op{acclim}}`,
+is defined in :eq:`chl2cacclim`.
+
 
 Without Chl quota,
 ''''''''''''''''''

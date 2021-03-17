@@ -83,7 +83,10 @@ from plankton Chlorophyll and carbon tracers.  Without,
 
    \op{Chl\text{:}C}_j = \op{Chl\text{:}C}_j^{\op{acclim}}
 
+where
+
 .. math::
+   :label: chl2cacclim
 
    \op{Chl\text{:}C}_j^{\op{acclim}} = \left[
          \frac{\op{Chl\text{:}C}^{\max}_j}
