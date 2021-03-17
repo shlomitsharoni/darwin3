@@ -35,6 +35,14 @@ ptracers package):
    \partial_t\op{PON}   &= \sum_j M_j^{\op{POM}} Q_j^{{\mathrm{N}}}  + g^{\op{PON}}  - R_{\op{PON}} \\
    \partial_t\op{POSi}  &= \sum_j M_j Q_j^{\op{Si}} \;\;\;\;\; + g^{\op{POSi}} - R_{\op{POSi}} \\
    \partial_t\op{POFe}  &= \sum_j M_j^{\op{POM}} Q_j^{\op{Fe}} + g^{\op{POFe}} - R_{\op{POFe}} \\
+   \partial_t\op{ALK}   &= -\biggl( P_{\op{NO3}} - \sum_j U^{\op{NO3}}_j \biggr)
+       - 2\biggl( \sum_j U^{\op{DIC}}_j R^{{\text{PIC:POC}}}_j - \kappa^{{\text{diss}}}_{\mathrm{C}}\op{PIC}\biggr)
+       + D_{\op{NO3}} \\
+   \partial_t{\mathrm{O}}_2 &= R_{{\mathrm{O}}:{\mathrm{P}}} \biggl(
+                                   \sum_j U^{\op{PO4}}_j
+                                   - R_{\op{DOP}} - [R_{\op{POP}}]
+                               \biggr)
+   \\
    \partial_t\op{CDOM}  &= S^{\op{CDOM}}
 
 
@@ -61,6 +69,7 @@ For alkalinity, oxygen and CDOM also see the sections below: :ref:`CarbonChemist
    :class: longtable
    :header: Trait, Param, Symbol, Default, Units, Description
 
-                       & :varlink:`Kdissc`     & :math:`\kappa^{\op{diss}}` & 1/(300 days) & 1/s                            & dissolution rate for PIC
-   :varlink:`R_PICPOC` & :varlink:`a_R_PICPOC` & :math:`R^{\op{PICPOC}}_j`  & 0.8          & mmol PIC (mmol POC)\ :sup:`-1` & inorganic-organic carbon ratio
+                       & :varlink:`Kdissc`     & :math:`\kappa^{\op{diss}}`        & 1/(300 days) & 1/s                            & dissolution rate for PIC
+   :varlink:`R_PICPOC` & :varlink:`a_R_PICPOC` & :math:`R^{\op{PICPOC}}_j`         & 0.8          & mmol PIC (mmol POC)\ :sup:`-1` & inorganic-organic carbon ratio
+                       & :varlink:`R_OP`       & :math:`R_{\mathrm{O}:\mathrm{P}}` & 170          & mmol O\ :sub:`2` / mmol P      & O:P ratio for respiration and consumption
 
