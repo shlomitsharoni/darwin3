@@ -74,6 +74,8 @@ Equations
    darwin_grazing
    darwin_temperature
    darwin_bacteria
+   darwin_sink
+   darwin_linfs
 
 Differences to darwin2
 ~~~~~~~~~~~~~~~~~~~~~~

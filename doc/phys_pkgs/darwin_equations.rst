@@ -3,8 +3,11 @@
 Model equations
 ^^^^^^^^^^^^^^^
 
-The basic model equations are (omitting transport terms handled by the
-ptracers package):
+The basic model equations are (omitting transport terms handled by the ptracers
+package, sinking and swimming terms discussed in
+:numref:`para_phys_pkg_darwin_sink` and terms correcting conservation with the
+linear free surface formulation discussed in
+:numref:`para_phys_pkg_darwin_linfs`):
 
 .. math::
 
