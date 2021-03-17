@@ -63,3 +63,12 @@ Without Chl quota,
 current chl, i.e., :math:`{c}_j\cdot\op{Chl\text{:}C}_j`, is
 stored for the next time step.
 
+
+.. csv-table:: Chlorophyll synthesis parameters
+   :delim: &
+   :widths: 13,20,14,14,15,24
+   :class: longtable
+   :header: Trait, Param, Symbol, Default, Units, Description
+
+                            & :varlink:`chl2nmax`        & Chl:n\ :math:`^{\op{max}}_j` & 3.00   & mg Chl / mmol N & max Chl:N ratio for Chl synthesis following Moore 2002
+   :varlink:`acclimtimescl` & :varlink:`a_acclimtimescl` & :math:`\tau^{\op{acclim}}` & 1/20days & 1/s             & rate of chlorophyll acclimation
