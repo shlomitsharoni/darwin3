@@ -11,10 +11,10 @@ denitrification occurs, provided
 
 .. math::
 
-     D_{\op{NH4}} &= r_{\op{DON}} \op{DON} + (r_{\op{PON}} \op{PON})
+     D_{\op{NH4}} &= R_{\op{DON}} + [R_{\op{PON}}]
 
-     D_{\op{NO3}} &= \op{denit\_NO3} \cdot \bigl(r_{\op{DOP}} \op{DOP} +
-                     (r_{\op{POP}} \op{POP}) \bigr)
+     D_{\op{NO3}} &= R^{\mathrm{NO3}:\mathrm{P}}_{\op{denit}} \cdot \bigl(
+                         R_{\op{DOP}} + [R_{\op{POP}}] \bigr)
 
 (the particulate organic terms are not present with :varlink:`DARWIN_ALLOW_CDOM`).
 
@@ -22,11 +22,11 @@ The diagnostic 'Denit' is this:
 
 .. math::
 
-     \op{Denit} = \op{denit\_NP} \cdot  \bigl(r_{\op{DOP}} \op{DOP} +
-                     (r_{\op{POP}} \op{POP}) \bigr)
+     \op{Denit} = R^{\mathrm{N}:\mathrm{P}}_{\op{denit}} \bigl(
+                      R_{\op{DOP}} + [R_{\op{POP}}] \bigr)
 
 
-Also, provided :math:`{\mathrm{O}}_2<{\mathrm{O}}_2^{{\text{crit}}}` and
+Also, when :math:`{\mathrm{O}}_2<{\mathrm{O}}_2^{{\text{crit}}}` and
 :math:`\op{NO}_3<\op{NO}_3^{{\text{crit}}}`, all remineralization,
 denitrification and CDOM degradation (except bleaching) stops.
 

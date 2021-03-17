@@ -11,17 +11,18 @@ replaced by
 
 .. math::
 
-     \partial_t\op{CDOM} &= f_{\op{CDOM}} (r_{\op{POP}} \op{POP}+ g^{\op{DOP}}) - D_{\op{CDOM}}
+     S^{\op{CDOM}} &= f_{\op{CDOM}} (R_{\op{POP}} + g^{\op{DOP}}) - D_{\op{CDOM}}
 
-     \partial_t\op{DOP} &= \dots + D_{\op{CDOM}} - f_{\op{CDOM}} (r_{\op{POP}} \op{POP}+ g^{\op{DOP}})
+     S^{\op{DOP}}_{\op{CDOM}} &= D_{\op{CDOM}} + (1 - f_{\op{CDOM}}) R_{\op{POP}}
 
-     \partial_t\op{DOC} &= \dots + R^{{\mathrm{C}}:{\mathrm{P}}}_{\op{CDOM}} (D_{\op{CDOM}} - f_{\op{CDOM}} (r_{\op{POP}} \op{POP}+ g^{\op{DOP}}))
+     S^{\op{DOC}}_{\op{CDOM}} &= R^{{\mathrm{C}}:{\mathrm{P}}}_{\op{CDOM}} (D_{\op{CDOM}} + (1 - f_{\op{CDOM}}) R_{\op{POP}}
 
-     \partial_t\op{DON} &= \dots + R^{{\mathrm{N}}:{\mathrm{P}}}_{\op{CDOM}} (D_{\op{CDOM}} - f_{\op{CDOM}} (r_{\op{POP}} \op{POP}+ g^{\op{DOP}}))
+     S^{\op{DON}}_{\op{CDOM}} &= R^{{\mathrm{N}}:{\mathrm{P}}}_{\op{CDOM}} (D_{\op{CDOM}} + (1 - f_{\op{CDOM}}) R_{\op{POP}}
 
-     \partial_t\op{DOFe} &= \dots + R^{\op{Fe}:{\mathrm{P}}}_{\op{CDOM}}(D_{\op{CDOM}} - f_{\op{CDOM}} (r_{\op{POP}} \op{POP}+ g^{\op{DOP}}))
+     S^{\op{DOFe}}_{\op{CDOM}} &= R^{\op{Fe}:{\mathrm{P}}}_{\op{CDOM}}(D_{\op{CDOM}} + (1 - f_{\op{CDOM}}) R_{\op{POP}}
 
-where
+where :math:`R_{\op{POP}}` is remineralization of POP, :math:`g^{\op{DOP}}`
+grazing loss to DOP and
 
 .. math::
 
@@ -29,5 +30,7 @@ where
                      + r^{\op{bleach}}_{\op{CDOM}} \min(1, I/I_{\op{CDOM}}) \right)
                 f^{{{\text{remin}}}}(T) \cdot \op{CDOM}
 
-(CDOM is still in P units.)
+CDOM degradation.
+
+Note: CDOM is in P units.  It should eventually be parameterized in term of organic carbon.
 
