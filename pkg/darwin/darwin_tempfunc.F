@@ -6,7 +6,8 @@ C !ROUTINE: DARWIN_TEMPFUNC
 C !INTERFACE: ==========================================================
       SUBROUTINE DARWIN_TEMPFUNC(
      I                  Temp,
-     O                  photoFun, grazFun, reminFun, mortFun, mort2Fun,
+     O                  photoFun, hetFun, grazFun,
+     O                  reminFun, mortFun, mort2Fun,
      O                  uptakeFun,
      I                  myThid)
 
@@ -35,6 +36,7 @@ C !OUTPUT PARAMETERS: ==================================================
 C grazFun :: the prey entries are for quota-style grazing,
 C            the predator ones for monod-style grazing
       _RL photoFun(nplank)
+      _RL hetFun(nplank)
       _RL grazFun(nplank)
       _RL reminFun
       _RL mortFun
@@ -61,7 +63,7 @@ c !LOCAL VARIABLES: ====================================================
 #elif DARWIN_TEMP_VERSION == 1
 
 c +++++++++++++++++++ VERSION 1 +++++++++++++++++++++++++++++++++++++++
-c steph's version 1 (pseudo-Eppley)
+c steph s version 1 (pseudo-Eppley)
 c plankton growth function (unitless)
       DO j = 1, nPhoto
 cswd -- this gives Eppley curve only
@@ -78,6 +80,7 @@ cswd -- temperature range
         photoFun(j) = min(photoFun(j),1. _d 0)
       ENDDO
       DO j = 1,nplank
+        hetFun(j) = 1.0 _d 0
 c       grazFun(j) = zooTempCoeff(j)*EXP(
 c    &             zooTempExp(j)*(Temp - zooTempOptimum(j)))
         grazFun(j) = 1.0 _d 0
@@ -91,7 +94,7 @@ c ++++++++++++++ END VERSION 1 +++++++++++++++++++++++++++++++++++++++
 #elif DARWIN_TEMP_VERSION == 2
 
 c +++++++++++++++++++ VERSION 2 +++++++++++++++++++++++++++++++++++++++
-c steph's version 2 (pseudo-Arrenhius)
+c steph s version 2 (pseudo-Arrenhius)
       Tkel      =   273.15 _d 0
 !      TempAe    = -4000.0 _d 0
 !      Tempref   =   293.15 _d 0
@@ -116,6 +119,7 @@ C
       reminFun = TempCoeffArr*
      &               max(reminFun, 1. _d -10)
       DO j = 1, nplank
+        hetFun(j) = reminFun
         grazFun(j) = reminFun
 c       grazFun(j) = 1. _d 0
       ENDDO
@@ -130,12 +134,13 @@ c ++++++++++++++ END VERSION 2 +++++++++++++++++++++++++++++++++++++++
 #elif DARWIN_TEMP_VERSION == 3
 
 c +++++++++++++++++++ VERSION 3 +++++++++++++++++++++++++++++++++++++++
-c ben's version 3 from quota model
+c ben s version 3 from quota model
       TempAe    =   0.05 _d 0
       Tempref   =  20.0 _d 0
       reminFun = MAX(1 _d -10, EXP(TempAe*(Temp-Tempref)))
       DO j = 1, nplank
         photoFun(j) = MAX(1 _d -10, EXP(TempAe*(Temp-Tempref)))
+        hetFun(j) = reminFun
         grazFun(j) = reminFun
       ENDDO
       mortFun = reminFun
@@ -143,8 +148,43 @@ c ben's version 3 from quota model
       uptakeFun = reminFun
 c ++++++++++++++ END VERSION 3 +++++++++++++++++++++++++++++++++++++++
 
+#elif DARWIN_TEMP_VERSION == 4
+
+c +++++++++++++++++++ VERSION 4 +++++++++++++++++++++++++++++++++++++++
+c exponential set so mumax is at 20C
+c plankton growth function (unitless)
+      Tempref = 20 _d 0
+      DO j = 1, nPhoto
+        photoFun(j) = EXP(phytoTempAe(j)*(Temp - Tempref))
+# ifdef DARWIN_TEMP_RANGE
+cswd -- temperature range
+        photoFun(j) = photoFun(j) *
+     &      EXP(-phytoTempExp2(j)*
+     &           ABS(Temp - phytoTempOptimum(j))**phytoDecayPower(j))
+# endif
+      ENDDO
+      DO j = 1, nplank
+        hetFun(j) = EXP(hetTempAe(j)*(Temp - Tempref))
+# ifdef DARWIN_TEMP_RANGE
+        hetFun(j) = hetFun(j) *
+     &      EXP(-hetTempExp2(j)*
+     &           ABS(Temp - hetTempOptimum(j))**hetDecayPower(j))
+# endif
+        grazFun(j) = EXP(grazTempAe(j)*(Temp - Tempref))
+# ifdef DARWIN_TEMP_RANGE
+        grazFun(j) = grazFun(j) *
+     &      EXP(-grazTempExp2(j)*
+     &           ABS(Temp - grazTempOptimum(j))**grazDecayPower(j))
+# endif
+      ENDDO
+      reminFun  = EXP(reminTempAe*(Temp - Tempref))
+      mortFun   = EXP(mortTempAe*(Temp - Tempref))
+      mort2Fun  = EXP(mort2TempAe*(Temp - Tempref))
+      uptakeFun = EXP(uptakeTempAe*(Temp - Tempref))
+c ++++++++++++++ END VERSION 4 +++++++++++++++++++++++++++++++++++++++
+
 #else
-#error "DARWIN_TEMP_VERSION must be 1, 2 or 3.  Define in DARWIN_OPTIONS.h"
+#error "DARWIN_TEMP_VERSION must be 1, 2, 3 or 4.  Define in DARWIN_OPTIONS.h"
 #endif
 
 #ifdef DARWIN_NOZOOTEMP

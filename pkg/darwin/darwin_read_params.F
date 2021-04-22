@@ -64,6 +64,10 @@
      &    TempAeArr,
      &    TemprefArr,
      &    TempCoeffArr,
+     &    reminTempAe,
+     &    mortTempAe,
+     &    mort2TempAe,
+     &    uptakeTempAe,
      &    alpfe,
      &    scav,
      &    ligand_tot,
@@ -76,6 +80,7 @@
      &    depthfesed,
      &    fesedflux,
      &    fesedflux_pcm,
+     &    fesedflux_min,
      &    R_CP_fesed,
      &    Knita,
      &    Knitb,
@@ -131,6 +136,7 @@
      &    denit_NO3,
      &    NO3crit,
      &    PARmin,
+     &    aphy_chl_ave,
      &    chl2nmax,
      &    synthcost,
      &    palat_min,
@@ -207,10 +213,12 @@ C     &    yono2,
      &    bw,
      &    aphy_chl_type,
      &    aphy_chl_ps_type,
+     &    aphy_mgC_type,
      &    bphy_mgC_type,
      &    bbphy_mgC_type,
      &    asize,
      &    apsize,
+     &    asize_mgC,
      &    bsize,
      &    bbsize,
      &    apart,
@@ -289,6 +297,10 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       TempAeArr = -4000.0 _d 0
       TemprefArr = 293.15 _d 0
       TempCoeffArr = 0.5882 _d 0
+      reminTempAe = 0.0438 _d 0
+      mortTempAe = 0.0438 _d 0
+      mort2TempAe = 0.0438 _d 0
+      uptakeTempAe = 0.0 _d 0
       alpfe = 0.04 _d 0
       scav = 0.4 _d 0/pyear
       ligand_tot = 1. _d -3
@@ -301,6 +313,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       depthfesed = -1.0 _d 0
       fesedflux = 1 _d -3 / pday
       fesedflux_pcm = 0.68 _d -3
+      fesedflux_min = 0.5 _d -3 / pday
       R_CP_fesed = 106 _d 0
       Knita = 1 _d 0/(0.5 _d 0*pday)
       Knitb = 1 _d 0/(10 _d 0*pday)
@@ -357,6 +370,7 @@ C     O2crit from Lipschultz et al 1990, DSR 37, 1513-1541:
       denit_NO3 = 104.0 _d 0
       NO3crit = 1. _d -2
       PARmin = 0.1 _d 0
+      aphy_chl_ave = 0.02 _d 0
       chl2nmax = 3.00 _d 0
       synthcost = 0.0 _d 0
       palat_min = 0 _d 0
@@ -447,10 +461,12 @@ C     from Montagnes et al 1994:
       bw = -1
       aphy_chl_type = -1
       aphy_chl_ps_type = -1
+      aphy_mgC_type = -1
       bphy_mgC_type = -1
       bbphy_mgC_type = -1
       asize = -1
       apsize = -1
+      asize_mgC = -1
       bsize = -1
       bbsize = -1
       apart = -1

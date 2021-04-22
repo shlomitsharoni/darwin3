@@ -231,9 +231,20 @@ C       if 0, temperature dependent, if 1, not.
 C temperature function parameters
         phytoTempCoeff(jp)   = a_phytoTempCoeff(g)
         phytoTempExp1(jp)    = a_phytoTempExp1(g)
+        phytoTempAe(jp)      = a_phytoTempAe(g)
         phytoTempExp2(jp)    = a_phytoTempExp2(g)
         phytoTempOptimum(jp) = a_phytoTempOptimum(g)
         phytoDecayPower(jp)  = a_phytoDecayPower(g)
+
+        hetTempAe(jp)        = a_hetTempAe(g)
+        hetTempExp2(jp)      = a_hetTempExp2(g)
+        hetTempOptimum(jp)   = a_hetTempOptimum(g)
+        hetDecayPower(jp)    = a_hetDecayPower(g)
+
+        grazTempAe(jp)       = a_grazTempAe(g)
+        grazTempExp2(jp)     = a_grazTempExp2(g)
+        grazTempOptimum(jp)  = a_grazTempOptimum(g)
+        grazDecayPower(jp)   = a_grazDecayPower(g)
 
 C plankton elemental ratios
         R_NC(jp)       = a_R_NC(g)
@@ -376,6 +387,18 @@ c size specific absorption spectra
              aphy_chl_ps(jp,l) = aphy_chl_ps_type(iopt,l)*scalefac
            ENDDO
 
+c in terms of mg C
+           IF (asize_mgC(iopt).GT.0 _d 0)THEN
+            volmeas = PI / 6. _d 0 * asize_mgC(iopt)**3
+            scalefac = (biovol(jp)/volmeas)**darwin_absorpSlope
+           ELSE
+            scalefac = 1 _d 0
+           ENDIF
+c size specific absorption spectra
+           DO l = 1, nlam
+             aphy_mgC(jp,l) = aphy_mgC_type(iopt,l)*scalefac
+           ENDDO
+
 c TOTAL SCATTER
 c in terms of diameter
            volmeas = PI / 6. _d 0 * bsize(iopt)**3
@@ -419,6 +442,7 @@ c OR use read in absorbtion spectra
           DO l = 1, nlam
            aphy_chl(jp,l) = aphy_chl_type(iopt,l)
            aphy_chl_ps(jp,l) = aphy_chl_ps_type(iopt,l)
+           aphy_mgC(jp,l) = aphy_mgC_type(iopt,l)
            bphy_mgC(jp,l) = bphy_mgC_type(iopt,l)
            bbphy_mgC(jp,l) = bbphy_mgC_type(iopt,l)
           ENDDO

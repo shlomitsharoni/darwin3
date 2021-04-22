@@ -35,11 +35,14 @@ C     === Global variables ===
 #include "FFIELDS.h"
 #include "SHELFICE.h"
 #include "SHELFICE_COST.h"
-#ifdef ALLOW_AUTODIFF
+#ifdef ALLOW_CTRL
 # include "CTRL_SIZE.h"
 # include "ctrl.h"
 # include "ctrl_dummy.h"
-#endif /* ALLOW_AUTODIFF */
+# ifdef ALLOW_GENTIM2D_CONTROL
+#  include "CTRL_GENARR.h"
+# endif
+#endif /* ALLOW_CTRL */
 #ifdef ALLOW_AUTODIFF_TAMC
 # ifdef SHI_ALLOW_GAMMAFRICT
 #  include "tamc.h"
@@ -77,7 +80,7 @@ C                         fresh water flux, 0 otherwise
 C     rFWinBL          :: = 1 when realFreshWaterFlux is used with BoundaryLayer
 C     auxiliary variables and abbreviations:
 C     a0, a1, a2, b, c0
-C     eps1, eps2, eps3, eps3a, eps4, eps5, eps6, eps7, eps8
+C     eps1, eps2, eps3, eps3a, eps4, eps6, eps7, eps8
 C     aqe, bqe, cqe, discrim, recip_aqe
 C     drKp1, recip_drLoc
       INTEGER I,J,K,Kp1
@@ -94,7 +97,7 @@ C     drKp1, recip_drLoc
       _RL convertFW2SaltLoc
 #endif
       _RL a0, a1, a2, b, c0
-      _RL eps1, eps2, eps3, eps3a, eps4, eps5, eps6, eps7, eps8
+      _RL eps1, eps2, eps3, eps3a, eps4, eps6, eps7, eps8
       _RL cFac, rFac, dFac, fwflxFac, rFWinBL
       _RL aqe, bqe, cqe, discrim, recip_aqe
       _RL drKp1, recip_drLoc
@@ -117,7 +120,10 @@ C     drKp1, recip_drLoc
       EXTERNAL SW_TEMP
 #endif
 
-#ifdef ALLOW_SHIFWFLX_CONTROL
+#ifdef ALLOW_GENTIM2D_CONTROL
+      INTEGER iarr
+#endif
+#if (defined ALLOW_SHIFWFLX_CONTROL || defined ALLOW_GENTIM2D_CONTROL)
       _RL xx_shifwflx_loc(1-OLx:sNx+OLx,1-OLy:sNy+OLy,nSx,nSy)
 #endif
 CEOP
@@ -216,30 +222,44 @@ C     where this value is part of the protocol
 #if (defined SHI_ALLOW_GAMMAFRICT && defined ALLOW_DIAGNOSTICS)
           uStarDiag             (I,J,bi,bj) = 0. _d 0
 #endif /* SHI_ALLOW_GAMMAFRICT and ALLOW_DIAGNOSTICS */
-         ENDDO
-        ENDDO
-       ENDDO
-      ENDDO
-#ifdef ALLOW_SHIFWFLX_CONTROL
-      DO bj = myByLo(myThid), myByHi(myThid)
-       DO bi = myBxLo(myThid), myBxHi(myThid)
-        DO J = 1-OLy,sNy+OLy
-         DO I = 1-OLx,sNx+OLx
-          xx_shifwflx_loc(I,J,bi,bj) = 0. _d 0
+#if (defined ALLOW_SHIFWFLX_CONTROL || defined ALLOW_GENTIM2D_CONTROL)
+          xx_shifwflx_loc       (I,J,bi,bj) = 0. _d 0
+#endif /* ALLOW_SHIFWFLX_CONTROL or ALLOW_GENTIM2D_CONTROL */
          ENDDO
         ENDDO
        ENDDO
       ENDDO
 #ifdef ALLOW_CTRL
-      IF (useCTRL) CALL CTRL_GET_GEN (
+      IF ( useCTRL .AND. ctrlUseGen ) THEN
+#ifdef ALLOW_GENTIM2D_CONTROL
+       DO iarr = 1, maxCtrlTim2D
+        IF (xx_gentim2d_file(iarr)(1:11).EQ.'xx_shifwflx') THEN
+         DO bj = myByLo(myThid),myByHi(myThid)
+          DO bi = myBxLo(myThid),myBxHi(myThid)
+           DO J = 1,sNy
+            DO I = 1,sNx
+             xx_shifwflx_loc(I,J,bi,bj)=xx_gentim2d(I,J,bi,bj,iarr)
+            ENDDO
+           ENDDO
+          ENDDO
+         ENDDO
+        ENDIF
+       ENDDO
+#endif /* ALLOW_GENTIM2D_CONTROL */
+#if (defined ECCO_CTRL_DEPRECATED && defined ALLOW_SHIFWFLX_CONTROL)
+C     unfortunately, we need this CPP flag here, because otherwise
+C     none of these fields are defined
+      ELSEIF ( useCTRL ) THEN
+        CALL CTRL_GET_GEN (
      &     xx_shifwflx_file, xx_shifwflxstartdate, xx_shifwflxperiod,
      &     maskSHI, xx_shifwflx_loc, xx_shifwflx0, xx_shifwflx1,
      &     xx_shifwflx_dummy,
      &     xx_shifwflx_remo_intercept, xx_shifwflx_remo_slope,
      &     wshifwflx,
      &     myTime, myIter, myThid )
-#endif
-#endif /* ALLOW_SHIFWFLX_CONTROL */
+#endif /* ECCO_CTRL_DEPRECATED and ALLOW_SHIFWFLX_CONTROL */
+      ENDIF
+#endif /* ALLOW_CTRL */
       DO bj = myByLo(myThid), myByHi(myThid)
        DO bi = myBxLo(myThid), myBxHi(myThid)
 
@@ -483,7 +503,7 @@ C--   Calculate the upward heat and  fresh water fluxes
      &           * shiTransCoeffT(i,j,bi,bj)
      &           * ( tLoc(I,J) - thetaFreeze )
      &           * HeatCapacity_Cp*rUnit2mass
-#ifdef ALLOW_SHIFWFLX_CONTROL
+#if (defined ALLOW_SHIFWFLX_CONTROL || defined ALLOW_GENTIM2D_CONTROL)
      &           - xx_shifwflx_loc(I,J,bi,bj)*SHELFICElatentHeat
 #endif /*  ALLOW_SHIFWFLX_CONTROL */
 C     upward heat flux into the shelf-ice implies basal melting,
@@ -534,8 +554,6 @@ C     a few abbreviations
      &           *shiTransCoeffT(i,j,bi,bj)
             eps2 = rUnit2mass*SHELFICElatentHeat
      &           *shiTransCoeffS(i,j,bi,bj)
-            eps5 = rUnit2mass*HeatCapacity_Cp
-     &           *shiTransCoeffS(i,j,bi,bj)
 
 C     solve quadratic equation for salinity at shelfice-ocean interface
 C     note: this part of the code is not very intuitive as it involves
@@ -577,7 +595,6 @@ c           bqe = eps1*eps6 + eps3*eps7 - eps2
              print *, 'ml-shelfice: eps2    = ', eps2
              print *, 'ml-shelfice: eps3    = ', eps3
              print *, 'ml-shelfice: eps4    = ', eps4
-             print *, 'ml-shelfice: eps5    = ', eps5
              print *, 'ml-shelfice: eps6    = ', eps6
              print *, 'ml-shelfice: eps7    = ', eps7
              print *, 'ml-shelfice: eps8    = ', eps8
@@ -608,7 +625,7 @@ cph     &           * ( saltFreeze - sLoc(I,J) ) / saltFreeze
             freshWaterFlux = rUnit2mass
      &           * shiTransCoeffS(i,j,bi,bj)
      &           * ( 1. _d 0 - sLoc(I,J) / saltFreeze )
-#ifdef ALLOW_SHIFWFLX_CONTROL
+#if (defined ALLOW_SHIFWFLX_CONTROL || defined ALLOW_GENTIM2D_CONTROL)
      &           + xx_shifwflx_loc(I,J,bi,bj)
 #endif /*  ALLOW_SHIFWFLX_CONTROL */
 C--   Calculate the upward heat and fresh water fluxes;
@@ -695,7 +712,7 @@ C     Friction velocity
      &  CALL DIAGNOSTICS_FILL(uStarDiag,'SHIuStar',0,1,0,1,1,myThid)
 #endif /* SHI_ALLOW_GAMMAFRICT */
 #ifdef ALLOW_SHELFICE_REMESHING
-       CALL DIAGNOSTICS_FILL_RS( R_shelfice, 'SHIRshel',
+       CALL DIAGNOSTICS_FILL_RS( R_shelfIce, 'SHIRshel',
      &                           0, 1, 0, 1, 1, myThid )
 #endif
       ENDIF

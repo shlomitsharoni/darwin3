@@ -54,9 +54,18 @@
      &    ExportFracExude,
      &    phytoTempCoeff,
      &    phytoTempExp1,
+     &    phytoTempAe,
      &    phytoTempExp2,
      &    phytoTempOptimum,
      &    phytoDecayPower,
+     &    hetTempAe,
+     &    hetTempExp2,
+     &    hetTempOptimum,
+     &    hetDecayPower,
+     &    grazTempAe,
+     &    grazTempExp2,
+     &    grazTempOptimum,
+     &    grazDecayPower,
      &    R_NC,
      &    R_PC,
      &    R_SiC,
@@ -138,6 +147,7 @@
       NAMELIST/DARWIN_RADTRANS_TRAITS/
      &    aphy_chl,
      &    aphy_chl_ps,
+     &    aphy_mgC,
      &    bphy_mgC,
      &    bbphy_mgC
 #endif
@@ -152,12 +162,6 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       READ(UNIT=iUnit, NML=DARWIN_TRAITS)
 
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-C     DARWIN_DEPENDENT_TRAITS
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-
-
-
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C     DARWIN_RADTRANS_TRAITS
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
@@ -165,6 +169,9 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       READ(UNIT=iUnit, NML=DARWIN_RADTRANS_TRAITS)
 #endif
 
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C     DARWIN_DEPENDENT_TRAITS
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
       DO jp = 1,nPlank
         vmaxNH4(jp) = vmaxNH4(jp) * useNH4(jp)
@@ -180,19 +187,17 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
         IF (useNO3(jp).EQ.0 .OR. useNO2(jp).EQ.0) THEN
           combNO(jp)=0
         ENDIF
-      ! Silicate parameters to zero for non-diatoms
+C       Silicate parameters to zero for non-diatoms
         IF (hasSi(jp) .EQ. 0) THEN
           vmaxSiO2(jp) = 0.0 _d 0
           ksatSiO2(jp) = 0.0 _d 0
           R_SiC(jp) = 0.0 _d 0
         ENDIF
-      ! only Coccolithophores have PIC
+C       only Coccolithophores have PIC
         IF (hasPIC(jp) .EQ. 0) THEN
           R_PICPOC(jp) = 0.0 _d 0
         ENDIF
-      
       ENDDO
-      
 
 #ifdef ALLOW_RADTRANS
 
@@ -238,10 +243,11 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       ENDDO
 #endif
 
-      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      ! checks
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C     Checks
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
-      ! check types are within type ranges
+C     check types are within type ranges
       DO jp=1,nplank
        IF (isPhoto(jp) .NE. 0) THEN
         IF (jp.GT.nPhoto) THEN
@@ -332,8 +338,9 @@ C re-compute isPrey and isPred to speed up grazing loops
        ENDDO
       ENDDO
 
-      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      ! zero out unused trait entries, so they do not mess up the traits file
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C zero out unused trait entries, so they do not mess up the traits file
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       DO jp=1,nplank
 #ifndef DARWIN_ALLOW_NQUOTA
        vmaxNH4(jp) = DARWIN_UNUSED
@@ -376,6 +383,7 @@ C re-compute isPrey and isPred to speed up grazing loops
 
         phytoTempCoeff(jp) = DARWIN_UNUSED
         phytoTempExp1(jp) = DARWIN_UNUSED
+        phytoTempAe(jp) = DARWIN_UNUSED
         phytoTempExp2(jp) = DARWIN_UNUSED
         phytoTempOptimum(jp) = DARWIN_UNUSED
         phytoDecayPower(jp) = DARWIN_UNUSED

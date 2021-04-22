@@ -60,7 +60,7 @@ C-    net Fresh Water flux into the ocean (+=down), [kg/m2/s]
        CALL DIAGNOSTICS_SCALE_FILL_RS( EmPmR,tmpFac,1,
      &                             'oceFWflx',0, 1,0,1,1,myThid )
 
-C-    net Salt flux into the ocean (+=down), [psu.kg/m2/s ~ g/m2/s]
+C-    net Salt flux into the ocean (+=down), [g/m2/s]
        tmpFac = -1. _d 0
        CALL DIAGNOSTICS_SCALE_FILL_RS( saltFlux,tmpFac,1,
      &                             'oceSflux',0, 1,0,1,1,myThid )
@@ -89,7 +89,7 @@ C-    sea-ice loading (expressed in Mass of ice+snow / area unit, [kg/m2])
        CALL DIAGNOSTICS_FILL_RS( sIceLoad,'sIceLoad',0,1,0,1,1,myThid )
 
       IF ( fluidIsWater ) THEN
-C-    pLoad (Atmospheric pressure loading [Pa=N/m2])
+C-    pLoad (Atmospheric pressure anomaly relative to surf_pRef [Pa=N/m2])
        CALL DIAGNOSTICS_FILL_RS( pLoad,   'atmPload',0,1,0,1,1,myThid )
 
 C-    oceFreez (= heating from freezing of sea-water, if allowFreezing=T)

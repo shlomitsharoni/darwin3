@@ -156,6 +156,10 @@ C     tempnorm          :: []               set temperature function (was 1.0)
 C     TempAeArr         :: [K]              slope for pseudo-Arrhenius (TEMP_VERSION 2)
 C     TemprefArr        :: [K]              reference temp for pseudo-Arrhenius (TEMP_VERSION 2)
 C     TempCoeffArr      :: []               pre-factor for pseudo-Arrhenius (TEMP_VERSION 2)
+C     reminTempAe       :: [1/K]            temperature coefficient for remineralization (TEMP_VERSION 4)
+C     mortTempAe        :: [1/K]            temperature coefficient for linear mortality (TEMP_VERSION 4)
+C     mort2TempAe       :: [1/K]            temperature coefficient for quadr. mortality (TEMP_VERSION 4)
+C     uptakeTempAe      :: [1/K]            temperature coefficient for uptake (TEMP_VERSION 4)
 C
 C- Iron parameters
 C     alpfe             :: []                 solubility of Fe dust
@@ -170,7 +174,8 @@ C     scav_R_POPPOC     :: [mmol P / mmol C]  POP:POC ratio for DARWIN_PART_SCAV
 C     depthfesed        :: [m]                depth above which to add sediment source (was -1000)
 C     fesedflux         :: [mmol Fe /m2/s]    fixed iron flux from sediment
 C     fesedflux_pcm     :: [mmol Fe / mmol C] iron input per POC sinking into bottom for DARWIN_IRON_SED_SOURCE_VARIABLE
-C     R_CP_fesed        :: [mmol C / mmol P]  POC:POP conversion for DARWIN_IRON_SED_SOURCE_VARIABLE
+C     fesedflux_min     :: [mmol Fe /s]       min iron input rate subtracted from fesedflux_pcm*wc_sink*POC
+C     R_CP_fesed        :: [mmol C / mmol P]  POC:POP conversion for DARWIN_IRON_SED_SOURCE_POP
 C
 C     Knita             :: [1/s]              ammonia oxidation rate
 C     Knitb             :: [1/s]              nitrite oxidation rate
@@ -233,6 +238,7 @@ C     NO3crit           :: [mmol N m-3]       critical nitrate below which no de
 C
 C- These should probably be traits
 C     PARmin            :: [uEin/m2/s]        minimum light for photosynthesis; for non-Geider: 1.0
+C     aphy_chl_ave      :: [m2/mg Chl]        Chl-specific absorption coefficient
 C     chl2nmax          :: [mg Chl / mmol N]  max Chl:N ratio for Chl synthesis following Moore 2002
 C     synthcost         :: [mmol C / mmol N]  cost of biosynthesis
 C     palat_min         :: []                 min non-zero palatability, smaller palat are set to 0 (was 1D-4 in quota)
@@ -270,6 +276,10 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    TempAeArr,
      &    TemprefArr,
      &    TempCoeffArr,
+     &    reminTempAe,
+     &    mortTempAe,
+     &    mort2TempAe,
+     &    uptakeTempAe,
      &    alpfe,
      &    scav,
      &    ligand_tot,
@@ -282,6 +292,7 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    depthfesed,
      &    fesedflux,
      &    fesedflux_pcm,
+     &    fesedflux_min,
      &    R_CP_fesed,
      &    Knita,
      &    Knitb,
@@ -337,6 +348,7 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    denit_NO3,
      &    NO3crit,
      &    PARmin,
+     &    aphy_chl_ave,
      &    chl2nmax,
      &    synthcost,
      &    palat_min,
@@ -369,6 +381,10 @@ C     &    yono2,
       _RL TempAeArr
       _RL TemprefArr
       _RL TempCoeffArr
+      _RL reminTempAe
+      _RL mortTempAe
+      _RL mort2TempAe
+      _RL uptakeTempAe
       _RL alpfe
       _RL scav
       _RL ligand_tot
@@ -381,6 +397,7 @@ C     &    yono2,
       _RL depthfesed
       _RL fesedflux
       _RL fesedflux_pcm
+      _RL fesedflux_min
       _RL R_CP_fesed
       _RL Knita
       _RL Knitb
@@ -436,6 +453,7 @@ C     &    yono2,
       _RL denit_NO3
       _RL NO3crit
       _RL PARmin
+      _RL aphy_chl_ave
       _RL chl2nmax
       _RL synthcost
       _RL palat_min
