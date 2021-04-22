@@ -6,6 +6,7 @@ C !ROUTINE: DARWIN_FE_CHEM
 C !INTERFACE: ==========================================================
       SUBROUTINE DARWIN_FE_CHEM(
      U                        FeT,
+     O                        diffFe,
      O                        freeFe,
      I                        bi, bj, iMin, iMax, jMin, jMax, myThid )
 
@@ -30,6 +31,7 @@ C !INPUT PARAMETERS: ===================================================
 
 C !INPUT/OUTPUT PARAMETERS: ============================================
       _RL FeT(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr)
+      _RL diffFe(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr)
 
 C !OUTPUT PARAMETERS: ==================================================
       _RL freeFe(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr)
@@ -41,10 +43,14 @@ c !LOCAL VARIABLES: ====================================================
       INTEGER i, j, k
       _RL lig
       _RL FeL
-
-      DO k=1,Nr
+      _RL FeTemp(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr)
+       
+       DO k=1,Nr
        DO j=jMin,jMax
         DO i=iMin,iMax
+
+         feTemp(i,j,k) = FeT(i,j,k)
+
          IF (maskC(i, j, k, bi, bj) .GT. 0.0 _d 0) THEN
           lig = (-ligand_stab*FeT(i,j,k) +
      &            ligand_stab*ligand_tot - 
@@ -62,10 +68,11 @@ c !LOCAL VARIABLES: ====================================================
           freefe(i,j,k) = MIN(freefe(i,j,k), freefemax)
           IF (maskInC(i,j,bi,bj) .GT. 0.0) THEN
            FeT(i,j,k) = FeL + freefe(i,j,k)
+           diffFe(i,j,k) = (FeT(i,j,k) - feTemp(i,j,k))
           ENDIF
 #endif
-         ELSE
-          freefe(i,j,k) = 0.0 _d 0
+          ELSE
+           freefe(i,j,k) = 0.0 _d 0
          ENDIF
         ENDDO
        ENDDO

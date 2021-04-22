@@ -70,6 +70,9 @@ C  k                    :: vertical level
       _RL gO2(1-OLx:sNx+OLx, 1-OLy:sNy+OLy)
       _RL surfFe(1-OLx:sNx+OLx, 1-OLy:sNy+OLy)
       _RL freeFe(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr)
+      _RL diffFe1(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr)
+      _RL diffFe2(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr)
+      _RL diffFe(1-OLx:sNx+OLx, 1-OLy:sNy+OLy, Nr)
       _RL scv,scav_poc
       _RL flx
       _RL ptr(nDarwin), gtr(nDarwin), PARl(nlam)
@@ -82,7 +85,8 @@ C  k                    :: vertical level
       _RL mort2TempFunc
       _RL uptakeTempFunc
       _RL tmp
-
+      _RL sedFe(1-OLx:sNx+OLx, 1-OLy:sNy+OLy,Nr)
+      
       DO k=1,Nr
        dTsub(k) = PTRACERS_dTLev(k)/nsubtime
       ENDDO
@@ -104,6 +108,15 @@ C === reset tendencies =================================================
       ENDDO
       ENDDO
 
+      DO k=1,Nr
+      DO j=jMin,jMax
+      DO i=iMin,iMax
+        diffFe1(i,j,k) = 0.0 _d 0
+        diffFe2(i,j,k) = 0.0 _d 0
+        diffFe(i,j,k) = 0.0 _d 0
+      ENDDO
+      ENDDO
+      ENDDO
 C === light ============================================================
 C     Initialize Chl from balanced-growth Chl:C if requested
 C     and check Chl:C bounds.
@@ -111,7 +124,7 @@ C     Note: myIter has already been incremented
 c      IF (myIter-1 .EQ. darwin_chlIter0) THEN
 c        CALL DARWIN_INIT_CHL(bi, bj, subTime, myIter, myThid)
 c      ENDIF
-
+c
 #ifdef ALLOW_SEAICE
       IF (DARWIN_useSEAICE) THEN
        DO j=jMin,jMax
@@ -154,6 +167,7 @@ C === iron =============================================================
       CALL TIMER_START('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
       CALL DARWIN_FE_CHEM(
      U                 Ptracer(1-OLx,1-OLy,1,bi,bj,iFeT),
+     O                 diffFe1(1-OLx,1-OLy,1),
      O                 freeFe(1-OLx, 1-OLy, 1),
      I                 bi, bj, iMin, iMax, jMin, jMax, myThid)
       CALL TIMER_STOP ('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
@@ -206,6 +220,7 @@ C     iron sediment source (in bottom grid cell above kMaxFeSed)
 #else
           flx = fesedflux
 #endif
+	  sedFe(i,j,k) = flx/(drF(k)*hFacC(i,j,k,bi,bj))
           gPtr(i,j,k,iFeT) = gPtr(i,j,k,iFeT) +
      &                             flx/(drF(k)*hFacC(i,j,k,bi,bj))
          ENDIF
@@ -300,10 +315,18 @@ C     re-apply free iron limit to FeT
       CALL TIMER_START('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
       CALL DARWIN_FE_CHEM(
      U                 pTracer(1-OLx,1-OLy,1,bi,bj,iFeT),
+     O                 diffFe2(1-OLx,1-OLy,1),
      O                 freeFe(1-OLx,1-OLy,1),
      I                 bi, bj, iMin, iMax, jMin, jMax, myThid)
       CALL TIMER_STOP ('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
 
+      DO k=1,Nr
+      DO j=jMin,jMax
+      DO i=iMin,iMax
+        diffFe(i,j,k) = (diffFe1(i,j,k) + diffFe2(i,j,k)) / deltaTClock
+      ENDDO
+      ENDDO
+      ENDDO
 C === diagnostics ======================================================
 #ifdef ALLOW_DIAGNOSTICS
       IF (useDIAGNOSTICS) THEN
@@ -398,7 +421,10 @@ C      diags(iCons*) for convenience
          ENDDO
         ENDDO
         CALL DIAGNOSTICS_FILL(surfFe,'sfcSolFe',0,1,2,bi,bj,myThid)
+        CALL DIAGNOSTICS_FILL(sedFe,'sedFe   ',0,Nr,1,bi,bj,myThid)
+        CALL DIAGNOSTICS_FILL(diffFe,'freeFe  ',0,Nr,1,bi,bj,myThid)
        ENDIF
+       
 #ifdef DARWIN_ALLOW_CARBON
        CALL DIAGNOSTICS_FILL(pH,     'pH      ',0,Nr,1,bi,bj,myThid)
        CALL DIAGNOSTICS_FILL(pCO2,   'pCO2    ',0,Nr,1,bi,bj,myThid)
