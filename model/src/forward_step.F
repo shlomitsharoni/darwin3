@@ -707,6 +707,12 @@ C       results.
 #endif /* ALLOW_LONGSTEP */
 
       IF ( .NOT.staggerTimeStep ) THEN
+#ifdef ALLOW_GCHEM
+        IF ( useGCHEM ) THEN
+          CALL GCHEM_CONS(0, myTime, myIter, myThid)
+        ENDIF
+#endif
+
 #ifdef ALLOW_AUTODIFF_TAMC
 CADJ STORE wVel = comlev1, key = ikey_dynamics, kind = isbyte
 #endif
@@ -1000,6 +1006,12 @@ C--   State-variables diagnostics
           CALL TIMER_START('DO_STATEVARS_DIAGS  [FORWARD_STEP]',myThid)
           CALL DO_STATEVARS_DIAGS( myTime, 1, myIter, myThid )
           CALL TIMER_STOP ('DO_STATEVARS_DIAGS  [FORWARD_STEP]',myThid)
+        ENDIF
+#endif
+
+#ifdef ALLOW_GCHEM
+        IF ( useGCHEM ) THEN
+          CALL GCHEM_CONS(0, myTime, myIter, myThid)
         ENDIF
 #endif
 
