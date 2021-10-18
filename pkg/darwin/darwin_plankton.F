@@ -747,14 +747,13 @@ C       Geider 1998
           rhochl = Chl2Nmax
          ENDIF
          synthChl = rhochl*uptakeN
+CTODO: should happen before exudation code above?????
+C        synth cost goes straight back to DIC
+         uptakeDIC = uptakeDIC - synthcost*uptakeN
+         growth = growth - synthcost*uptakeN
         ELSE
          synthChl = 0 _d 0
         ENDIF
-CTODO: this seems wrong!  Should only happen when PARtot.GT.PARmin
-CTODO: should happen before exudation code above?????
-        growth = growth - synthcost*uptakeN
-C       synth cost goes straight back to DIC
-        uptakeDIC = uptakeDIC - synthcost*uptakeN
 #  else /* not DARWIN_ALLOW_NQUOTA */
 #   ifdef DARWIN_GEIDER_RHO_SYNTH
         IF (alpha_I .GT. 0.0 _d 0 .AND. acclim .GT. 0.0 _d 0) THEN
