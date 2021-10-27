@@ -56,7 +56,7 @@ C Contains indices into diagnostics array
       PARAMETER(iDSi= iDFe+1)
       PARAMETER(iDmin=iDSi+1)
 # ifdef DARWIN_ALLOW_CSTORE_DIAGS
-      PARAMETER(iEXplank=iDnut+1)
+      PARAMETER(iEXplank=iDmin+1)
       PARAMETER(iGWplank=iEXplank+nPhoto)
       PARAMETER(iDNplank=iGWplank+nPhoto)
       PARAMETER(iDPplank=iDNplank+nPhoto)
