@@ -192,6 +192,7 @@ c !LOCAL VARIABLES: ====================================================
 
       _RL inhibNH4
 
+      _RL PhotoSyn
       _RL alpha_I
       _RL alpha_I_growth
       _RL PCm
@@ -608,9 +609,9 @@ C         only 1 waveband without DARWIN_ALLOW_GEIDER
 
 #endif /* DARWIN_ALLOW_GEIDER */
 
-        growth = PC*X(j)
-
-        uptakeDIC = growth
+        PhotoSyn = PC*X(j)
+        uptakeDIC = PhotoSyn
+        growth = PhotoSyn
 
 C non-quota elements are taken up with fixed stoichiometry
 #ifndef DARWIN_ALLOW_NQUOTA
@@ -647,6 +648,7 @@ C          rhochl = Chl2Nmax/(alpha_I*chl2c) ???
         ENDIF
 CTODO: this seems wrong!  Should only happen when PARtot.GT.PARmin
         uptakeDIC = uptakeDIC - synthcost*uptakeN
+        growth = growth - synthcost*uptakeN
 #  else /* not DARWIN_ALLOW_NQUOTA */
 #   ifdef DARWIN_GEIDER_RHO_SYNTH
         IF (alpha_I .GT. 0.0 _d 0 .AND. acclim .GT. 0.0 _d 0) THEN
@@ -667,7 +669,7 @@ CTODO: this seems wrong!  Should only happen when PARtot.GT.PARmin
 # endif /* DARWIN_ALLOW_CHLQUOTA */
 #endif /* DARWIN_ALLOW_GEIDER */
 C=======================================================================
-        consumDIC_PIC = consumDIC_PIC + uptakeDIC*R_PICPOC(j)
+        consumDIC_PIC = consumDIC_PIC + growth*R_PICPOC(j)
         consumDIC  = consumDIC  + uptakeDIC
         consumNH4  = consumNH4  + uptakeNH4
         consumNO2  = consumNO2  + uptakeNO2
@@ -676,9 +678,9 @@ C=======================================================================
         consumSiO2 = consumSiO2 + uptakeSiO2
         consumFeT  = consumFeT  + uptakeFeT
 
-        diags(iPP) = diags(iPP) + growth
+        diags(iPP) = diags(iPP) + PhotoSyn
 #ifdef DARWIN_DIAG_PERTYPE
-        diags(iPPplank+j-1) = diags(iPPplank+j-1) + growth
+        diags(iPPplank+j-1) = diags(iPPplank+j-1) + PhotoSyn
         diags(iPCplank+j-1) = diags(iPCplank+j-1) + PC
 #endif
         IF (diazo(j) .GT. 0.0 _d 0) THEN
@@ -687,7 +689,7 @@ C=======================================================================
 
 C=======================================================================
 
-        gTr(ic+j-1)=gTr(ic+j-1)  + uptakeDIC
+        gTr(ic+j-1)=gTr(ic+j-1)  + growth
 #ifdef DARWIN_ALLOW_NQUOTA
         gTr(in+j-1)=gTr(in+j-1)  + uptakeN
 #endif
