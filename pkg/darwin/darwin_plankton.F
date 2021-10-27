@@ -814,6 +814,24 @@ C=======================================================================
         IF (diazo(j) .GT. 0.0 _d 0) THEN
          diags(iNfix)=diags(iNfix)+uptakeN-uptakeNH4-uptakeNO2-uptakeNO3
         ENDIF
+#ifdef DARWIN_ALLOW_CSTORE
+        diags(iEX) = diags(iEX) + excretC
+        diags(iGW) = diags(iGW) + growth
+        diags(iDN) = diags(iDN) + Dmd_NC
+        diags(iDP) = diags(iDP) + Dmd_PC
+        diags(iDFe) = diags(iDFe) + Dmd_FeC
+        diags(iDSi) = diags(iDSi) + Dmd_SiC
+        diags(iDmin)= diags(iDmin)+ Dmd_min
+#ifdef DARWIN_ALLOW_CSTORE_DIAGS
+        diags(iEXplank+j-1) = diags(iEXplank+j-1) + excretC
+        diags(iGWplank+j-1) = diags(iGWplank+j-1) + growth
+        diags(iDNplank+j-1) = diags(iDNplank+j-1) + Dmd_NC
+        diags(iDPplank+j-1) = diags(iDPplank+j-1) + Dmd_PC
+        diags(iDFplank+j-1) = diags(iDFplank+j-1) + Dmd_FeC
+        diags(iDSplank+j-1) = diags(iDSplank+j-1) + Dmd_SiC
+        diags(iDminplank+j-1) = diags(iDminplank+j-1) + Dmd_min
+#endif
+#endif
 
 C=======================================================================
 
