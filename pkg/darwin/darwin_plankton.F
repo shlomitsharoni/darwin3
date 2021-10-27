@@ -533,7 +533,10 @@ C       normalize to sum 1
           fracNO3 = 0 _d 0
         ENDIF
 C if diazo, all fracN* == 0 but want no N limitation
-        limitn = MIN(1.0, limitn + diazo(j))
+        limitn = MIN(1 _d 0, limitn)
+        IF (diazo(j) .GT. 0) THEN
+          limitn = 1 _d 0
+        ENDIF
 #endif /* DARWIN_ALLOW_NQUOTA */
 
         limitnut = MIN(limitn, limitp, limitsi)
