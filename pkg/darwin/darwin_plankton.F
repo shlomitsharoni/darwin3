@@ -594,26 +594,9 @@ C         only 1 waveband without DARWIN_ALLOW_GEIDER
 
 #endif /* DARWIN_ALLOW_GEIDER */
 
-        growth = PC*X(j)
+        uptakeDIC = PC*X(j)
 
-        uptakeDIC = growth
-
-C non-quota elements are taken up with fixed stoichiometry
-#ifndef DARWIN_ALLOW_NQUOTA
-        uptakeN = growth*R_NC(j)
-        uptakeNH4 = uptakeN*fracNH4
-        uptakeNO2 = uptakeN*fracNO2
-        uptakeNO3 = uptakeN*fracNO3
-#endif
-#ifndef DARWIN_ALLOW_PQUOTA
-        uptakePO4 = growth*R_PC(j)
-#endif
-#ifndef DARWIN_ALLOW_SIQUOTA
-        uptakeSiO2 = growth*R_SiC(j)
-#endif
-#ifndef DARWIN_ALLOW_FEQUOTA
-        uptakeFeT = growth*R_FeC(j)
-#endif
+        growth = uptakeDIC
 
 C==== chlorophyll ======================================================
 #ifdef DARWIN_ALLOW_GEIDER
@@ -631,7 +614,6 @@ C          rhochl = Chl2Nmax/(alpha_I*chl2c) ???
         ELSE
          synthChl = 0 _d 0
         ENDIF
-CTODO: this seems wrong!  Should only happen when PARtot.GT.PARmin
         uptakeDIC = uptakeDIC - synthcost*uptakeN
 #  else /* not DARWIN_ALLOW_NQUOTA */
 #   ifdef DARWIN_GEIDER_RHO_SYNTH
@@ -652,7 +634,25 @@ CTODO: this seems wrong!  Should only happen when PARtot.GT.PARmin
         synthChl = 0.0
 # endif /* DARWIN_ALLOW_CHLQUOTA */
 #endif /* DARWIN_ALLOW_GEIDER */
+
 C=======================================================================
+C non-quota elements are taken up with fixed stoichiometry
+#ifndef DARWIN_ALLOW_NQUOTA
+        uptakeN = uptakeDIC*R_NC(j)
+        uptakeNH4 = uptakeN*fracNH4
+        uptakeNO2 = uptakeN*fracNO2
+        uptakeNO3 = uptakeN*fracNO3
+#endif
+#ifndef DARWIN_ALLOW_PQUOTA
+        uptakePO4 = uptakeDIC*R_PC(j)
+#endif
+#ifndef DARWIN_ALLOW_SIQUOTA
+        uptakeSiO2 = uptakeDIC*R_SiC(j)
+#endif
+#ifndef DARWIN_ALLOW_FEQUOTA
+        uptakeFeT = uptakeDIC*R_FeC(j)
+#endif
+
         consumDIC_PIC = consumDIC_PIC + uptakeDIC*R_PICPOC(j)
         consumDIC  = consumDIC  + uptakeDIC
         consumNH4  = consumNH4  + uptakeNH4
@@ -662,9 +662,9 @@ C=======================================================================
         consumSiO2 = consumSiO2 + uptakeSiO2
         consumFeT  = consumFeT  + uptakeFeT
 
-        diags(iPP) = diags(iPP) + growth
+        diags(iPP) = diags(iPP) + uptakeDIC
 #ifdef DARWIN_DIAG_PERTYPE
-        diags(iPPplank+j-1) = diags(iPPplank+j-1) + growth
+        diags(iPPplank+j-1) = diags(iPPplank+j-1) + uptakeDIC
         diags(iPCplank+j-1) = diags(iPCplank+j-1) + PC
 #endif
         IF (diazo(j) .GT. 0.0 _d 0) THEN
