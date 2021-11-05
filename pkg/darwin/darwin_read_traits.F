@@ -396,15 +396,6 @@ C re-compute isPrey and isPred to speed up grazing loops
        ENDDO
       ENDDO
 
-      DO jz=1,nplank
-        IF (isPred(jz) .NE. 0 .AND. R_PICPOC(jz).NE.0) THEN
-          WRITE(msgBuf,'(2A,I4)') 'DARWIN_READTRAITS: ERROR: ',
-     &    'predator has R_PICPOC.NE.0: ', jz
-          CALL PRINT_ERROR( msgBuf , 1)
-          STOP 'ABNORMAL END: S/R DARWIN_READTRAITS'
-        ENDIF
-      ENDDO
-
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C zero out unused trait entries, so they do not mess up the traits file
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
