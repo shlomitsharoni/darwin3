@@ -26,6 +26,7 @@
       INTEGER jz
       INTEGER l
       INTEGER iopt
+      INTEGER errCnt
 
       NAMELIST/DARWIN_TRAITS/
      &    isPhoto,
@@ -310,6 +311,7 @@ C     check types are within type ranges
         ENDIF
        ENDIF
 
+       errCnt = 0
        DO jz=1,nplank
         IF (palat(jp,jz) .NE. 0.) THEN
          IF (isPrey(jp) .EQ. 0) THEN
@@ -317,7 +319,7 @@ C     check types are within type ranges
      &    'palat set for type outside of prey range: ', jp, jz
           CALL PRINT_ERROR( msgBuf , 1)
           IF (darwin_strict_check) THEN
-           STOP 'palat set outside of prey range'
+           errCnt = errCnt + 1
           ELSE
            palat(jp,jz) = 0. _d 0
           ENDIF
@@ -327,14 +329,58 @@ C     check types are within type ranges
      &    'palat set for type outside of predator range: ', jp, jz
           CALL PRINT_ERROR( msgBuf , 1)
           IF (darwin_strict_check) THEN
-           STOP 'palat set outside of predator range'
+           errCnt = errCnt + 1
           ELSE
            palat(jp,jz) = 0. _d 0
           ENDIF
          ENDIF
+C For non-quota elements, elemental ratio of predator cannot be greater
+C than that of prey or sloppy feeding flux will be reversed.
+         IF (R_PICPOC(jz) .GT. R_PICPOC(jp)) THEN
+          WRITE(msgBuf,'(2A,2I4)') 'DARWIN_READTRAITS: ERROR: ',
+     &    'R_PICPOC of predator larger than that of prey: ', jz, jp
+          CALL PRINT_ERROR( msgBuf , 1)
+          errCnt = errCnt + 1
+         ENDIF
+#ifndef DARWIN_ALLOW_NQUOTA
+         IF (R_NC(jz) .GT. R_NC(jp)) THEN
+          WRITE(msgBuf,'(2A,2I4,2F22.18)') 'DARWIN_READTRAITS: ERROR: ',
+     &    'R_NC of predator larger than that of prey: ', jz, jp,
+     &    R_NC(jz), R_NC(jp)
+          CALL PRINT_ERROR( msgBuf , 1)
+          errCnt = errCnt + 1
+         ENDIF
+#endif
+#ifndef DARWIN_ALLOW_PQUOTA
+         IF (R_PC(jz) .GT. R_PC(jp)) THEN
+          WRITE(msgBuf,'(2A,2I4)') 'DARWIN_READTRAITS: ERROR: ',
+     &    'R_PC of predator larger than that of prey: ', jz, jp
+          CALL PRINT_ERROR( msgBuf , 1)
+          errCnt = errCnt + 1
+         ENDIF
+#endif
+#ifndef DARWIN_ALLOW_FEQUOTA
+         IF (R_FeC(jz) .GT. R_FeC(jp)) THEN
+          WRITE(msgBuf,'(2A,2I4)') 'DARWIN_READTRAITS: ERROR: ',
+     &    'R_FeC of predator larger than that of prey: ', jz, jp
+          CALL PRINT_ERROR( msgBuf , 1)
+          errCnt = errCnt + 1
+         ENDIF
+#endif
+#ifndef DARWIN_ALLOW_SIQUOTA
+         IF (R_SiC(jz) .GT. R_SiC(jp)) THEN
+          WRITE(msgBuf,'(2A,2I4)') 'DARWIN_READTRAITS: ERROR: ',
+     &    'R_SiC of predator larger than that of prey: ', jz, jp
+          CALL PRINT_ERROR( msgBuf , 1)
+          errCnt = errCnt + 1
+         ENDIF
+#endif
         ENDIF
        ENDDO
       ENDDO
+      IF (errCnt .GT. 0) THEN
+        STOP 'DARWIN_READ_TRAITS: predator-prey R_PC'
+      ENDIF
 
 C re-compute isPrey and isPred to speed up grazing loops
       DO jp=1,nplank
