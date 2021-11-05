@@ -272,7 +272,6 @@ C for grazing
 
       _RL mort_c(nplank)
 
-      _RL respir
       _RL respir_c
 
 #ifdef DARWIN_ALLOW_CDOM
@@ -596,6 +595,11 @@ C         only 1 waveband without DARWIN_ALLOW_GEIDER
 
         uptakeDIC = PC*X(j)
 
+C       respiration goes straight back to DIC
+        Xe = MAX(0 _d 0, X(j) - Xmin(j))
+        respir_c = respRate(j)*Xe*reminTempFunc
+        uptakeDIC = uptakeDIC - respir_c
+
         growth = uptakeDIC
 
 C==== chlorophyll ======================================================
@@ -636,12 +640,21 @@ C          rhochl = Chl2Nmax/(alpha_I*chl2c) ???
 #endif /* DARWIN_ALLOW_GEIDER */
 
 C=======================================================================
-C non-quota elements are taken up with fixed stoichiometry
+C Non-quota elements are taken up with fixed stoichiometry
 #ifndef DARWIN_ALLOW_NQUOTA
+C Maintain ratios of NH4, NO2 and NO3 uptake.
         uptakeN = uptakeDIC*R_NC(j)
-        uptakeNH4 = uptakeN*fracNH4
-        uptakeNO2 = uptakeN*fracNO2
-        uptakeNO3 = uptakeN*fracNO3
+        IF (uptakeN .GE. 0 _d 0) THEN
+         uptakeNH4 = uptakeN*fracNH4
+         uptakeNO2 = uptakeN*fracNO2
+         uptakeNO3 = uptakeN*fracNO3
+        ELSE
+C Do not allow uptake of NH4 and NO2 to go negative.
+C Excess respired N goes to NO3.
+         uptakeNH4 = 0 _d 0
+         uptakeNO2 = 0 _d 0
+         uptakeNO3 = uptakeN
+        ENDIF
 #endif
 #ifndef DARWIN_ALLOW_PQUOTA
         uptakePO4 = uptakeDIC*R_PC(j)
@@ -1269,7 +1282,6 @@ C==== mortality ========================================================
       exude_POP  = 0.0 _d 0
       exude_POSi = 0.0 _d 0
       exude_PIC  = 0.0 _d 0
-      respir     = 0.0 _d 0
 
       DO jp = 1, nplank
         Xe = MAX(0 _d 0, X(jp) - Xmin(jp))
@@ -1300,12 +1312,9 @@ C==== mortality ========================================================
 
         exude_POSi = exude_POSi + mort_c(jp)*Qsi(jp)
 
-        respir_c = respRate(jp)*Xe*reminTempFunc
-        respir = respir + respir_c
+        exude_PIC = exude_PIC + mort_c(jp)*R_PICPOC(jp)
 
-        exude_PIC = exude_PIC + (mort_c(jp)+respir_c)*R_PICPOC(jp)
-
-        gTr(ic+jp-1)=gTr(ic+jp-1)  - mort_c(jp) - respir_c
+        gTr(ic+jp-1)=gTr(ic+jp-1)  - mort_c(jp)
 #ifdef DARWIN_ALLOW_NQUOTA
         gTr(in+jp-1)=gTr(in+jp-1)  - mort_c(jp)*Qn(jp)
 #endif
@@ -1360,8 +1369,6 @@ C==== mortality ========================================================
         gTr(iChl+jp-1)=gTr(iChl+jp-1) - mort_c(jp)*QChl(jp)
       ENDDO
 #endif
-
-      gTr(iDIC )=gTr(iDIC ) + respir
 
       gTr(iDOC )=gTr(iDOC ) + exude_DOC
       gTr(iDON )=gTr(iDON ) + exude_DON
