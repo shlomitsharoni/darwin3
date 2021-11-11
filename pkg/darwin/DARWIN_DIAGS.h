@@ -20,16 +20,22 @@ C Contains indices into diagnostics array
       integer iConsPO4
       integer iConsSi
       integer iConsFe
+      integer iConsO2
+      integer iProdO2
+      integer iSrcAlk
       integer darwin_nDiag
-      PARAMETER(iPP=     1)
-      PARAMETER(iNfix=   2)
-      PARAMETER(iDenit=  3)
-      PARAMETER(iDenitN= 4)
-      PARAMETER(iConsPO4=5)
-      PARAMETER(iConsSi= 6)
-      PARAMETER(iConsFe= 7)
-      PARAMETER(iConsDIN=8)
-      PARAMETER(iPPplank=9)
+      PARAMETER(iPP=      1)
+      PARAMETER(iNfix=    2)
+      PARAMETER(iDenit=   3)
+      PARAMETER(iDenitN=  4)
+      PARAMETER(iConsPO4= 5)
+      PARAMETER(iConsSi=  6)
+      PARAMETER(iConsFe=  7)
+      PARAMETER(iConsDIN= 8)
+      PARAMETER(iConsO2=  9)
+      PARAMETER(iProdO2= 10)
+      PARAMETER(iSrcAlk= 11)
+      PARAMETER(iPPplank=12)
 #ifdef DARWIN_DIAG_PERTYPE
       PARAMETER(iPCplank=iPPplank+nplank)
       PARAMETER(iGRplank=iPCplank+nplank)
