@@ -387,6 +387,7 @@ C === apply tendencies to tracers ======================================
 
 C === iron =============================================================
 C     re-apply free iron limit to FeT
+#ifdef DARWIN_MINFE
       CALL TIMER_START('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
       CALL DARWIN_FE_CHEM(
      U                 pTracer(1-OLx,1-OLy,1,bi,bj,iFeT),
@@ -397,6 +398,7 @@ C     re-apply free iron limit to FeT
 #endif
      I                 bi, bj, iMin, iMax, jMin, jMax, myThid)
       CALL TIMER_STOP ('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
+#endif
 
 C === diagnostics ======================================================
 #ifdef ALLOW_DIAGNOSTICS
