@@ -137,7 +137,7 @@ C in salinity. Thus, also increase in other surface tracers
 C (i.e. positive virtual flux into surface layer)
          VFluxAlk(i,j,bi,bj) = gsm_ALK*surfaceForcingS(i,j,bi,bj)/gsm_S
          gALK(i,j) =
-     &     recip_drF(ks) * VFluxAlk(i,j,bi,bj)
+     &     recip_drF(ks)*recip_hFacC(i,j,ks,bi,bj)*VFluxAlk(i,j,bi,bj)
         ELSE
          VFluxAlk(i,j,bi,bj) = 0 _d 0
         ENDIF
