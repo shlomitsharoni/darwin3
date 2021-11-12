@@ -73,6 +73,7 @@
      &    ligand_tot,
      &    ligand_stab,
      &    freefemax,
+     &    tauFreeFe,
      &    scav_rat,
      &    scav_inter,
      &    scav_exp,
@@ -306,6 +307,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       ligand_tot = 1. _d -3
       ligand_stab = 2. _d 5
       freefemax = 0.4 _d -3
+      tauFreeFe = 0 _d 0
       scav_rat = 0.005 _d 0 / pday
       scav_inter = 0.079 _d 0
       scav_exp = 0.58 _d 0

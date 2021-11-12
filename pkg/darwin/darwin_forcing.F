@@ -183,6 +183,31 @@ C === iron =============================================================
      I                 bi, bj, iMin, iMax, jMin, jMax, myThid)
       CALL TIMER_STOP ('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
 
+C ----------------------------------------------------------------------
+C     relax FeT to achieve upper freefe bound
+      IF (tauFreeFe .GT. 0 _d 0) THEN
+       CALL TIMER_START('DARWIN_FERELAX [DARWIN_FORCING]',myThid)
+       DO k=1,Nr
+       DO j=jMin,jMax
+       DO i=iMin,iMax
+       IF (hFacC(i,j,k,bi,bj).NE.0..AND.freefe(i,j,k).GT.freeFeMax) THEN
+        tmp3d(i,j,k) = (freefe(i,j,k) - freeFeMax)/tauFreeFe
+        gPtr(i,j,k,iFeT) = gPtr(i,j,k,iFeT) - tmp3d(i,j,k)
+        freefe(i,j,k) = freefe(i,j,k) - tmp3d(i,j,k)
+#ifdef DARWIN_ALLOW_CONS
+        DARWIN_minFeLoss(i,j,k,bi,bj) = DARWIN_minFeLoss(i,j,k,bi,bj)
+     &                                + dTsub(k)*tmp3d(i,j,k)
+#endif
+c      ELSE
+c       tmp3d(i,j,k) = 0 _d 0
+       ENDIF
+       ENDDO
+       ENDDO
+       ENDDO
+       CALL TIMER_STOP ('DARWIN_FERELAX [DARWIN_FORCING]',myThid)
+      ENDIF
+
+C ----------------------------------------------------------------------
 C     iron dust input
       CALL TIMER_START('DARWIN_FE_DUST [DARWIN_FORCING]',myThid)
       DO j=jMin,jMax
@@ -211,6 +236,7 @@ C-    Account for change in level thickness
       ENDDO
       CALL TIMER_STOP ('DARWIN_FE_DUST [DARWIN_FORCING]',myThid)
 
+C ----------------------------------------------------------------------
 C     scavenging
       CALL TIMER_START('DARWIN_FE_SCAV [DARWIN_FORCING]',myThid)
       DO k=1,Nr
@@ -236,6 +262,7 @@ C     scavenging
       ENDDO
       CALL TIMER_STOP ('DARWIN_FE_SCAV [DARWIN_FORCING]',myThid)
 
+C ----------------------------------------------------------------------
 C     iron sediment source (in bottom grid cell above kMaxFeSed)
       CALL TIMER_START('DARWIN_FE_SED [DARWIN_FORCING]',myThid)
       DO k = kMinFeSed, kMaxFeSed
