@@ -258,7 +258,7 @@ C     iron sediment source (in bottom grid cell above kMaxFeSed)
 #endif
           tmp3d(i,j,k) = flx/(drF(k)*hFacC(i,j,k,bi,bj))
 #ifdef DARWIN_ALLOW_CONS
-          ironSedFlx(i,j,bi,bj) = flx
+          ironSedFlx(i,j,bi,bj) = ironSedFlx(i,j,bi,bj) + dTsub(k)*flx
 #endif
          ELSE
           tmp3d(i,j,k) = 0 _d 0

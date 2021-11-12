@@ -272,7 +272,12 @@ C for grazing
 
       _RL mort_c(nplank)
 
+      _RL respir
       _RL respir_c
+      _RL respirN
+      _RL respirP
+      _RL respirFe
+      _RL respirSi
 
 #ifdef DARWIN_ALLOW_CDOM
       _RL graz2CDOM, exude_CDOM
@@ -531,7 +536,7 @@ C if diazo, all fracN* == 0 but want no N limitation
 
         limitpCO2 = 1.
 
-C==== growth ===========================================================
+C==== Photosynthesis ===================================================
 #ifdef DARWIN_ALLOW_GEIDER
 
         alpha_I = 0 _d 0
@@ -595,7 +600,11 @@ C         only 1 waveband without DARWIN_ALLOW_GEIDER
 
         uptakeDIC = PC*X(j)
 
-C       respiration goes straight back to DIC
+C==== Respiration ======================================================
+C Respiration goes straight back to DIC, so we subtract from DIC uptake.
+C Uptake of other non-quota elements is reduced according to plankton
+C stoichiometry to ensure conservation of chemical elements.
+C Zooplankton respiration is handled in the mortality/exudation loop.
         Xe = MAX(0 _d 0, X(j) - Xmin(j))
         respir_c = respRate(j)*Xe*reminTempFunc
         uptakeDIC = uptakeDIC - respir_c
@@ -1282,6 +1291,11 @@ C==== mortality ========================================================
       exude_POP  = 0.0 _d 0
       exude_POSi = 0.0 _d 0
       exude_PIC  = 0.0 _d 0
+      respir     = 0.0 _d 0
+      respirN    = 0.0 _d 0
+      respirP    = 0.0 _d 0
+      respirFe   = 0.0 _d 0
+      respirSi   = 0.0 _d 0
 
       DO jp = 1, nplank
         Xe = MAX(0 _d 0, X(jp) - Xmin(jp))
@@ -1313,6 +1327,28 @@ C==== mortality ========================================================
         exude_POSi = exude_POSi + mort_c(jp)*Qsi(jp)
 
         exude_PIC = exude_PIC + mort_c(jp)*R_PICPOC(jp)
+
+C Respiration of non-phototrophs
+C Respired carbon goes to DIC.  Other non-quota elements go to inorganic
+C matter pools according to plankton stoichiometry.  PIC also goes back
+C to DIC as if it had never been synthesized.
+        IF (isPhoto(jp) .EQ. 0) THEN
+         respir_c = respRate(jp)*Xe*reminTempFunc
+         gTr(ic+jp-1) = gTr(ic+jp-1) - respir_c
+         respir = respir + respir_c*(1 _d 0 + R_PICPOC(jp))
+#ifndef DARWIN_ALLOW_NQUOTA
+         respirN = respirN + respir_c*R_NC(jp)
+#endif
+#ifndef DARWIN_ALLOW_PQUOTA
+         respirP = respirP + respir_c*R_PC(jp)
+#endif
+#ifndef DARWIN_ALLOW_FEQUOTA
+         respirFe = respirFe + respir_c*R_FeC(jp)
+#endif
+#ifndef DARWIN_ALLOW_SIQUOTA
+         respirSi = respirSi + respir_c*R_SiC(jp)
+#endif
+        ENDIF
 
         gTr(ic+jp-1)=gTr(ic+jp-1)  - mort_c(jp)
 #ifdef DARWIN_ALLOW_NQUOTA
@@ -1368,6 +1404,20 @@ C==== mortality ========================================================
       DO jp = 1, nPhoto
         gTr(iChl+jp-1)=gTr(iChl+jp-1) - mort_c(jp)*QChl(jp)
       ENDDO
+#endif
+
+      gTr(iDIC) = gTr(iDIC) + respir
+#ifndef DARWIN_ALLOW_NQUOTA
+      gTr(iNO3) = gTr(iNO3) + respirN
+#endif
+#ifndef DARWIN_ALLOW_PQUOTA
+      gTr(iPO4) = gTr(iPO4) + respirP
+#endif
+#ifndef DARWIN_ALLOW_FEQUOTA
+      gTr(iFeT) = gTr(iFeT) + respirFe
+#endif
+#ifndef DARWIN_ALLOW_SIQUOTA
+      gTr(iSiO2) = gTr(iSiO2) + respirSi
 #endif
 
       gTr(iDOC )=gTr(iDOC ) + exude_DOC
