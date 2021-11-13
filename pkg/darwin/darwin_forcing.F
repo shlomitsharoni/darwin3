@@ -172,32 +172,15 @@ C     Other contributions to gPtr must come after these calls!
 #endif /* DARWIN_ALLOW_CARBON */
 
 C === iron =============================================================
-#ifdef DARWIN_ALLOW_CONS
-      DO k=1,Nr
-       DO j=jMin,jMax
-        DO i=iMin,iMax
-         DARWIN_minFeLoss(i,j,k,bi,bj) = DARWIN_minFeLoss(i,j,k,bi,bj)
-     &                                 + Ptracer(i,j,k,bi,bj,iFeT)
-        ENDDO
-       ENDDO
-      ENDDO
-#endif
       CALL TIMER_START('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
       CALL DARWIN_FE_CHEM(
      U                 Ptracer(1-OLx,1-OLy,1,bi,bj,iFeT),
-     O                 freeFe(1-OLx, 1-OLy, 1),
+     O                 freeFe(1-OLx,1-OLy,1),
+#ifdef DARWIN_ALLOW_CONS
+     U                 DARWIN_minFeLoss(1,1,1,bi,bj),
+#endif
      I                 bi, bj, iMin, iMax, jMin, jMax, myThid)
       CALL TIMER_STOP ('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
-#ifdef DARWIN_ALLOW_CONS
-      DO k=1,Nr
-       DO j=jMin,jMax
-        DO i=iMin,iMax
-         DARWIN_minFeLoss(i,j,k,bi,bj) = DARWIN_minFeLoss(i,j,k,bi,bj)
-     &                                 - Ptracer(i,j,k,bi,bj,iFeT)
-        ENDDO
-       ENDDO
-      ENDDO
-#endif
 
 C     scavenging
       CALL TIMER_START('DARWIN_FE_SCAV [DARWIN_FORCING]',myThid)
@@ -400,32 +383,15 @@ C === apply tendencies to tracers ======================================
 C === iron =============================================================
 C     re-apply free iron limit to FeT
 #ifdef DARWIN_MINFE
-#ifdef DARWIN_ALLOW_CONS
-      DO k=1,Nr
-       DO j=jMin,jMax
-        DO i=iMin,iMax
-         DARWIN_minFeLoss(i,j,k,bi,bj) = DARWIN_minFeLoss(i,j,k,bi,bj)
-     &                                 + Ptracer(i,j,k,bi,bj,iFeT)
-        ENDDO
-       ENDDO
-      ENDDO
-#endif
       CALL TIMER_START('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
       CALL DARWIN_FE_CHEM(
      U                 pTracer(1-OLx,1-OLy,1,bi,bj,iFeT),
      O                 freeFe(1-OLx,1-OLy,1),
+#ifdef DARWIN_ALLOW_CONS
+     U                 DARWIN_minFeLoss(1,1,1,bi,bj),
+#endif
      I                 bi, bj, iMin, iMax, jMin, jMax, myThid)
       CALL TIMER_STOP ('DARWIN_FE_CHEM [DARWIN_FORCING]',myThid)
-#ifdef DARWIN_ALLOW_CONS
-      DO k=1,Nr
-       DO j=jMin,jMax
-        DO i=iMin,iMax
-         DARWIN_minFeLoss(i,j,k,bi,bj) = DARWIN_minFeLoss(i,j,k,bi,bj)
-     &                                 - Ptracer(i,j,k,bi,bj,iFeT)
-        ENDDO
-       ENDDO
-      ENDDO
-#endif
 #endif
 
 C === diagnostics ======================================================
