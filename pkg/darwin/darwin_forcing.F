@@ -353,6 +353,7 @@ C === apply tendencies to tracers ======================================
 
 C === iron =============================================================
 C     re-apply free iron limit to FeT
+#ifdef DARWIN_MINFE
 #ifdef DARWIN_ALLOW_CONS
       DO k=1,Nr
        DO j=jMin,jMax
@@ -378,6 +379,7 @@ C     re-apply free iron limit to FeT
         ENDDO
        ENDDO
       ENDDO
+#endif
 #endif
 
 C === diagnostics ======================================================
