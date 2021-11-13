@@ -164,9 +164,10 @@ C
 C- Iron parameters
 C     alpfe             :: []                 solubility of Fe dust
 C     scav              :: [1/s]              fixed iron scavenging rate
-C     ligand_tot        :: [mol/m3]           total ligand concentration
-C     ligand_stab       :: [m3/mol]           ligand stability rate ratio
-C     freefemax         :: [mol/m3]           max concentration of free iron
+C     ligand_tot        :: [mmol/m3]          total ligand concentration
+C     ligand_stab       :: [m3/mmol]          ligand stability rate ratio
+C     freefemax         :: [mmol/m3]          max concentration of free iron
+C     tauFreeFe         :: [s]                relaxation time scale for free iron limit
 C     scav_rat          :: [1/s]              rate of POM-based iron scavenging
 C     scav_inter        :: []                 intercept of scavenging power law
 C     scav_exp          :: []                 exponent of scavenging power law
@@ -285,6 +286,7 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    ligand_tot,
      &    ligand_stab,
      &    freefemax,
+     &    tauFreeFe,
      &    scav_rat,
      &    scav_inter,
      &    scav_exp,
@@ -390,6 +392,7 @@ C     &    yono2,
       _RL ligand_tot
       _RL ligand_stab
       _RL freefemax
+      _RL tauFreeFe
       _RL scav_rat
       _RL scav_inter
       _RL scav_exp
