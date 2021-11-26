@@ -40,6 +40,8 @@ C       |-- CHEAPAML_FIELDS_LOAD
 C       |
 C       |-- EXTERNAL_FIELDS_LOAD
 C       |
+C       |-- RADTRANS_FIELDS_LOAD
+C       |
 C       |-- GCHEM_FIELDS_LOAD
 C       |
 C       |-- RBCS_FIELDS_LOAD
@@ -172,6 +174,15 @@ CADJ STORE Qsw    = comlev1, key = ikey_dynamics, kind = isbyte
 # endif
 #endif
       ENDIF
+
+#ifdef ALLOW_RADTRANS
+      IF ( useRADTRANS ) THEN
+#ifdef ALLOW_DEBUG
+        IF (debugMode) CALL DEBUG_CALL('RADTRANS_FIELDS_LOAD',myThid)
+#endif /* ALLOW_DEBUG */
+        CALL RADTRANS_FIELDS_LOAD( myTime, myIter, myThid )
+      ENDIF
+#endif /* ALLOW_RADTRANS */
 
 #ifdef ALLOW_GCHEM
       IF ( useGCHEM ) THEN
