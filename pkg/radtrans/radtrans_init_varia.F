@@ -17,10 +17,11 @@ C     !USES:
 #include "SIZE.h"
 #include "GRID.h"
 #include "PARAMS.h"
-#include "EXF_INTERP_SIZE.h"
+#ifdef ALLOW_EXF
+#include "EXF_PARAM.h"
+#endif
 #include "RADTRANS_SIZE.h"
 #include "RADTRANS_PARAMS.h"
-#include "RADTRANS_EXF_PARAMS.h"
 #include "RADTRANS_FIELDS.h"
 
 C     !INPUT PARAMETERS:

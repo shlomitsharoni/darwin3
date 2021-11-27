@@ -17,7 +17,7 @@ C !USES: ===============================================================
 #include "EEPARAMS.h"
 #include "PARAMS.h"
 #ifdef ALLOW_EXF
-#include "EXF_INTERP_SIZE.h"
+#include "EXF_PARAM.h"
 #endif
 #include "DARWIN_SIZE.h"
 #include "DARWIN_EXF_PARAMS.h"

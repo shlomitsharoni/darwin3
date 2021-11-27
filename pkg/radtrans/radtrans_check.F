@@ -16,12 +16,9 @@ C !USES: ===============================================================
 #include "SIZE.h"
 #ifdef ALLOW_EXF
 #include "EXF_PARAM.h"
-#include "EXF_INTERP_SIZE.h"
-#include "EXF_INTERP_PARAM.h"
 #endif
 #include "RADTRANS_SIZE.h"
 #include "RADTRANS_PARAMS.h"
-#include "RADTRANS_EXF_PARAMS.h"
 
 C !INPUT PARAMETERS: ===================================================
 C  myThid               :: thread number

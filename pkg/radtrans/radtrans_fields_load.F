@@ -16,11 +16,14 @@ C !USES: ===============================================================
 #include "GRID.h"
 #include "EEPARAMS.h"
 #include "PARAMS.h"
-#include "EXF_INTERP_SIZE.h"
+#ifdef ALLOW_EXF
+#include "EXF_PARAM.h"
+#endif
+#ifdef ALLOW_RADTRANS
 #include "RADTRANS_SIZE.h"
 #include "RADTRANS_PARAMS.h"
-#include "RADTRANS_EXF_PARAMS.h"
 #include "RADTRANS_FIELDS.h"
+#endif
 
 C !INPUT PARAMETERS: ===================================================
       _RL     mytime
