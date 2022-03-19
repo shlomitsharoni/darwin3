@@ -94,6 +94,7 @@ ccccccccccccccccccccccccc
       IF ( useDARWIN ) THEN
         CALL DARWIN_CONSERVE_SURFACE( myTime, myIter, myThid )
         CALL DARWIN_CONS( 1, myTime, myIter, myThid )
+        CALL DARWIN_CONS_RESET( myThid )
       ENDIF
 #endif
 
