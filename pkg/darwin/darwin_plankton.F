@@ -577,8 +577,6 @@ C==== Phototrophy ======================================================
       DO j = 1, nPhoto
        IF (isPhoto(j) .NE. 0) THEN
 
-        exQc = 0 _d 0
-
 C==== Uptake and nutrient limitation ===================================
 
 C       for quota elements, growth is limiteed by available quota,
@@ -1077,16 +1075,15 @@ C         uptakeFe = uptakeFe - exQfe*X(j)
 
         PCg = PC
         ! Kei7: Exudation of C
-        IF (tauExC(j) .NE. 0 _d 0) THEN
-          IF (exQn .EQ. 0 _d 0) THEN
-
+        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
           Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
      &     + QN_chl_const + QN_photo_const
 
           QcnExc = 1 - Qn(j)/Qn_min
           exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
-          PC = PC !- exQc
-          ENDIF
+C          PC = PC !- exQc
+        ELSE
+          exQc = 0 _d 0
         ENDIF
 
         diags(iPChl+j-1) = PChl
@@ -1315,8 +1312,11 @@ C==== Nutrient consumption =============================================
 
 C==== Apply phototrophy tendencies =====================================
 
-        gTr(ic+j-1)=gTr(ic+j-1)  + growth - X(j)*exQc
+        gTr(ic+j-1)=gTr(ic+j-1)  + growth
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+        gTr(ic+j-1)=gTr(ic+j-1)  - X(j)*exQc
         gTr(iDOC) = gTr(iDOC) + X(j)*exQc
+#endif
 #ifdef DARWIN_ALLOW_CSTORE
         gTr(ich+j-1)=gTr(ich+j-1)  + storeC
 #endif
