@@ -27,6 +27,15 @@ C Contains indices into diagnostics array
       integer iDisscDIC_PIC
       integer iConsALK
       integer iSrcAlk
+      integer iaMacro
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      integer iPChl, iVN
+      integer iCChl, iNChl, iNPho, iNSyn, iNPrn, iNRNA
+      integer iNDNA, iNSTO, iNEXC
+      integer iPRNA, iPDNA, iPTHY, iPCON, iPSTO, iPEXC
+      integer iFPHO, iFSTO, iFEXC
+      integer iMODE, iFe_C, iexQc, iPCg
+#endif
       integer iConsO2
       integer iProdO2
       integer iPPplank
@@ -77,8 +86,38 @@ C Contains indices into diagnostics array
       PARAMETER(iSrcAlk= 19)
       PARAMETER(iConsO2= 20)
       PARAMETER(iProdO2= 21)
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      PARAMETER(iPChl=   22)
+      PARAMETER(iVN=     iPChl+nPhoto)
+      PARAMETER(iMODE=   iVN  +nPhoto)
+      PARAMETER(iFe_C=   iMODE+nPhoto)
+      PARAMETER(iexQc=   iFe_C+nPhoto)
+      PARAMETER(iPCg =   iexQC+nPhoto)
+
+      PARAMETER(iCChl=   iPCg  +nPhoto)
+      PARAMETER(iNChl=   iCChl+nPhoto)
+      PARAMETER(iNPho=   iNChl+nPhoto)
+      PARAMETER(iNSyn=   iNPho+nPhoto)
+      PARAMETER(iNPrn=   iNSyn+nPhoto)
+      PARAMETER(iNRNA=   iNPrn+nPhoto)
+      PARAMETER(iNDNA=   iNRNA+nPhoto)
+      PARAMETER(iNSTO=   iNDNA+nPhoto)
+      PARAMETER(iNEXC=   iNSTO+nPhoto)
+      PARAMETER(iPRNA=   iNEXC+nPhoto)
+      PARAMETER(iPDNA=   iPRNA+nPhoto)
+      PARAMETER(iPTHY=   iPDNA+nPhoto)
+      PARAMETER(iPCON=   iPTHY+nPhoto)
+      PARAMETER(iPSTO=   iPCON+nPhoto)
+      PARAMETER(iPEXC=   iPSTO+nPhoto)
+      PARAMETER(iFPHO=   iPEXC+nPhoto)
+      PARAMETER(iFSTO=   iFPHO+nPhoto)
+      PARAMETER(iFEXC=   iFSTO+nPhoto)
+      PARAMETER(iaMacro= iFEXC+nPhoto)
+#else
+      PARAMETER(iaMacro= 22)
+#endif
 #ifdef DARWIN_ALLOW_CSTORE
-      PARAMETER(iEX=  22)
+      PARAMETER(iEX=  iaMacro)
       PARAMETER(iGW=  iEX+1)
       PARAMETER(iDN=  iGW+1)
       PARAMETER(iDP=  iDN+1)
@@ -98,7 +137,7 @@ C Contains indices into diagnostics array
       PARAMETER(iPPplank=iDmin+1)
 # endif
 #else
-      PARAMETER(iPPplank=22)
+      PARAMETER(iPPplank=iaMacro)
 #endif
 #ifdef DARWIN_DIAG_PERTYPE
       PARAMETER(iPCplank=iPPplank+nplank)

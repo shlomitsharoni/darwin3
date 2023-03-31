@@ -132,6 +132,7 @@ c !LOCAL VARIABLES: ====================================================
       _RL muO
       _RL mu
 
+      _RL VN,VNH4,VNO2,VNO3,VP,VFe
       _RL uptakeDIC
       _RL uptakeNH4
       _RL uptakeNO2
@@ -222,6 +223,129 @@ c !LOCAL VARIABLES: ====================================================
       _RL PARtot
 
       _RL tmp
+
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      _RL PChl
+      _RL Chl_const
+      _RL Chl_D
+      _RL Nchl_D
+      _RL Nphoto_D
+      _RL Nchl_const
+      _RL Nphoto_const
+      _RL Nbiosynth_D
+      _RL Nprotein_D
+      _RL Nprotein_const
+      _RL Nrna_D
+      _RL Nrna_D2
+      _RL Qn_D0
+      _RL Qn_D1
+      _RL Qn_D2
+      _RL Qn_exc
+      _RL Cchl
+      _RL NchlCell
+      _RL Nphotosyn
+      _RL Nbiosynth
+      _RL Nprotein
+      _RL Nrna
+      _RL QnExc
+      _RL exQn
+
+      _RL Cthylakoid_D0
+      _RL Cthylakoid_D1
+      _RL Cprotein_D0
+      _RL Cprotein_D1
+      _RL Crna_D0
+      _RL Crna_D1
+      _RL Crna_D2
+      _RL Cdna
+      _RL Qc_D0
+      _RL Qc_D1
+      _RL Qc_D2
+      _RL Qc_exc
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+CKei1-0: New values for P limitation
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      _RL A_P
+      _RL B_P
+      _RL L_P
+      _RL M_P
+      _RL Qp_D0
+      _RL Qp_D1
+      _RL Qp_D2
+      _RL PC_n
+      _RL Qp_exc
+      _RL PC_p
+      _RL Pthylakoid
+      _RL Prna
+      _RL Nessential
+      _RL Pessential
+      _RL Qn_max
+      _RL Qc_essential
+      _RL PC_c
+      _RL Pstore
+      _RL Pexcess
+      _RL Nstore
+      _RL Nexcess
+      _RL Qc_essential_and_Nstore
+      _RL QpExc
+      _RL exQp
+      _RL uptakeP
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+CKei1-1: New values for C exudation
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      _RL Qn_min
+      _RL CNmax
+      _RL QcnExc
+      _RL exQc
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C Kei1-2: New values for Fe limitation
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      _RL R_Fe
+      _RL S_Fe
+      _RL Qfe_D1
+      _RL Qfe_D0
+      _RL Qfe_exc
+      _RL PC_fe
+      _RL Fephoto
+      _RL Feessential
+c      _RL Qfe_max
+      _RL Festore
+      _RL Feexcess
+      _RL exQfe
+      _RL QfeExc
+      _RL uptakeFe
+      _RL MODE
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C Kei1-3: revision for N,P,Fe shortage
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      _RL CchlN
+      _RL CchlP
+      _RL CchlF
+      _RL NCmin
+      _RL PCmin
+      _RL FCmin
+      _RL Npro_const
+      _RL Ndna_plot
+      _RL Pconst_plot
+      _RL Pdna_plot
+      _RL Prna0
+      _RL Npro_const0
+      _RL Pdna_plot0
+      _RL Nlim
+      _RL Plim
+      _RL Flim
+      _RL PCc
+      _RL PCg
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
 #ifdef DARWIN_ALLOW_CDOM
       _RL CDOM
@@ -457,7 +581,10 @@ C==== Phototrophy ======================================================
       DO j = 1, nPhoto
        IF (isPhoto(j) .NE. 0) THEN
 
+        exQc = 0 _d 0
+
 C==== Uptake and nutrient limitation ===================================
+
 C       for quota elements, growth is limiteed by available quota,
 C       for non-quota elements, by available nutrients in medium
 
@@ -486,7 +613,8 @@ c phosphorus
      &                          (Qpmax(j)-Qpmin(j)) ))
         regQp = regQp**hillnumPO4(j)
 C       carbon-specific PO4 uptake rate
-        uptakePO4 = vmaxPO4(j)*MM_PO4*regQp*uptakeTempFunc*X(j)
+        VP = vmaxPO4(j) * MM_PO4 * regQp * uptakeTempFunc
+        uptakePO4 = VP*X(j)
 c       normalized Droop limitation
         limitp = MIN(1., (1.0-Qpmin(j)/MAX(Qpmin(j), Qp(j)))/
      &                   (1.0-Qpmin(j)/Qpmax(j)))
@@ -541,7 +669,8 @@ c iron
         regQfe = MAX(0., MIN(1., (Qfemax(j)-Qfe(j))/
      &                           (Qfemax(j)-Qfemin(j)) ))
         regQfe = regQfe**hillnumFeT(j)
-        uptakeFeT = vmaxFeT(j)*MM_FeT*regQfe*uptakeTempFunc*X(j)
+        VFe = vmaxFeT(j) * MM_FeT * regQfe * uptakeTempFunc
+        uptakeFeT = VFe*X(j)
 c       normalized Droop limitation
         limitfe = MIN(1., (1.0-Qfemin(j)/MAX(Qfemin(j), Qfe(j)))/
      &                    (1.0-Qfemin(j)/Qfemax(j)))
@@ -569,16 +698,20 @@ c       have nitrogen quota
         regQn = MAX(0., MIN(1., (Qnmax(j)-Qn(j))/
      &                          (Qnmax(j)-Qnmin(j)) ))
         regQn = regQn**hillnumDIN(j)
-        uptakeNH4 = vmaxNH4(j)*MM_NH4*regQn*uptakeTempFunc*X(j)
-        uptakeNO2 = vmaxNO2(j)*MM_NO2*regQn*uptakeTempFunc*X(j)
-        uptakeNO3 = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc*X(j)
+        VNH4 = vmaxNH4(j)*MM_NH4*regQn*uptakeTempFunc
+        VNO2 = vmaxNO2(j)*MM_NO2*regQn*uptakeTempFunc
+        VNO3 = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc
 #ifdef DARWIN_ALLOW_FEQUOTA
 #ifdef DARWIN_NITRATE_FELIMIT
-        uptakeNO3 = uptakeNO3 * limitfe
+        VNO3 = VNO3 * limitfe
 #endif
 #endif
-        uptakeN = MAX(uptakeNH4 + uptakeNO2 + uptakeNO3,
-     &                vmaxN(j)*regQn*uptakeTempFunc*X(j)*diazo(j))
+        VN = MAX(VNH4 + VNO2 + VNO3,
+     &           vmaxN(j)*regQn*uptakeTempFunc*diazo(j))
+        uptakeN = VN*X(j)
+        uptakeNO3 = VNO3*X(j)
+        uptakeNO2 = VNO2*X(j)
+        uptakeNH4 = VNH4*X(j)
 
 c       linear limitation
         limitn = MAX(0., MIN(1., (Qn(j) - Qnmin(j))/
@@ -636,6 +769,428 @@ C       will apply limits for quota elements to growth rate instead
         limitpCO2 = 1.
 
 C==== Photosynthesis ===================================================
+
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+
+C       set up Chl and N requirements as a function of growth rate PC
+C       then solve for PC
+
+C       carbohydrate fixation rate per chlorophyll (C mol s-1 Chl mol-1)
+C       =====Size factor here======
+        PChl = Sf(j)*PChlMax(j)*(1 - EXP(-ksatPAR(j)*PARtot))
+C       ===========================
+
+        PCg = 0 _d 0
+        IF ( PChl .GT. PchlMin(j) ) THEN
+
+C        chlorophyll quota (mol C cell-1)
+C        Chl = ((1 + E)*ls + m)/PChl
+C        where ls = D*Qc               (molC s-1) Biomass synthesis rate
+         Chl_const = Chl_const_num(j)/PChl
+         Chl_D     = Chl_D_num(j)/PChl
+
+C        nitrogen pools in mol N cell-1
+C
+C        Nchl = Chl*YchlN_C                    (nitrogen in Chlorophyll)
+         Nchl_const = Chl_const*YchlN_C(j)
+         Nchl_D     = Chl_D*YchlN_C(j)
+
+C        Nphoto = Chl*Ynphoto_chl       (photosynthesis related protein)
+         Nphoto_const = Chl_const*Ynphoto_chl(j)
+         Nphoto_D     = Chl_D*Ynphoto_chl(j)
+
+C        Nbiosynth = D*Cnbiosynth         (biosynthesis related protein)
+         Nbiosynth_D = Cnbiosynth(j)
+
+C        Nprotein = Nphoto + Nconst_protein + Nbiosynth   (all proteins)
+         Nprotein_const = Nphoto_const + Nconst_protein(j)
+         Nprotein_D     = Nphoto_D + Nbiosynth_D
+
+C        Nrna = Nrna_const + Nprotein*D*Cnrna_variable (nitrogen in RNA)
+         Nrna_D  = Nprotein_const*Cnrna_variable(j)
+         Nrna_D2 = Nprotein_D*Cnrna_variable(j)
+
+C        Qn = Nchl + Nprotein + Nrna + Ndna
+         Qn_D0 = Nchl_const + Nprotein_const + Nrna_const(j) + Ndna(j)
+         Qn_D1 = Nchl_D + Nprotein_D + Nrna_D
+         Qn_D2 = Nrna_D2
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C Kei3: For P limitation
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+       A_P = ((1 _d 0 + ECo2Prod(j))*QcMacroMol(j)*Ynphoto_chl(j))/PChl
+     &          + Cnbiosynth(j)
+       B_P = Nconst_protein(j) + (maintConsum(j)*Ynphoto_chl(j))/PChl
+       L_P = ((1 + ECo2Prod(j))*QcMacroMol(j)*Ypthylakoid_chl(j))/PChl
+       M_P = (maintConsum(j)*Ypthylakoid_chl(j))/PChl
+
+       Qp_D0 = M_P + Nrna_const(j)*YnucacidP_N(j)
+     &         + Ndna(j)*YnucacidP_N(j) + Pconst_other(j)
+       Qp_D1 = L_P + B_P*Cnrna_variable(j)*YnucacidP_N(j)
+       Qp_D2 = A_P*Cnrna_variable(j)*YnucacidP_N(j)
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C Kei3-1: For Fe limitation
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      R_Fe = ((1 _d 0 + ECo2Prod(j))*QcMacroMol(j)*Ynphoto_chl(j)
+     &      *YphotoFe_N(j))/Pchl
+      S_Fe = (maintConsum(j)*Ynphoto_chl(j)*YphotoFe_N(j))/Pchl
+      Qfe_D1 = R_Fe
+      Qfe_D0 = S_Fe
+
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+C        solve Qn = Qn_D0 + Qn_D*PC + Qn_D2*PC**2 for PC
+C        making sure PC >= 0 and converting Qn from N:C to mol N cell-1
+         Qn_exc = MAX(0 _d 0, Qn(j)*QcMacroMol(j) - Qn_D0)
+         PC = 2*Qn_exc/(Qn_D1 + SQRT(Qn_D1*Qn_D1 + 4*Qn_D2*Qn_exc))
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C Kei4: For P and Fe limitation
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+       PC_n = 2*Qn_exc/(Qn_D1 + SQRT(Qn_D1*Qn_D1 + 4*Qn_D2*Qn_exc))
+       Qp_exc = Max(0 _d 0, Qp(j)*QcMacroMol(j) - Qp_D0)
+       PC_p = 2*Qp_exc/(Qp_D1 + SQRT(Qp_D1*Qp_D1 + 4*Qp_D2*Qp_exc))
+       Qfe_exc = Max(0 _d 0, Qfe(j)*QcMacroMol(j) - Qfe_D0)
+       PC_fe = Qfe_exc/Qfe_D1
+
+
+C======================================
+C Determining what is limited
+C======================================
+
+       IF (PC_p.GT.PC_n.and.PC_fe.GT.PC_n) THEN
+        PC = PC_n
+        MODE = 2 _d 0
+       ELSE IF (PC_n.GT.PC_p.and.PC_fe.GT.PC_p) THEN
+        PC = PC_p
+        MODE = 1 _d 0
+       ELSE IF (PC_n.GT.PC_fe.and.PC_p.GT.PC_fe) THEN
+        PC = PC_fe
+        MODE = 3 _d 0
+       ELSE
+        PC = MIN(PC_n, MIN(PC_p, PC_fe))
+        MODE = 0 _d 0
+       ENDIF
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+C        carbon restriction on growth rate
+         Cthylakoid_D0 = Chl_const*R_CChl_thylakoid(j)  !Ypthylakoid_chl*YpgC_P
+         Cthylakoid_D1 = Chl_D    *R_CChl_thylakoid(j)  !Ypthylakoid_chl*YpgC_P
+         Cprotein_D0 = Nprotein_const*R_CN_protein(j)
+         Cprotein_D1 = Nprotein_D    *R_CN_protein(j)
+         Crna_D0 = Nrna_const(j)*R_CN_RNA(j)
+         Crna_D1 = Nrna_D *R_CN_RNA(j)
+         Crna_D2 = Nrna_D2*R_CN_RNA(j)
+         Cdna = Ndna(j)*R_CN_DNA(j)
+
+         Qc_D0 = Chl_const + Cprotein_D0 + Crna_D0 + Cthylakoid_D0
+     &         + Cdna + Cessential(j)
+         Qc_D1 = Chl_D + Cprotein_D1 + Cthylakoid_D1 + Crna_D1
+         Qc_D2 = Crna_D2
+
+         Qc_exc = MAX(0 _d 0, QcMacroMol(j) - Qc_D0)
+         PCc = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
+         IF (PCc.LT.PC) THEN
+           PC = PCc
+           MODE = 4 _d 0
+         ENDIF
+c         PC = MIN(PC,
+c     &            2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc)))
+
+
+
+C        limit updated nitrogen quota to Qnmax(j)
+C         VN = MIN(VN, (Qnmax(j) - Qn)/dt + Qnmax(j)*PC)
+C         uptakeN = VN*X
+C         uptakeNH4 = uptakeNH4*X
+C         uptakeNO2 = uptakeNO2*X
+C         uptakeNO3 = uptakeNO3*X
+
+C        make sure we do not exceed CchlMax
+C         PC = MIN(PC, (CchlMax(j) - Chl_const)/Chl_D)
+
+         Cchl = Chl_const + Chl_D*PC
+
+C       IF ( PChl .GT. PchlMin(j) ) THEN
+        ELSE
+         MODE = 5 _d 0
+         PC = 0. _d 0
+         Cchl = CchlMax(j)
+
+        ENDIF
+
+        IF (PC .EQ. 0. _d 0) THEN
+         CchlN = (Qn(j)*QcMacroMol(j) - QnNoChl(j))
+     &         /(YchlN_C(j) + Ynphoto_chl(j))
+         CchlP = (Qp(j)*QcMacroMol(j) - QpNoChl(j))/Ypthylakoid_chl(j)
+         CchlF = (Qfe(j)*QcMacroMol(j) - QfeNoChl(j))
+     &         /(Ynphoto_chl(j)*YphotoFe_N(j))
+         Cchl = MAX(0., MIN(CchlN,CchlP,CchlF,CchlMax(j)))
+        ENDIF
+
+C       convert to mg Chl m-3
+        chlout(j) = 893.49 _d 0*X(j)*Cchl/QcMacroMol(j)/55 _d 0
+
+        NchlCell  = Cchl*YchlN_C(j)
+        Nphotosyn = Cchl*Ynphoto_chl(j)
+        Nbiosynth = Cnbiosynth(j)*PC
+        Nprotein  = Nconst_protein(j) + Nphotosyn + Nbiosynth
+        Nrna      = Nrna_const(j) + Nprotein*Cnrna_variable(j)*PC
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C Kei5: For P and Fe limitation
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      Pthylakoid = Cchl * Ypthylakoid_chl(j)
+      Prna = Nrna*YnucacidP_N(j)
+      Fephoto = Nphotosyn * YphotoFe_N(j)
+
+C===========================
+CRevising store amount============
+C===========================
+      Nessential = NchlCell + Nprotein + Nrna + Ndna(j)
+      Pessential = Pthylakoid + Prna + Pdna(j) + Pconst_other(j)
+      Feessential = Fephoto
+      Qn_max = Nessential + Nstore_max(j)
+c      Qfe_max = Feessential + Festore_max(j)
+
+c----------define parameters----(kei 204-7)-----------
+      IF ( PChl .LE. PchlMin(j) ) THEN
+
+        Chl_const = CchlMax(j)
+
+C       nitrogen pools in mol N cell-1
+C
+C       Nchl = Chl*YchlN_C                    (nitrogen in Chlorophyll)
+        Nchl_const = Chl_const*YchlN_C(j)
+
+C       Nphoto = Chl*Ynphoto_chl       (photosynthesis related protein)
+        Nphoto_const = Chl_const*Ynphoto_chl(j)
+
+C       Nbiosynth = D*Cnbiosynth         (biosynthesis related protein)
+
+C       Nprotein = Nphoto + Nconst_protein + Nbiosynth   (all proteins)
+        Nprotein_const = Nphoto_const + Nconst_protein(j)
+
+C       Nrna = Nrna_const + Nprotein*D*Cnrna_variable (nitrogen in RNA)
+
+        Cthylakoid_D0 = Chl_const*R_CChl_thylakoid(j) !Ypthylakoid_chl*YpgC_P
+        Cprotein_D0 = Nprotein_const*R_CN_protein(j)
+        Crna_D0 = Nrna_const(j)*R_CN_RNA(j)
+        Cdna = Ndna(j)*R_CN_DNA(j)
+c------------------------------------------------------
+
+        Qc_D0 = Chl_const + Cprotein_D0 + Crna_D0 + Cthylakoid_D0
+     &         + Cdna + Cessential(j)
+        Qc_D1 = 0 _d 0
+        Qc_D2 = 0 _d 0
+
+      ENDIF
+c-------------------------------
+
+      Qc_essential = Qc_D0 + Qc_D1*PC + Qc_D2*PC*PC
+c      PC_c=2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
+
+c=======================================
+cHere compute when N,P,or Fe are scarce
+c=======================================
+
+      NCmin = QnNoChl(j)/QcMacroMol(j)
+      PCmin = QpNoChl(j)/QcMacroMol(j)
+      FCmin = QfeNoChl(j)/QcMacroMol(j)
+
+      IF (Qn(j).LT.NCmin) THEN
+        Nlim = 1 _d 0
+        ! NchlCell = 0 _d 0
+        Npro_const = Qn(j)*QcMacroMol(j)*Nconst_protein(j)/QnNoChl(j)
+        Nprotein = Npro_const
+        Nrna = Qn(j)*QcMacroMol(j)*Nrna_const(j)/QnNoChl(j)
+        Ndna_plot = Qn(j)*QcMacroMol(j)*Ndna(j)/QnNoChl(j)
+
+        Nessential = Npro_const + Nrna + Ndna_plot
+        Qn_max = Nessential + Nstore_max(j)
+
+        Prna = Nrna * YnucacidP_N(j)
+        Pdna_plot = Ndna_plot * YnucacidP_N(j)
+        Pessential = Prna + Pdna_plot + Pconst_other(j)
+        PCmin = Pessential/QcMacroMol(j)
+      ELSE
+        Nlim = 0 _d 0
+        Npro_const = Nconst_protein(j)
+        Ndna_plot = Ndna(j)
+        Pdna_plot = Ndna(j)*YnucacidP_N(j)
+      ENDIF
+
+      IF (Qp(j).LT.PCmin) THEN
+        Plim = 1 _d 0
+        Prna0 = Qp(j)*QcMacromol(j)*Nrna_const(j)*YnucacidP_N(j)
+     &          /QpNoChl(j)
+        Prna = MIN(Prna0,Prna)
+        Pdna_plot0 = Qp(j)*QcMacromol(j)*Ndna(j)*YnucacidP_N(j)
+     &               /QpNoChl(j)
+        Pdna_plot = MIN(Pdna_plot0,Pdna_plot)
+        Pconst_plot = MIN(Qp(j) - Prna - Pdna_plot, Pconst_other(j))
+        Pessential = Prna + Pdna_plot + Pconst_plot
+
+        Nrna = Prna/YnucacidP_N(j)
+        Ndna_plot = Pdna_plot/YnucacidP_N(j)
+!re-compute Npro_const as Nrna and Ndna might be reduced.
+        Npro_const0 = Qn(j)*QcMacroMol(j) - Nrna - Ndna_plot
+        Npro_const = MIN(Npro_const0, Nconst_protein(j))
+        Nprotein = Npro_const
+        Nessential = Npro_const + Nrna + Ndna_plot
+        Qn_max = Nessential + Nstore_max(j)
+        NCmin = Nessential/QcMacroMol(j)
+      ELSE
+        Plim = 0 _d 0
+        Pconst_plot = Pconst_other(j)
+      ENDIF
+
+      IF (Qfe(j).LT.FCmin) THEN
+        Flim = 1 _d 0
+      ELSE
+        Flim = 0 _d 0
+      ENDIF
+
+C Storage calculation -----------------
+
+        !If P is smaller than max
+        IF (Qp(j)*QcMacroMol(j).LT.Qp_max(j)) THEN
+         Pstore = Qp(j)*QcMacroMol(j) - Pessential
+         Pexcess = 0 _d 0
+
+        !If P is greater than max and  P essential > max
+        ELSE IF (Pessential.GT.Qp_max(j)) THEN
+         Pstore = 0 _d 0
+         Pexcess = Qp(j)*QcMacroMol(j) - Pessential
+
+        !If P is great than max but P essential < max
+        Else
+         Pstore = Qp_max(j) - Pessential
+         Pexcess = Qp(j)*QcMacroMol(j) - Qp_max(j)
+        ENDIF
+
+        IF (Qn(j)*QcMacroMol(j).LT.Qn_max) THEN
+         Nstore = Qn(j)*QcMacroMol(j) - Nessential
+         Nexcess = 0 _d 0
+        ELSE
+         Nstore = Nstore_max(j)
+         Nexcess = Qn(j)*QcMacroMol(j) - Qn_max
+        ENDIF
+
+        IF (Qfe(j)*QcMacroMol(j).LT.Qfe_max(j)) THEN
+         Festore = Qfe(j)*QcMacroMol(j) - Feessential
+         Feexcess = 0 _d 0
+        ELSE IF (Feessential.GT.Qfe_max(j)) THEN
+         Festore = 0 _d 0
+         Feexcess = Qfe(j)*QcMacroMol(j) - Feessential
+        ELSE
+         Festore = Qfe_max(j) - Feessential
+         Feexcess = Qfe(j)*QcMacroMol(j) - Qfe_max(j)
+        ENDIF
+
+        Qc_essential_and_Nstore = Qc_essential + Nstore*YcyanoC_N(j)
+
+        IF (Qc_essential_and_Nstore.GT.QcMacroMol(j)) THEN
+         Nstore = (QcMacroMol(j) - Qc_Essential)/YcyanoC_N(j)
+         Nexcess = Qn(j)*QcMacroMol(j) - Nstore - Nessential
+
+        ENDIF
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+C       exude excess nitrogen to NO3
+        IF (tauExN(j) .NE. 0 _d 0) THEN
+          IF (Nlim .NE. 1 _d 0) THEN
+          QnExc = Qn(j) - (Nchlcell+Nprotein+Nrna+Ndna(j)+Nstore)
+     $     /QcMacroMol(j)
+          exQn = MAX(0 _d 0, QnExc)/tauExN(j)
+          uptakeN = uptakeN - exQn*X(j)
+          uptakeNO3 = uptakeNO3 - exQn*X(j)
+          VN = VN - exQn
+          ELSE
+          exQn = 0 _d 0
+          ENDIF
+        ENDIF
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C Kei6: Exudation of P and Fe
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        IF (tauExP(j) .NE. 0 _d 0) THEN
+          IF (Plim .NE. 1 _d 0) THEN
+          QpExc = Qp(j) - (Pessential+Pstore)/QcMacroMol(j)
+          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
+C          uptakeP = uptakeP - exQp*X(j)
+          uptakePO4 = uptakePO4 - exQp*X(j)
+          VP = VP - exQp
+          ENDIF
+        ENDIF
+
+        IF (tauExFe(j) .NE. 0 _d 0) THEN
+          IF (Flim .NE. 1 _d 0) THEN
+          QfeExc = Qfe(j) - (Feessential+Festore)/QcMacroMol(j)
+          exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
+C          uptakeFe = uptakeFe - exQfe*X(j)
+          uptakeFeT = uptakeFeT - exQfe*X(j)
+          Vfe = Vfe - exQfe
+          ENDIF
+        ENDIF
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C Kei6.5: Size impact on growth
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C        PC = PC * Sf(j)
+        PCg = PC
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C Kei7: Exudation of C
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        IF (tauExC(j) .NE. 0 _d 0) THEN
+         IF (exQn .EQ. 0 _d 0) THEN
+
+          Qn_min =(Nrna_const(j) + Nconst_protein(j) +
+     &     Ndna(j) + Nchl_const + Nphoto_const)/QcMacroMol(j)
+
+          QcnExc = 1 - Qn(j)/Qn_min
+          exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
+          PC = PC ! - exQc
+
+C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+         ENDIF
+        ENDIF
+
+        diags(iVN  +j-1) = VN
+        diags(iPChl+j-1) = PChl
+        diags(iMODE+j-1) = MODE
+        diags(iFe_C+j-1) = Qfe(j)
+        diags(iexQc+j-1) = exQc
+        diags(iPCg +j-1) = PCg
+
+        diags(iCChl+j-1) = Cchl
+        diags(iNChl+j-1) = NChlCell
+        diags(iNPho+j-1) = Nphotosyn
+        diags(iNSyn+j-1) = Nbiosynth
+        diags(iNPrn+j-1) = Nprotein
+        diags(iNRNA+j-1) = Nrna
+        diags(iNDNA+j-1) = Ndna_plot
+        diags(iNSTO+j-1) = Nstore
+        diags(iNEXC+j-1) = Nexcess
+        diags(iPRNA+j-1) = Prna
+        diags(iPDNA+j-1) = Pdna_plot
+        diags(iPTHY+j-1) = Pthylakoid
+        diags(iPCON+j-1) = Pconst_plot
+        diags(iPSTO+j-1) = Pstore
+        diags(iPEXC+j-1) = Pexcess
+        diags(iFPHO+j-1) = Fephoto
+        diags(iFSTO+j-1) = Festore
+        diags(iFEXC+j-1) = Feexcess
+
+#else /* DARWIN_MACROMOLECULAR_GROWTH */
+
 #ifdef DARWIN_ALLOW_GEIDER
 
         alpha_I = 0 _d 0
@@ -697,7 +1252,10 @@ C         only 1 waveband without DARWIN_ALLOW_GEIDER
 
 #endif /* DARWIN_ALLOW_GEIDER */
 
+#endif /* DARWIN_MACROMOLECULAR_GROWTH */
+
         photoSyn = PC*X(j)
+
 
 C==== Respiration ======================================================
 C Respiration goes straight back to DIC, so we subtract from DIC uptake.
@@ -831,7 +1389,8 @@ C==== Nutrient consumption =============================================
 
 C==== Apply phototrophy tendencies =====================================
 
-        gTr(ic+j-1)=gTr(ic+j-1)  + growth
+        gTr(ic+j-1)=gTr(ic+j-1)  + growth - X(j)*exQc
+        gTr(iDOC) = gTr(iDOC) + X(j)*exQc
 #ifdef DARWIN_ALLOW_CSTORE
         gTr(ich+j-1)=gTr(ich+j-1)  + storeC
 #endif

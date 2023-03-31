@@ -250,6 +250,46 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    ksatDOC,
      &    ksatDOP,
      &    ksatDOFe
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+     &   ,ECo2Prod,
+     &    QcMacroMol,
+     &    YchlN_C,
+     &    Nconst_protein,
+     &    Nrna_const,
+     &    Ndna,
+     &    PChlMax,
+     &    Chl_const_num,
+     &    Chl_D_num,
+     &    Ynphoto_chl,
+     &    Cnbiosynth,
+     &    Cnrna_variable,
+     &    CchlMax,
+     &    PchlMin,
+     &    R_CN_DNA,
+     &    R_CN_RNA,
+     &    R_CN_protein,
+     &    Cessential,
+     &    R_CChl_thylakoid,
+     &    QnNoChl,
+     &    tauExN,
+     &    tauExP,
+     &    tauExFe,
+     &    tauExC,
+     &    YcyanoC_N,
+     &    Pdna,
+     &    Nstore_max,
+     &    Pconst_other,
+     &    Qp_max,
+     &    maintConsum,
+     &    Ypthylakoid_chl,
+     &    YnucacidP_N,
+     &    YphotoFe_N,
+     &    Festore_max,
+     &    QpNoChl,
+     &    QfeNoChl,
+     &    Qfe_max,
+     &    Sf
+#endif
       _RL Xmin(nplank)
       _RL amminhib(nplank)
       _RL acclimtimescl(nplank)
@@ -337,6 +377,46 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
       _RL ksatDOC(nplank)
       _RL ksatDOP(nplank)
       _RL ksatDOFe(nplank)
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      _RL ECo2Prod(nplank)
+      _RL QcMacroMol(nplank)
+      _RL YchlN_C(nplank)
+      _RL Nconst_protein(nplank)
+      _RL Nrna_const(nplank)
+      _RL Ndna(nplank)
+      _RL PChlMax(nplank)
+      _RL Chl_const_num(nplank)
+      _RL Chl_D_num(nplank)
+      _RL Ynphoto_chl(nplank)
+      _RL Cnbiosynth(nplank)
+      _RL Cnrna_variable(nplank)
+      _RL CchlMax(nplank)
+      _RL PchlMin(nplank)
+      _RL R_CN_DNA(nplank)
+      _RL R_CN_RNA(nplank)
+      _RL R_CN_protein(nplank)
+      _RL Cessential(nplank)
+      _RL R_CChl_thylakoid(nplank)
+      _RL QnNoChl(nplank)
+      _RL tauExN(nplank)
+      _RL tauExP(nplank)
+      _RL tauExFe(nplank)
+      _RL tauExC(nplank)
+      _RL YcyanoC_N(nplank)
+      _RL Pdna(nplank)
+      _RL Nstore_max(nplank)
+      _RL Pconst_other(nplank)
+      _RL Qp_max(nplank)
+      _RL maintConsum(nplank)
+      _RL Ypthylakoid_chl(nplank)
+      _RL YnucacidP_N(nplank)
+      _RL YphotoFe_N(nplank)
+      _RL Festore_max(nplank)
+      _RL QpNoChl(nplank)
+      _RL QfeNoChl(nplank)
+      _RL Qfe_max(nplank)
+      _RL Sf(nplank)
+#endif
 
 C--   COMMON /DARWIN_DEPENDENT_TRAITS_i/ Dependent and constant (not read-in) parameters
 C     group  :: which group this type belongs to

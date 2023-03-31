@@ -81,6 +81,9 @@ C CDOM is in carbon units and follows POC
 C include code for reading nutrient runoff from files
 #undef  DARWIN_NUTRIENT_RUNOFF
 
+C enable macromolecular growth code; requires N, P and Fe quotas
+#undef DARWIN_MACROMOLECULAR_GROWTH
+
 
 C light
 
