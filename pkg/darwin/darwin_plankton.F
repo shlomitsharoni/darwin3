@@ -839,18 +839,6 @@ C======================================
 C Determining what is limited
 C======================================
 
-       IF (PC_p.GT.PC_n.and.PC_fe.GT.PC_n) THEN
-        PC = PC_n
-        MODE = 2 _d 0
-       ELSE IF (PC_n.GT.PC_p.and.PC_fe.GT.PC_p) THEN
-        PC = PC_p
-        MODE = 1 _d 0
-       ELSE IF (PC_n.GT.PC_fe.and.PC_p.GT.PC_fe) THEN
-        PC = PC_fe
-        MODE = 3 _d 0
-       ENDIF
-
-
 C        carbon restriction on growth rate
          QC_thy_D0 = QC_chl_const*A_thy(j)
          QC_thy_D1 = QC_chl_D*A_thy(j)
@@ -867,9 +855,18 @@ C        carbon restriction on growth rate
 
          Qc_exc = MAX(0 _d 0, Qc(j) - Qc_D0)
          PCc = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
-         IF (PCc.LT.PC) THEN
-           PC = PCc
-           MODE = 4 _d 0
+
+         PC = MIN(PC_n,PC_p,PC_fe,PCc)
+         IF (PC_n.EQ.PC) THEN
+          MODE = 2 _d 0
+         ELSEIF (PC_p.EQ.PC) THEN
+          MODE = 1 _d 0
+         ELSEIF (PC_fe.EQ.PC) THEN
+          MODE = 3 _d 0
+         ELSEIF (PCc.EQ.PC) THEN
+          MODE = 4 _d 0
+         ELSE
+          MODE = 0 _d 0
          ENDIF
 
          QC_chl = QC_chl_const + QC_chl_D*PC
