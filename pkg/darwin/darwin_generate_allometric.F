@@ -48,34 +48,8 @@ C     msgBuf   :: Informational/error meesage buffer
       _RL bmean, bbmean
       _RL bbbratiomeas, bbbratioac
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-C      _RL Nstore_max
-C      _RL Pconst_other
-      _RL Molar_mass_DNA_AT_average
-      _RL Molar_mass_DNA_CG_average
-      _RL Molar_mass_RNA_AT_average
-      _RL Molar_mass_RNA_CG_average
-      _RL CG_Ecoli
-      _RL AT_Ecoli
-      _RL Molar_mass_DNA_Ecoli
-      _RL Molar_mass_RNA_Ecoli
-      _RL RNA_DNA_mass_ratio
-      _RL RNA_DNA_molar_ratio
-C      _RL YcyanoC_N
-      _RL YpgC_P
-      _RL CG
-      _RL DNAmb
-      _RL Avogadro
-      _RL Pdna_const
-      _RL Prna_const
-      _RL Ndna_const
-      _RL PChlMax0
-      _RL Mchl
-      _RL OPhoto, TPhoto
-      _RL Cprotein_D0
-      _RL Crna_D0
-      _RL Cdna
-      _RL Qc_const
-      _RL Qc_const_Pchl
+      _RL Y_PC_pg
+      _RL QC_const
 #endif
 
 C ======================================================================
@@ -399,132 +373,59 @@ C real parameters
 
 C ----------------------------------------------------------------------
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-C these are computed in mol/cell and converted to mmol N (mmol C)^-1
-
-        ECo2Prod(jp) = 0.7741553538213819 _d 0   ! (dimensionless) CO2 production ratio
-
-        QcMacroMol(jp) = 1.00*1 _d -12/12       ! (molC/cell) biomass C per cell (196-18)(average of N and P limited cases from Healey 1985)
-        YchlN_C(jp) = 4 _d 0/55 _d 0
-
-C       Y intercept parameters
-        Nconst_protein(jp) = 4.453369 _d -15
-
-C       ================================
-        Molar_mass_DNA_AT_average = 307.47 _d 0   ! (g mol-1) Molar mass AT average (from "10 Amino acids and nucleic acids stoichiometry.xlsx")
-        Molar_mass_DNA_CG_average = 307.97 _d 0   ! (g mol-1) Molar mass CG average (from "10 Amino acids and nucleic acids stoichiometry.xlsx")
-
-        Molar_mass_RNA_AT_average = 316.47 _d 0   ! (g mol-1) Molar mass AT average (from "10 Amino acids and nucleic acids stoichiometry.xlsx")
-        Molar_mass_RNA_CG_average = 323.97 _d 0   ! (g mol-1) Molar mass CG average (from "10 Amino acids and nucleic acids stoichiometry.xlsx")
-
-C       E coli
-        CG_Ecoli = 0.506 _d 0                     ! (dimensionless) from [http://www.ncbi.nlm.nih.gov/genome/167 (accessed 06/18/2016)]
-        AT_Ecoli = 1 - CG_Ecoli                   ! (dimensionless)
-
-        Molar_mass_DNA_Ecoli = Molar_mass_DNA_AT_average*CG_Ecoli +
-     &                         Molar_mass_DNA_CG_average*AT_Ecoli     ! (g mol-1) Molar mass of DNA unit
-        Molar_mass_RNA_Ecoli = Molar_mass_RNA_AT_average*CG_Ecoli +
-     &                         Molar_mass_RNA_CG_average*AT_Ecoli     ! (g mol-1) Molar mass of RNA unit
-
-        RNA_DNA_mass_ratio = 20/7.6 _d 0              ! (ug/ug) Bremer and Dennis 1996
-        RNA_DNA_mass_ratio = 17.844 _d 0/6.5239 _d 0  ! (ug/ug) from values ad D=0 "07 Bremer and Dennis 1996 data plot.xlsx"
-
-        RNA_DNA_molar_ratio = RNA_DNA_mass_ratio/Molar_mass_RNA_Ecoli*
-     &                        Molar_mass_DNA_Ecoli    ! (mol mol-1)
 
 C       Stoichiometric parameters
-C        YcyanoC_N = 2                                ! (molC molN) C/N molar ratio of cyanophycin
-        YpgC_P = 40                                  ! (molC molP) C/P molar ratio of PG: Phosphatidyl glycerol (assuming C16 fatty acids (since actually mostly C16 (Huflejt et al., 1990)
-
-        CG = 0.563 _d 0                             ! GC%    [http://www.ncbi.nlm.nih.gov/genome/13522 (accessed 06/18/2016)]
-        YnucacidP_N(jp) = 1/(3.5 _d 0*(1 - CG) + 4*CG)   ! (molP molN-1) P/N molar ratio of RNA (193-26) values (193-28) excel file "08 N to P ratio in DNA and RNA.xlsx"
-
-        R_CN_DNA(jp) = 3.5 _d 0*(1 - CG) + 2.5 _d 0*CG    ! (molC molN-1) C/N molar ratio of dna (based on "10 Amino acids and nucleic acids stoichiometry.xlsx)
-        R_CN_RNA(jp) = 3.25 _d 0*(1 - CG) + 2.5 _d 0*CG   ! (molC molN-1) C/N molar ratio of rna (based on "10 Amino acids and nucleic acids stoichiometry.xlsx)
-
-        DNAmb = 2.1269 _d 0                             ! (Mb) Megabase pair of synechococcus DNA in mega (million) base pairs [http://www.ncbi.nlm.nih.gov/genome/13522 (accessed 06/18/2016)]
-        Avogadro = 6.022 _d 23                           ! (molecules mol-1) Avogadro constant
-        Pdna_const = DNAmb*2 _d 6/Avogadro               ! (molP cell-1) Constant part of DNA in phosphorus
-C        Prna_const = Pdna_const*RNA_DNA_molar_ratio      ! (molP cell-1) Constant part of RNA in phosphorus
-                                                         ! * Make sure to multiply by 2 as they are base PAIRs"
-        Ndna_const = Pdna_const/YnucacidP_N(jp)              ! (molN cell-1) Constant part of DNA in nitrogen
-        Nrna_const(jp) = Ndna_const*RNA_DNA_molar_ratio  ! (molN cell-1) Constatn part of RNA in nitrogen
-        Ndna(jp) = Ndna_const                            ! (molN cell-1) DNA in nitrogen (here assuming constant)
+        Y_PC_pg = 40.0 _d 0                                      ! (molC molP-1) C/P molar ratio of PG: Phosphatidyl glycerol
+        Y_CN_protein(jp) = 4.49 _d 0                             ! (molC molN-1) C/N molar ratio in protein
+        Y_NC_chl(jp) = 4.0 _d 0/55.0 _d 0                        ! (molN molC-1) N/C molar ratio in chlorophyll
+        Y_CN_cyano(jp) = 2.0 _d 0                                ! (molC molN-1) C/N molar ratio of cyanophycin
+        Y_PN_nucacid(jp) = 0.2644 _d 0                           ! (molP molN-1) P/N molar ratio of RNA
+        Y_CN_DNA(jp) = 2.9370 _d 0                               ! (molC molN-1) C/N molar ratio of DNA
+        Y_CN_RNA(jp) = 2.8277 _d 0                               ! (molC molN-1) C/N molar ratio of RNA
+        Y_THY_P(jp) = 0.028163 _d 0                              ! ((molP)/(molC in chl)-1) the shoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll
+        Y_FeN_photo(jp) = 0.00163 _d 0                           ! (molFe mol N-1) Fe/N ratio in photosystem iron
 
 C       Photosynthetic parameters
-        maintConsum(jp) = 3.791468 _d -19                ! (mol C s-1 cell-1) maintenance carbohydrate consumption (idea from 172-7)
-        PChlMax0 = 7 _d 0                       ! (g C /(g Chl h) Maximum production rate per chlorophyll (around 6 by Cullen 1990)
-        Mchl = 893.49 _d 0                      ! (g / mol chlorophyll) mollar mass of chlorophyll
-        PChlMax(jp) = 0.00320513  ! (mol C s-1 mol chl-1) carbon fixing rate (156-10) (156-15) for unit conversion)
-        OPhoto = 0.0025 _d 0
-        TPhoto = 5.0 _d 0
-        ksatPAR(jp) = 0.008633641
-        Chl_const_num(jp) = maintConsum(jp)
-        Chl_D_num(jp) = (1 + ECo2Prod(jp))*QcMacroMol(jp)
+        ECo2Prod(jp) = 0.774 _d 0                                ! (dimensionless) CO2 production ratio
+        maintConsum(jp) = 0.393 _d 0/3600/24                     ! (s-1) maintenance carbohydrate consumption
+        VI_max(jp) = 277 _d 0/3600/24                            ! (molC (molC in Chl)-1 s-1) carbon fixing rate
+        A_I(jp) = 0.0086 _d 0                                    ! (umol-1 m2 s) coefficient characterizing the absorption cross section
+
+        QC_other(jp) = 0.0182 _d 0                               ! (molC molC-1) essential carbon (lipid membrane, etc.)
+        QC_pro_other(jp) = 0.24 _d 0                             ! (molC molC-1)
+        QP_other(jp) = 6.5344 _d -4                              ! (molP molC-1) Constant part of phosphorus
+        QP_RNA_min(jp) = 2.23 _d -4                              ! (molP molC-1)
+        QC_DNA(jp) = 9.41 _d -4                                  ! (molC molC-1) constant part of DNA in carbon
+        QN_pro_other(jp) = QC_pro_other(jp)/Y_CN_protein(jp)     ! (molN molC-1)
+        QN_RNA_min(jp) = QP_RNA_min(jp)/Y_PN_nucacid(jp)         ! (molN molC-1) constant part of RNA in nitrogen
+        QN_DNA(jp) = QC_DNA(jp)/Y_CN_DNA(jp)                     ! (molN molC-1) DNA in nitrogen
+        QP_DNA(jp) = QN_DNA(jp)*Y_PN_nucacid(jp)                 ! (molP molC-1) DNA in phosphorous
+        QN_sto_max(jp) = 0.035 _d 0                              ! (molN molC-1) maximum nitrogen storage
+        Qp_max(jp) = 0.0052 _d 0                                 ! (molP molC-1) maximum phosphorus quota
+        Qfe_max(jp) = 2.436 _d -4                                ! (molFe molC-1) maximum iron quota
 
 C       Constant parameters
-        Ynphoto_chl(jp) = 3.561 _d 0            ! ((molN cell-1)/(molC chl cell-1)) the stoichiometric ratio for cell photosynthetic enzyme (Rubisco etc.) nitrogen to chlorophyll (193-25)
-        Ypthylakoid_chl(jp) = 0.02816331 _d 0           ! ((molP cell-1)/(molC chl cell-1)) the shoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll (193-26)
-        Cnbiosynth(jp) = 4.3472828 _d -10             ! (molN cell-1 s) Constant for varible part of biosynthesis protein nitrogen (193-37)
-        Cnrna_variable(jp) = 6212.5925 _d 0  ! (s) Constant for Variable part of RNA (193-26)
-        R_CN_protein(jp) = 4.49 _d 0   !(molC molN) the ratio of C to N in protein (derived from Brown 1991) calculation in "13 Amino acid Ccomposition of different phytoplankton.xlsx"
-        Cessential(jp) = 1.5178675 _d -15  ! (molC cell-1) essential carbon (lipid membrane, etc.) *8.33e-14/10 is 10%
+        A_pho(jp) = 16.0 _d 0                                    ! ((molC)/(molC in chl)-1) A constant of proportionalty
+        A_bio(jp) = 0.2711 _d 0*3600*24                          ! (molC (molC)-1 s) Constant for variable part of biosynthesis protein
+        AP_RNA(jp) = 0.00423 _d 0*3600*24*Y_CN_RNA(jp)
+     &    /Y_PN_nucacid(jp)                                      ! (s) Constant for Variable part of RNA
+        A_thy(jp) = Y_THY_P(jp)*Y_PC_pg                          ! (molC (molC in chl)-1)
 
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C New part for P limitation
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        YcyanoC_N(jp) = 2 _d 0  !(molC molN) C/N molar ratio of cyanophycin
-        Pdna(jp) = Ndna(jp)*YnucacidP_N(jp)  !(mol P cell-1) DNA in phosphorus
-        Nstore_max(jp) = 2.916793845 _d -15        ! (molN cell-1) maximum nitrogen storage (193-25)
-        Pconst_other(jp) = 5.445344856 _d -17               ! (molP cell-1) Constant part of phosphorus (193-26) * This includes ATP ADP, Phospholipid and DNA RNA
-        Qp_max(jp) = 25/(3.097e16)            !(mol P cell-1) maximum phosphorus quota
-
-        Qfe_max(jp) = 1.015*1 _d -12/12 * 1.2 _d -4
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C New part for Fe limitation
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      Festore_max(jp) = 1. _d -17   !#(mol Fe cell-1) maximum iron storage.
-      YphotoFe_N(jp) = 0.001636364  ! (mol Fe mol N-1) Fe/N ratio in photosystem iron
-
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C New part for Size Factor for growth   
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      Sf(jp)= 1. _d 0
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-C        CchlMax(jp) = 0.1 _d 0 * QcMacroMol(jp)  ! max Chl quota is 10% of cellular carbon
-C        PchlMin(jp) = maintConsum/CchlMax(jp)    ! this is the minimum carbon fixing rate we need
-
-        R_CChl_thylakoid(jp) = Ypthylakoid_chl(jp)*YpgC_P
-
-        Cprotein_D0 = Nconst_protein(jp)*R_CN_protein(jp)
-        Crna_D0     = Nrna_const(jp)*R_CN_RNA(jp)
-        Cdna        = Ndna(jp)*R_CN_DNA(jp)
+        Sf(jp) = 1.0 _d 0
 
 C       compute minimum carbon fixing rate (zero growth)
-        Qc_const = Cprotein_D0 + Crna_D0 + Cdna + Cessential(jp)
-        Qc_const_Pchl = maintConsum(jp)*
-     &    (1. + R_CChl_thylakoid(jp) + Ynphoto_chl(jp)*R_CN_protein(jp))
-        PchlMin(jp) = Qc_const_Pchl/(QcMacroMol(jp) - Qc_const)
-        CchlMax(jp) = maintConsum(jp)/PchlMin(jp)
+        QC_const = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
+     &    QC_DNA(jp) + QC_other(jp)
+        VI_min(jp) = maintConsum(jp)*
+     &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const)
+        QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
 
-        QnNoChl(jp) = Ndna(jp) + Nrna_const(jp) + Nconst_protein(jp)
-        QpNoChl(jp) = Nrna_const(jp)*YnucacidP_N(jp)
-     &         + Ndna(jp)*YnucacidP_N(jp) + Pconst_other(jp)
-        QfeNoChl(jp) = 0 _d 0        
+        QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
+        QpNoChl(jp) = QN_RNA_min(jp)*Y_PN_nucacid(jp)
+     &         + QN_DNA(jp)*Y_PN_nucacid(jp) + QP_other(jp)
+        QfeNoChl(jp) = 0.0 _d 0
 
-C       time scale for exudation of excess nutrients
-        tauExN(jp) = 0 _d 0
-        tauExP(jp) = 0 _d 0
-        tauExFe(jp) = 0 _d 0
-        tauExC(jp) = 0 _d 0
+        ksatPAR(jp) = 0.008633641 _d 0
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
 
@@ -667,3 +568,4 @@ C           standard deviation of size preference
 
       RETURN
       END
+#endif

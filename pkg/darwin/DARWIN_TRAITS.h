@@ -251,44 +251,44 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    ksatDOP,
      &    ksatDOFe
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &   ,ECo2Prod,
-     &    QcMacroMol,
-     &    YchlN_C,
-     &    Nconst_protein,
-     &    Nrna_const,
-     &    Ndna,
-     &    PChlMax,
-     &    Chl_const_num,
-     &    Chl_D_num,
-     &    Ynphoto_chl,
-     &    Cnbiosynth,
-     &    Cnrna_variable,
-     &    CchlMax,
-     &    PchlMin,
-     &    R_CN_DNA,
-     &    R_CN_RNA,
-     &    R_CN_protein,
-     &    Cessential,
-     &    R_CChl_thylakoid,
+     &   ,Y_CN_protein,
+     &    Y_NC_chl,
+     &    Y_CN_cyano,
+     &    Y_PN_nucacid,
+     &    Y_CN_DNA,
+     &    Y_CN_RNA,
+     &    Y_THY_P,
+     &    Y_FeN_photo,
+     &    ECo2Prod,
+     &    maintConsum,
+     &    VI_max,
+     &    A_I,
+     &    QC_other,
+     &    QC_pro_other,
+     &    QP_other,
+     &    QP_RNA_min,
+     &    QC_DNA,
+     &    QN_pro_other,
+     &    QN_RNA_min,
+     &    QN_DNA,
+     &    QP_DNA,
+     &    QN_sto_max,
+     &    Qp_max,
+     &    Qfe_max,
+     &    A_pho,
+     &    A_bio,
+     &    AP_RNA,
+     &    A_thy,
+     &    Sf,
+     &    VI_min,
+     &    QC_chlMax,
      &    QnNoChl,
+     &    QpNoChl,
+     &    QfeNoChl,
      &    tauExN,
      &    tauExP,
      &    tauExFe,
-     &    tauExC,
-     &    YcyanoC_N,
-     &    Pdna,
-     &    Nstore_max,
-     &    Pconst_other,
-     &    Qp_max,
-     &    maintConsum,
-     &    Ypthylakoid_chl,
-     &    YnucacidP_N,
-     &    YphotoFe_N,
-     &    Festore_max,
-     &    QpNoChl,
-     &    QfeNoChl,
-     &    Qfe_max,
-     &    Sf
+     &    tauExC
 #endif
       _RL Xmin(nplank)
       _RL amminhib(nplank)
@@ -378,44 +378,44 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
       _RL ksatDOP(nplank)
       _RL ksatDOFe(nplank)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
+      _RL Y_CN_protein(nplank)
+      _RL Y_NC_chl(nplank)
+      _RL Y_CN_cyano(nplank)
+      _RL Y_PN_nucacid(nplank)
+      _RL Y_CN_DNA(nplank)
+      _RL Y_CN_RNA(nplank)
+      _RL Y_THY_P(nplank)
+      _RL Y_FeN_photo(nplank)
       _RL ECo2Prod(nplank)
-      _RL QcMacroMol(nplank)
-      _RL YchlN_C(nplank)
-      _RL Nconst_protein(nplank)
-      _RL Nrna_const(nplank)
-      _RL Ndna(nplank)
-      _RL PChlMax(nplank)
-      _RL Chl_const_num(nplank)
-      _RL Chl_D_num(nplank)
-      _RL Ynphoto_chl(nplank)
-      _RL Cnbiosynth(nplank)
-      _RL Cnrna_variable(nplank)
-      _RL CchlMax(nplank)
-      _RL PchlMin(nplank)
-      _RL R_CN_DNA(nplank)
-      _RL R_CN_RNA(nplank)
-      _RL R_CN_protein(nplank)
-      _RL Cessential(nplank)
-      _RL R_CChl_thylakoid(nplank)
+      _RL maintConsum(nplank)
+      _RL VI_max(nplank)
+      _RL A_I(nplank)
+      _RL QC_other(nplank)
+      _RL QC_pro_other(nplank)
+      _RL QP_other(nplank)
+      _RL QP_RNA_min(nplank)
+      _RL QC_DNA(nplank)
+      _RL QN_pro_other(nplank)
+      _RL QN_RNA_min(nplank)
+      _RL QN_DNA(nplank)
+      _RL QP_DNA(nplank)
+      _RL QN_sto_max(nplank)
+      _RL Qp_max(nplank)
+      _RL Qfe_max(nplank)
+      _RL A_pho(nplank)
+      _RL A_bio(nplank)
+      _RL AP_RNA(nplank)
+      _RL A_thy(nplank)
+      _RL Sf(nplank)
+      _RL VI_min(nplank)
+      _RL QC_chlMax(nplank)
       _RL QnNoChl(nplank)
+      _RL QpNoChl(nplank)
+      _RL QfeNoChl(nplank)
       _RL tauExN(nplank)
       _RL tauExP(nplank)
       _RL tauExFe(nplank)
       _RL tauExC(nplank)
-      _RL YcyanoC_N(nplank)
-      _RL Pdna(nplank)
-      _RL Nstore_max(nplank)
-      _RL Pconst_other(nplank)
-      _RL Qp_max(nplank)
-      _RL maintConsum(nplank)
-      _RL Ypthylakoid_chl(nplank)
-      _RL YnucacidP_N(nplank)
-      _RL YphotoFe_N(nplank)
-      _RL Festore_max(nplank)
-      _RL QpNoChl(nplank)
-      _RL QfeNoChl(nplank)
-      _RL Qfe_max(nplank)
-      _RL Sf(nplank)
 #endif
 
 C--   COMMON /DARWIN_DEPENDENT_TRAITS_i/ Dependent and constant (not read-in) parameters

@@ -164,156 +164,154 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 
        WRITE(diagName,'(A,I4.4)')'MODE', j
        WRITE(diagTitle,'(A)')'1: N, 2: P, 3: Fe limitation'
-       diagUnits = 'dimensionless  '
+       diagUnits = 'dimensionless   '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'Fe_C', j
        WRITE(diagTitle,'(A)')'Fe/C'
-       diagUnits = 'mol Fe/mol C'
+       diagUnits = 'mol Fe/mol C    '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'exQc', j
        WRITE(diagTitle,'(A)')'exQc'
-       diagUnits = 's-1'
+       diagUnits = 's-1             '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'PCg', j
        WRITE(diagTitle,'(A)')'PCg'
-       diagUnits = 's-1'
+       diagUnits = 's-1             '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
-
-
        WRITE(diagName,'(A,I4.4)')'CChl', j
        WRITE(diagTitle,'(A)')'C quota in Chlorophyll'
-       diagUnits = 'mol C/cell      '
+       diagUnits = 'molC molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'NChl', j
        WRITE(diagTitle,'(A)')'N quota in Chlorophyll'
-       diagUnits = 'mol N/cell      '
+       diagUnits = 'molN molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'NPho', j
        WRITE(diagTitle,'(A)')'N quota related to photosynthesis'
-       diagUnits = 'mol N/cell      '
+       diagUnits = 'molN molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'NSyn', j
        WRITE(diagTitle,'(A)')'N quota related to biosynthesis'
-       diagUnits = 'mol N/cell      '
+       diagUnits = 'molN molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'NPrn', j
        WRITE(diagTitle,'(A)')'N quota in proteins'
-       diagUnits = 'mol N/cell      '
+       diagUnits = 'molN molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'NRNA', j
        WRITE(diagTitle,'(A)')'N quota in RNA'
-       diagUnits = 'mol N/cell      '
+       diagUnits = 'molN molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'NDNA', j
        WRITE(diagTitle,'(A)')'N quota in DNA'
-       diagUnits = 'mol N/cell      '
+       diagUnits = 'molN molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'NSTO', j
-       WRITE(diagTitle,'(A)')'N quota in Nstore'
-       diagUnits = 'mol N/cell      '
+       WRITE(diagTitle,'(A)')'N quota in QN_store'
+       diagUnits = 'molN molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'NEXC', j
-       WRITE(diagTitle,'(A)')'N quota in Nexcess'
-       diagUnits = 'mol N/cell      '
+       WRITE(diagTitle,'(A)')'N quota in QN_excess'
+       diagUnits = 'molN molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'PRNA', j
        WRITE(diagTitle,'(A)')'P quota in RNA'
-       diagUnits = 'mol P/cell      '
+       diagUnits = 'molP molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'PDNA', j
        WRITE(diagTitle,'(A)')'P quota in DNA'
-       diagUnits = 'mol P/cell      '
+       diagUnits = 'molP molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'PTHY', j
        WRITE(diagTitle,'(A)')'P quota in Thylakoid membrane'
-       diagUnits = 'mol P/cell      '
+       diagUnits = 'molP molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'PCON', j
        WRITE(diagTitle,'(A)')'P quota a constant part'
-       diagUnits = 'mol P/cell      '
+       diagUnits = 'molP molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'PSTO', j
        WRITE(diagTitle,'(A)')'P quota in P storage'
-       diagUnits = 'mol P/cell      '
+       diagUnits = 'molP molC-1     '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'PEXC', j
-       WRITE(diagTitle,'(A)')'P quota in Pexcess'
-       diagUnits = 'mol P/cell      '
+       WRITE(diagTitle,'(A)')'P quota in QP_excess'
+       diagUnits = 'mol P molC-1    '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'FPHO', j
        WRITE(diagTitle,'(A)')'Fe quota in Photosystem'
-       diagUnits = 'mol Fe/cell      '
+       diagUnits = 'mol Fe molC-1   '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'FSTO', j
-       WRITE(diagTitle,'(A)')'Fe quota in Festore'
-       diagUnits = 'mol Fe/cell      '
+       WRITE(diagTitle,'(A)')'Fe quota in QFe_store'
+       diagUnits = 'mol Fe molC-1   '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'FEXC', j
-       WRITE(diagTitle,'(A)')'Fe quota in Feexcess'
-       diagUnits = 'mol Fe/cell      '
+       WRITE(diagTitle,'(A)')'Fe quota in QFe_excess'
+       diagUnits = 'mol Fe molC-1   '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )

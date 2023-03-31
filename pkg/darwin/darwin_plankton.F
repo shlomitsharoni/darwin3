@@ -8,7 +8,8 @@ C !INTERFACE: ==========================================================
      U     gTr,
      O     chlout, diags,
      I     PAR, photoTempFunc, hetTempFunc, grazTempFunc, reminTempFunc,
-     I     mortTempFunc, mort2TempFunc, uptakeTempFunc,
+     I     mortTempFunc, mort2TempFunc,
+     I     uptakeTempFunc, macromolTempFunc,
      I     omegaCl,
      I     k_debug,myTime,myIter,myThid)
 
@@ -42,6 +43,7 @@ C  myThid :: thread number
       _RL grazTempFunc(nplank)
       _RL mortTempFunc
       _RL mort2TempFunc
+      _RL macromolTempFunc
       _RL omegaCl
       _RL myTime
       INTEGER k_debug
@@ -226,38 +228,36 @@ c !LOCAL VARIABLES: ====================================================
 
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       _RL PChl
-      _RL Chl_const
-      _RL Chl_D
-      _RL Nchl_D
-      _RL Nphoto_D
-      _RL Nchl_const
-      _RL Nphoto_const
-      _RL Nbiosynth_D
-      _RL Nprotein_D
-      _RL Nprotein_const
-      _RL Nrna_D
-      _RL Nrna_D2
+      _RL QC_chl_const
+      _RL QC_chl_D
+      _RL QN_chl_D
+      _RL QN_photo_D
+      _RL QN_chl_const
+      _RL QN_photo_const
+      _RL QN_bio_D
+      _RL QN_protein_D
+      _RL QN_protein_const
+      _RL QN_rna_D
+      _RL QN_rna_D2
       _RL Qn_D0
       _RL Qn_D1
       _RL Qn_D2
       _RL Qn_exc
-      _RL Cchl
-      _RL NchlCell
-      _RL Nphotosyn
-      _RL Nbiosynth
-      _RL Nprotein
-      _RL Nrna
+      _RL QC_chl
+      _RL QN_chl
+      _RL QN_pro_photo
+      _RL QN_pro_bio
+      _RL QN_pro_tot
+      _RL QN_RNA
       _RL QnExc
       _RL exQn
-
-      _RL Cthylakoid_D0
-      _RL Cthylakoid_D1
-      _RL Cprotein_D0
-      _RL Cprotein_D1
-      _RL Crna_D0
-      _RL Crna_D1
-      _RL Crna_D2
-      _RL Cdna
+      _RL QC_thy_D0
+      _RL QC_thy_D1
+      _RL QC_pro_const
+      _RL QC_protein_D1
+      _RL QC_RNA_min
+      _RL QC_rna_D1
+      _RL QC_rna_D2
       _RL Qc_D0
       _RL Qc_D1
       _RL Qc_D2
@@ -276,17 +276,17 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL PC_n
       _RL Qp_exc
       _RL PC_p
-      _RL Pthylakoid
-      _RL Prna
-      _RL Nessential
-      _RL Pessential
-      _RL Qn_max
-      _RL Qc_essential
+      _RL QP_thy
+      _RL QP_RNA
+      _RL QN_essential
+      _RL QP_essential
+      _RL QN_max
+      _RL QC_essential
       _RL PC_c
-      _RL Pstore
-      _RL Pexcess
-      _RL Nstore
-      _RL Nexcess
+      _RL QP_store
+      _RL QP_excess
+      _RL QN_store
+      _RL QN_excess
       _RL Qc_essential_and_Nstore
       _RL QpExc
       _RL exQp
@@ -298,7 +298,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 CKei1-1: New values for C exudation
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Qn_min
-      _RL CNmax
       _RL QcnExc
       _RL exQc
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -306,17 +305,14 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 C Kei1-2: New values for Fe limitation
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      _RL R_Fe
-      _RL S_Fe
       _RL Qfe_D1
       _RL Qfe_D0
       _RL Qfe_exc
       _RL PC_fe
-      _RL Fephoto
-      _RL Feessential
-c      _RL Qfe_max
-      _RL Festore
-      _RL Feexcess
+      _RL Qfe_pro_photo
+      _RL Qfe_essential
+      _RL Qfe_Store
+      _RL Qfe_excess
       _RL exQfe
       _RL QfeExc
       _RL uptakeFe
@@ -326,19 +322,19 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 C Kei1-3: revision for N,P,Fe shortage
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      _RL CchlN
-      _RL CchlP
-      _RL CchlF
+      _RL QC_chlN
+      _RL QC_chlP
+      _RL QC_chlF
       _RL NCmin
       _RL PCmin
       _RL FCmin
-      _RL Npro_const
-      _RL Ndna_plot
-      _RL Pconst_plot
-      _RL Pdna_plot
-      _RL Prna0
-      _RL Npro_const0
-      _RL Pdna_plot0
+      _RL QN_pro_const
+      _RL QN_DNA_plot
+      _RL QP_const_plot
+      _RL QP_DNA_plot
+      _RL QP_rna0
+      _RL QN_pro_const0
+      _RL QP_DNA_plot0
       _RL Nlim
       _RL Plim
       _RL Flim
@@ -775,86 +771,69 @@ C==== Photosynthesis ===================================================
 C       set up Chl and N requirements as a function of growth rate PC
 C       then solve for PC
 
-C       carbohydrate fixation rate per chlorophyll (C mol s-1 Chl mol-1)
-C       =====Size factor here======
-        PChl = Sf(j)*PChlMax(j)*(1 - EXP(-ksatPAR(j)*PARtot))
-C       ===========================
+C       Carbohydrate fixation rate per chlorophyll (s-1)
+        PChl = Sf(j)*VI_max(j)*(1 - EXP(-A_I(j)*PARtot))
 
         PCg = 0 _d 0
-        IF ( PChl .GT. PchlMin(j) ) THEN
+        IF ( PChl .GT. VI_min(j) ) THEN
 
 C        chlorophyll quota (mol C cell-1)
-C        Chl = ((1 + E)*ls + m)/PChl
+C        Chl = ((1 _d 0 + E)*ls + m)/PChl
 C        where ls = D*Qc               (molC s-1) Biomass synthesis rate
-         Chl_const = Chl_const_num(j)/PChl
-         Chl_D     = Chl_D_num(j)/PChl
+         QC_chl_const = maintConsum(j)/PChl
+         QC_chl_D     = (1 + ECo2Prod(j))/PChl
 
-C        nitrogen pools in mol N cell-1
-C
-C        Nchl = Chl*YchlN_C                    (nitrogen in Chlorophyll)
-         Nchl_const = Chl_const*YchlN_C(j)
-         Nchl_D     = Chl_D*YchlN_C(j)
+C        nitrogen pools in mol N (mol C)-1
+         QN_chl_const = QC_chl_const*Y_NC_chl(j)
+         QN_chl_D     = QC_chl_D*Y_NC_chl(j)
 
-C        Nphoto = Chl*Ynphoto_chl       (photosynthesis related protein)
-         Nphoto_const = Chl_const*Ynphoto_chl(j)
-         Nphoto_D     = Chl_D*Ynphoto_chl(j)
+C        photosynthesis related protein
+         QN_photo_const = QC_chl_const*A_pho(j)/Y_CN_protein(j)
+         QN_photo_D     = QC_chl_D*A_pho(j)/Y_CN_protein(j)
 
-C        Nbiosynth = D*Cnbiosynth         (biosynthesis related protein)
-         Nbiosynth_D = Cnbiosynth(j)
+C        biosynthesis related protein
+         QN_bio_D = (A_bio(j)/Y_CN_protein(j))/macromolTempFunc
+         QN_protein_const = QN_photo_const + QN_pro_other(j)
+         QN_protein_D     = QN_photo_D + QN_bio_D
 
-C        Nprotein = Nphoto + Nconst_protein + Nbiosynth   (all proteins)
-         Nprotein_const = Nphoto_const + Nconst_protein(j)
-         Nprotein_D     = Nphoto_D + Nbiosynth_D
+C        nitrogen in RNA
+         QN_rna_D  = QN_protein_const*AP_RNA(j)/macromolTempFunc
+         QN_rna_D2 = QN_protein_D*AP_RNA(j)/macromolTempFunc
 
-C        Nrna = Nrna_const + Nprotein*D*Cnrna_variable (nitrogen in RNA)
-         Nrna_D  = Nprotein_const*Cnrna_variable(j)
-         Nrna_D2 = Nprotein_D*Cnrna_variable(j)
+C         Total
+         Qn_D0 = QN_chl_const+QN_protein_const+QN_RNA_min(j)+QN_DNA(j)
+         Qn_D1 = QN_chl_D + QN_protein_D + QN_rna_D
+         Qn_D2 = QN_rna_D2
 
-C        Qn = Nchl + Nprotein + Nrna + Ndna
-         Qn_D0 = Nchl_const + Nprotein_const + Nrna_const(j) + Ndna(j)
-         Qn_D1 = Nchl_D + Nprotein_D + Nrna_D
-         Qn_D2 = Nrna_D2
+C        Kei3: For P limitation
+        A_P = ((1 _d 0 + ECo2Prod(j))*A_pho(j)/Y_CN_protein(j))/PChl
+     &          + A_bio(j)/Y_CN_protein(j)/macromolTempFunc
+        B_P = QN_pro_other(j)
+     &          + (maintConsum(j)*A_pho(j)/Y_CN_protein(j))/PChl
+        L_P = ((1 _d 0 + ECo2Prod(j))*Y_THY_P(j))/PChl
+        M_P = (maintConsum(j)*Y_THY_P(j))/PChl
 
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C Kei3: For P limitation
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-       A_P = ((1 _d 0 + ECo2Prod(j))*QcMacroMol(j)*Ynphoto_chl(j))/PChl
-     &          + Cnbiosynth(j)
-       B_P = Nconst_protein(j) + (maintConsum(j)*Ynphoto_chl(j))/PChl
-       L_P = ((1 + ECo2Prod(j))*QcMacroMol(j)*Ypthylakoid_chl(j))/PChl
-       M_P = (maintConsum(j)*Ypthylakoid_chl(j))/PChl
-
-       Qp_D0 = M_P + Nrna_const(j)*YnucacidP_N(j)
-     &         + Ndna(j)*YnucacidP_N(j) + Pconst_other(j)
-       Qp_D1 = L_P + B_P*Cnrna_variable(j)*YnucacidP_N(j)
-       Qp_D2 = A_P*Cnrna_variable(j)*YnucacidP_N(j)
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C Kei3-1: For Fe limitation
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      R_Fe = ((1 _d 0 + ECo2Prod(j))*QcMacroMol(j)*Ynphoto_chl(j)
-     &      *YphotoFe_N(j))/Pchl
-      S_Fe = (maintConsum(j)*Ynphoto_chl(j)*YphotoFe_N(j))/Pchl
-      Qfe_D1 = R_Fe
-      Qfe_D0 = S_Fe
+        Qp_D0 = M_P + QN_RNA_min(j)*Y_PN_nucacid(j)
+     &         + QN_DNA(j)*Y_PN_nucacid(j) + QP_other(j)
+        Qp_D1 = L_P + B_P*AP_RNA(j)*Y_PN_nucacid(j)
+     &         /macromolTempFunc
+        Qp_D2 = A_P*AP_RNA(j)*Y_PN_nucacid(j)
+     &         /macromolTempFunc
 
 
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C        Kei3-1: For Fe limitation
+       Qfe_D1=((1 _d 0 + ECo2Prod(j))*A_pho(j)/Y_CN_protein(j)
+     &      *Y_FeN_photo(j))/PChl
+       Qfe_D0 =(maintConsum(j)*A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j))
+     &      /PChl
 
-C        solve Qn = Qn_D0 + Qn_D*PC + Qn_D2*PC**2 for PC
-C        making sure PC >= 0 and converting Qn from N:C to mol N cell-1
-         Qn_exc = MAX(0 _d 0, Qn(j)*QcMacroMol(j) - Qn_D0)
-         PC = 2*Qn_exc/(Qn_D1 + SQRT(Qn_D1*Qn_D1 + 4*Qn_D2*Qn_exc))
 
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C Kei4: For P and Fe limitation
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C        Kei4: For N, P and Fe limitation
+       Qn_exc = MAX(0 _d 0, Qn(j) - Qn_D0)
        PC_n = 2*Qn_exc/(Qn_D1 + SQRT(Qn_D1*Qn_D1 + 4*Qn_D2*Qn_exc))
-       Qp_exc = Max(0 _d 0, Qp(j)*QcMacroMol(j) - Qp_D0)
+       Qp_exc = Max(0 _d 0, Qp(j) - Qp_D0)
        PC_p = 2*Qp_exc/(Qp_D1 + SQRT(Qp_D1*Qp_D1 + 4*Qp_D2*Qp_exc))
-       Qfe_exc = Max(0 _d 0, Qfe(j)*QcMacroMol(j) - Qfe_D0)
+       Qfe_exc = Max(0 _d 0, Qfe(j) - Qfe_D0)
        PC_fe = Qfe_exc/Qfe_D1
 
 
@@ -871,183 +850,142 @@ C======================================
        ELSE IF (PC_n.GT.PC_fe.and.PC_p.GT.PC_fe) THEN
         PC = PC_fe
         MODE = 3 _d 0
-       ELSE
-        PC = MIN(PC_n, MIN(PC_p, PC_fe))
-        MODE = 0 _d 0
        ENDIF
 
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 C        carbon restriction on growth rate
-         Cthylakoid_D0 = Chl_const*R_CChl_thylakoid(j)  !Ypthylakoid_chl*YpgC_P
-         Cthylakoid_D1 = Chl_D    *R_CChl_thylakoid(j)  !Ypthylakoid_chl*YpgC_P
-         Cprotein_D0 = Nprotein_const*R_CN_protein(j)
-         Cprotein_D1 = Nprotein_D    *R_CN_protein(j)
-         Crna_D0 = Nrna_const(j)*R_CN_RNA(j)
-         Crna_D1 = Nrna_D *R_CN_RNA(j)
-         Crna_D2 = Nrna_D2*R_CN_RNA(j)
-         Cdna = Ndna(j)*R_CN_DNA(j)
+         QC_thy_D0 = QC_chl_const*A_thy(j)
+         QC_thy_D1 = QC_chl_D*A_thy(j)
+         QC_pro_const = QN_protein_const*Y_CN_protein(j)
+         QC_protein_D1 = QN_protein_D*Y_CN_protein(j)
+         QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
+         QC_rna_D1 = QN_rna_D *Y_CN_RNA(j)
+         QC_rna_D2 = QN_rna_D2*Y_CN_RNA(j)
 
-         Qc_D0 = Chl_const + Cprotein_D0 + Crna_D0 + Cthylakoid_D0
-     &         + Cdna + Cessential(j)
-         Qc_D1 = Chl_D + Cprotein_D1 + Cthylakoid_D1 + Crna_D1
-         Qc_D2 = Crna_D2
+         Qc_D0 = QC_chl_const + QC_pro_const + QC_RNA_min + QC_thy_D0
+     &         + QC_DNA(j) + QC_other(j)
+         Qc_D1 = QC_chl_D + QC_protein_D1 + QC_thy_D1 + QC_rna_D1
+         Qc_D2 = QC_rna_D2
 
-         Qc_exc = MAX(0 _d 0, QcMacroMol(j) - Qc_D0)
+         Qc_exc = MAX(0 _d 0, Qc(j) - Qc_D0)
          PCc = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
          IF (PCc.LT.PC) THEN
            PC = PCc
            MODE = 4 _d 0
          ENDIF
-c         PC = MIN(PC,
-c     &            2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc)))
 
+         QC_chl = QC_chl_const + QC_chl_D*PC
 
-
-C        limit updated nitrogen quota to Qnmax(j)
-C         VN = MIN(VN, (Qnmax(j) - Qn)/dt + Qnmax(j)*PC)
-C         uptakeN = VN*X
-C         uptakeNH4 = uptakeNH4*X
-C         uptakeNO2 = uptakeNO2*X
-C         uptakeNO3 = uptakeNO3*X
-
-C        make sure we do not exceed CchlMax
-C         PC = MIN(PC, (CchlMax(j) - Chl_const)/Chl_D)
-
-         Cchl = Chl_const + Chl_D*PC
-
-C       IF ( PChl .GT. PchlMin(j) ) THEN
+C       !   IF ( PChl .GT. VI_min(j) ) THEN
         ELSE
          MODE = 5 _d 0
          PC = 0. _d 0
-         Cchl = CchlMax(j)
-
+         QC_chl = QC_chlMax(j)
         ENDIF
 
+C        if growth rate is zero
         IF (PC .EQ. 0. _d 0) THEN
-         CchlN = (Qn(j)*QcMacroMol(j) - QnNoChl(j))
-     &         /(YchlN_C(j) + Ynphoto_chl(j))
-         CchlP = (Qp(j)*QcMacroMol(j) - QpNoChl(j))/Ypthylakoid_chl(j)
-         CchlF = (Qfe(j)*QcMacroMol(j) - QfeNoChl(j))
-     &         /(Ynphoto_chl(j)*YphotoFe_N(j))
-         Cchl = MAX(0., MIN(CchlN,CchlP,CchlF,CchlMax(j)))
+         QC_chlN = (Qn(j) - QnNoChl(j))
+     &         /(Y_NC_chl(j) + A_pho(j)/Y_CN_protein(j))
+         QC_chlP = (Qp(j) - QpNoChl(j))/Y_THY_P(j)
+         QC_chlF = (Qfe(j) - QfeNoChl(j))
+     &         /(A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j))
+         QC_chl = MAX(0., MIN(QC_chlN,QC_chlP,QC_chlF,QC_chlMax(j)))
         ENDIF
 
 C       convert to mg Chl m-3
-        chlout(j) = 893.49 _d 0*X(j)*Cchl/QcMacroMol(j)/55 _d 0
+        chlout(j) = 893.49 _d 0*X(j)*QC_chl/55 _d 0
 
-        NchlCell  = Cchl*YchlN_C(j)
-        Nphotosyn = Cchl*Ynphoto_chl(j)
-        Nbiosynth = Cnbiosynth(j)*PC
-        Nprotein  = Nconst_protein(j) + Nphotosyn + Nbiosynth
-        Nrna      = Nrna_const(j) + Nprotein*Cnrna_variable(j)*PC
+        QN_chl       = QC_chl*Y_NC_chl(j)
+        QN_pro_photo = QC_chl*A_pho(j)/Y_CN_protein(j)
+        QN_pro_bio   = A_bio(j)/Y_CN_protein(j)*PC/macromolTempFunc
+        QN_pro_tot   = QN_pro_other(j) + QN_pro_photo + QN_pro_bio
+        QN_RNA       = QN_RNA_min(j) + QN_pro_tot*AP_RNA(j)*PC
+     &         /macromolTempFunc
 
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C Kei5: For P and Fe limitation
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      Pthylakoid = Cchl * Ypthylakoid_chl(j)
-      Prna = Nrna*YnucacidP_N(j)
-      Fephoto = Nphotosyn * YphotoFe_N(j)
+         QP_thy = QC_chl*Y_THY_P(j)
+         QP_RNA = QN_RNA*Y_PN_nucacid(j)
+         Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
 
 C===========================
-CRevising store amount============
+CRevising store amount
 C===========================
-      Nessential = NchlCell + Nprotein + Nrna + Ndna(j)
-      Pessential = Pthylakoid + Prna + Pdna(j) + Pconst_other(j)
-      Feessential = Fephoto
-      Qn_max = Nessential + Nstore_max(j)
-c      Qfe_max = Feessential + Festore_max(j)
+      QN_essential = QN_chl + QN_pro_tot + QN_RNA + QN_DNA(j)
+      QP_essential = QP_thy + QP_RNA + QP_DNA(j) +  QP_other(j)
+      Qfe_essential = Qfe_pro_photo
+      QN_max = QN_essential + QN_sto_max(j)
 
-c----------define parameters----(kei 204-7)-----------
-      IF ( PChl .LE. PchlMin(j) ) THEN
+C     under light limitation
+      IF ( PChl .LE. VI_min(j) ) THEN
 
-        Chl_const = CchlMax(j)
+        QC_chl_const = QC_chlMax(j)
+        QN_chl_const = QC_chl_const*Y_NC_chl(j)
+        QN_photo_const = QC_chl_const*A_pho(j)/Y_CN_protein(j)
+        QN_protein_const = QN_photo_const + QN_pro_other(j)
+        QC_thy_D0 = QC_chl_const*A_thy(j)
+        QC_pro_const = QN_protein_const*Y_CN_protein(j)
+        QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
 
-C       nitrogen pools in mol N cell-1
-C
-C       Nchl = Chl*YchlN_C                    (nitrogen in Chlorophyll)
-        Nchl_const = Chl_const*YchlN_C(j)
-
-C       Nphoto = Chl*Ynphoto_chl       (photosynthesis related protein)
-        Nphoto_const = Chl_const*Ynphoto_chl(j)
-
-C       Nbiosynth = D*Cnbiosynth         (biosynthesis related protein)
-
-C       Nprotein = Nphoto + Nconst_protein + Nbiosynth   (all proteins)
-        Nprotein_const = Nphoto_const + Nconst_protein(j)
-
-C       Nrna = Nrna_const + Nprotein*D*Cnrna_variable (nitrogen in RNA)
-
-        Cthylakoid_D0 = Chl_const*R_CChl_thylakoid(j) !Ypthylakoid_chl*YpgC_P
-        Cprotein_D0 = Nprotein_const*R_CN_protein(j)
-        Crna_D0 = Nrna_const(j)*R_CN_RNA(j)
-        Cdna = Ndna(j)*R_CN_DNA(j)
-c------------------------------------------------------
-
-        Qc_D0 = Chl_const + Cprotein_D0 + Crna_D0 + Cthylakoid_D0
-     &         + Cdna + Cessential(j)
+        Qc_D0 = QC_chl_const + QC_pro_const + QC_RNA_min + QC_thy_D0
+     &         + QC_DNA(j) + QC_other(j)
         Qc_D1 = 0 _d 0
         Qc_D2 = 0 _d 0
 
       ENDIF
-c-------------------------------
 
-      Qc_essential = Qc_D0 + Qc_D1*PC + Qc_D2*PC*PC
-c      PC_c=2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
+      QC_essential = Qc_D0 + Qc_D1*PC + Qc_D2*PC*PC
 
 c=======================================
 cHere compute when N,P,or Fe are scarce
 c=======================================
 
-      NCmin = QnNoChl(j)/QcMacroMol(j)
-      PCmin = QpNoChl(j)/QcMacroMol(j)
-      FCmin = QfeNoChl(j)/QcMacroMol(j)
+      NCmin = QnNoChl(j)
+      PCmin = QpNoChl(j)
+      FCmin = QfeNoChl(j)
 
       IF (Qn(j).LT.NCmin) THEN
         Nlim = 1 _d 0
-        ! NchlCell = 0 _d 0
-        Npro_const = Qn(j)*QcMacroMol(j)*Nconst_protein(j)/QnNoChl(j)
-        Nprotein = Npro_const
-        Nrna = Qn(j)*QcMacroMol(j)*Nrna_const(j)/QnNoChl(j)
-        Ndna_plot = Qn(j)*QcMacroMol(j)*Ndna(j)/QnNoChl(j)
+        QN_pro_const = Qn(j)*QN_pro_other(j)/QnNoChl(j)
+        QN_pro_tot = QN_pro_const
+        QN_RNA = Qn(j)*QN_RNA_min(j)/QnNoChl(j)
+        QN_DNA_plot = Qn(j)*QN_DNA(j)/QnNoChl(j)
 
-        Nessential = Npro_const + Nrna + Ndna_plot
-        Qn_max = Nessential + Nstore_max(j)
+        QN_essential = QN_pro_const + QN_RNA + QN_DNA_plot
+        QN_max = QN_essential + QN_sto_max(j)
 
-        Prna = Nrna * YnucacidP_N(j)
-        Pdna_plot = Ndna_plot * YnucacidP_N(j)
-        Pessential = Prna + Pdna_plot + Pconst_other(j)
-        PCmin = Pessential/QcMacroMol(j)
+        QP_RNA = QN_RNA * Y_PN_nucacid(j)
+        QP_DNA_plot = QN_DNA_plot * Y_PN_nucacid(j)
+        QP_essential = QP_RNA + QP_DNA_plot +  QP_other(j)
+        PCmin = QP_essential
       ELSE
         Nlim = 0 _d 0
-        Npro_const = Nconst_protein(j)
-        Ndna_plot = Ndna(j)
-        Pdna_plot = Ndna(j)*YnucacidP_N(j)
+        QN_pro_const = QN_pro_other(j)
+        QN_DNA_plot = QN_DNA(j)
+        QP_DNA_plot = QN_DNA(j)*Y_PN_nucacid(j)
       ENDIF
 
       IF (Qp(j).LT.PCmin) THEN
         Plim = 1 _d 0
-        Prna0 = Qp(j)*QcMacromol(j)*Nrna_const(j)*YnucacidP_N(j)
-     &          /QpNoChl(j)
-        Prna = MIN(Prna0,Prna)
-        Pdna_plot0 = Qp(j)*QcMacromol(j)*Ndna(j)*YnucacidP_N(j)
-     &               /QpNoChl(j)
-        Pdna_plot = MIN(Pdna_plot0,Pdna_plot)
-        Pconst_plot = MIN(Qp(j) - Prna - Pdna_plot, Pconst_other(j))
-        Pessential = Prna + Pdna_plot + Pconst_plot
+        QP_rna0 = Qp(j)*QN_RNA_min(j)*Y_PN_nucacid(j)/QpNoChl(j)
+        QP_RNA = MIN(QP_rna0,QP_RNA)
+        QP_DNA_plot0 = Qp(j)*QN_DNA(j)*Y_PN_nucacid(j)/QpNoChl(j)
+        QP_DNA_plot = MIN(QP_DNA_plot0,QP_DNA_plot)
+        QP_const_plot = MIN(Qp(j) - QP_RNA - QP_DNA_plot,  QP_other(j))
+        QP_essential = QP_RNA + QP_DNA_plot + QP_const_plot
 
-        Nrna = Prna/YnucacidP_N(j)
-        Ndna_plot = Pdna_plot/YnucacidP_N(j)
-!re-compute Npro_const as Nrna and Ndna might be reduced.
-        Npro_const0 = Qn(j)*QcMacroMol(j) - Nrna - Ndna_plot
-        Npro_const = MIN(Npro_const0, Nconst_protein(j))
-        Nprotein = Npro_const
-        Nessential = Npro_const + Nrna + Ndna_plot
-        Qn_max = Nessential + Nstore_max(j)
-        NCmin = Nessential/QcMacroMol(j)
+        QN_RNA = QP_RNA/Y_PN_nucacid(j)
+        QN_DNA_plot = QP_DNA_plot/Y_PN_nucacid(j)
+
+C       !re-compute Npro_const as Nrna and Ndna might be reduced.
+        QN_pro_const0 = Qn(j) - QN_RNA - QN_DNA_plot
+        QN_pro_const = MIN(QN_pro_const0, QN_pro_other(j))
+        QN_pro_tot = QN_pro_const
+        QN_essential = QN_pro_const + QN_RNA + QN_DNA_plot
+        QN_max = QN_essential + QN_sto_max(j)
+        NCmin = QN_essential
       ELSE
         Plim = 0 _d 0
-        Pconst_plot = Pconst_other(j)
+        QP_const_plot =  QP_other(j)
       ENDIF
 
       IF (Qfe(j).LT.FCmin) THEN
@@ -1059,55 +997,53 @@ c=======================================
 C Storage calculation -----------------
 
         !If P is smaller than max
-        IF (Qp(j)*QcMacroMol(j).LT.Qp_max(j)) THEN
-         Pstore = Qp(j)*QcMacroMol(j) - Pessential
-         Pexcess = 0 _d 0
-
+        IF (Qp(j).LT.Qp_max(j)) THEN
+         QP_store = Qp(j) - QP_essential
+         QP_excess = 0 _d 0
+        
         !If P is greater than max and  P essential > max
-        ELSE IF (Pessential.GT.Qp_max(j)) THEN
-         Pstore = 0 _d 0
-         Pexcess = Qp(j)*QcMacroMol(j) - Pessential
-
-        !If P is great than max but P essential < max
-        Else
-         Pstore = Qp_max(j) - Pessential
-         Pexcess = Qp(j)*QcMacroMol(j) - Qp_max(j)
+        ELSE IF (QP_essential.GT.Qp_max(j)) THEN
+         QP_store = 0 _d 0
+         QP_excess = Qp(j) - QP_essential
+        
+        !If P is great than max but P essential < max  
+        Else  
+         QP_store = Qp_max(j) - QP_essential
+         QP_excess = Qp(j) - Qp_max(j)
         ENDIF
 
-        IF (Qn(j)*QcMacroMol(j).LT.Qn_max) THEN
-         Nstore = Qn(j)*QcMacroMol(j) - Nessential
-         Nexcess = 0 _d 0
+        IF (Qn(j).LT.QN_max) THEN
+         QN_store = Qn(j) - QN_essential
+         QN_excess = 0 _d 0
         ELSE
-         Nstore = Nstore_max(j)
-         Nexcess = Qn(j)*QcMacroMol(j) - Qn_max
+         QN_store = QN_sto_max(j)
+         QN_excess = Qn(j) - QN_max
         ENDIF
-
-        IF (Qfe(j)*QcMacroMol(j).LT.Qfe_max(j)) THEN
-         Festore = Qfe(j)*QcMacroMol(j) - Feessential
-         Feexcess = 0 _d 0
-        ELSE IF (Feessential.GT.Qfe_max(j)) THEN
-         Festore = 0 _d 0
-         Feexcess = Qfe(j)*QcMacroMol(j) - Feessential
+        
+        IF (Qfe(j).LT.Qfe_max(j)) THEN
+         Qfe_Store = Qfe(j) - Qfe_essential
+         Qfe_excess = 0 _d 0
+        ELSE IF (Qfe_essential.GT.Qfe_max(j)) THEN
+         Qfe_Store = 0 _d 0
+         Qfe_excess = Qfe(j) - Qfe_essential
         ELSE
-         Festore = Qfe_max(j) - Feessential
-         Feexcess = Qfe(j)*QcMacroMol(j) - Qfe_max(j)
+         Qfe_Store = Qfe_max(j) - Qfe_essential
+         Qfe_excess = Qfe(j) - Qfe_max(j)
         ENDIF
 
-        Qc_essential_and_Nstore = Qc_essential + Nstore*YcyanoC_N(j)
+        Qc_essential_and_Nstore = QC_essential + QN_store* Y_CN_cyano(j)
 
-        IF (Qc_essential_and_Nstore.GT.QcMacroMol(j)) THEN
-         Nstore = (QcMacroMol(j) - Qc_Essential)/YcyanoC_N(j)
-         Nexcess = Qn(j)*QcMacroMol(j) - Nstore - Nessential
+        IF (Qc_essential_and_Nstore.GT.1) THEN
+         QN_store = (1.0 _d 0 - Qc_Essential)/ Y_CN_cyano(j)
+         QN_excess = Qn(j)  - QN_store - QN_essential
 
         ENDIF
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+C
 
 C       exude excess nitrogen to NO3
         IF (tauExN(j) .NE. 0 _d 0) THEN
           IF (Nlim .NE. 1 _d 0) THEN
-          QnExc = Qn(j) - (Nchlcell+Nprotein+Nrna+Ndna(j)+Nstore)
-     $     /QcMacroMol(j)
+          QnExc = Qn(j) - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
           exQn = MAX(0 _d 0, QnExc)/tauExN(j)
           uptakeN = uptakeN - exQn*X(j)
           uptakeNO3 = uptakeNO3 - exQn*X(j)
@@ -1116,14 +1052,12 @@ C       exude excess nitrogen to NO3
           exQn = 0 _d 0
           ENDIF
         ENDIF
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C Kei6: Exudation of P and Fe
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        IF (tauExP(j) .NE. 0 _d 0) THEN
+       ! Kei6: Exudation of P and Fe
+         IF (tauExP(j) .NE. 0 _d 0) THEN
           IF (Plim .NE. 1 _d 0) THEN
-          QpExc = Qp(j) - (Pessential+Pstore)/QcMacroMol(j)
+          QpExc = Qp(j) - (QP_essential+QP_store)
           exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
-C          uptakeP = uptakeP - exQp*X(j)
+C         uptakeP = uptakeP - exQp*X(j)
           uptakePO4 = uptakePO4 - exQp*X(j)
           VP = VP - exQp
           ENDIF
@@ -1131,63 +1065,55 @@ C          uptakeP = uptakeP - exQp*X(j)
 
         IF (tauExFe(j) .NE. 0 _d 0) THEN
           IF (Flim .NE. 1 _d 0) THEN
-          QfeExc = Qfe(j) - (Feessential+Festore)/QcMacroMol(j)
+          QfeExc = Qfe(j) - (Qfe_essential+Qfe_Store)
           exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
-C          uptakeFe = uptakeFe - exQfe*X(j)
+C         uptakeFe = uptakeFe - exQfe*X(j)
           uptakeFeT = uptakeFeT - exQfe*X(j)
           Vfe = Vfe - exQfe
           ENDIF
         ENDIF
 
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C Kei6.5: Size impact on growth
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C        PC = PC * Sf(j)
+
         PCg = PC
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-C Kei7: Exudation of C
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        ! Kei7: Exudation of C
         IF (tauExC(j) .NE. 0 _d 0) THEN
-         IF (exQn .EQ. 0 _d 0) THEN
+          IF (exQn .EQ. 0 _d 0) THEN
 
-          Qn_min =(Nrna_const(j) + Nconst_protein(j) +
-     &     Ndna(j) + Nchl_const + Nphoto_const)/QcMacroMol(j)
+          Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
+     &     + QN_chl_const + QN_photo_const
 
           QcnExc = 1 - Qn(j)/Qn_min
           exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
-          PC = PC ! - exQc
-
-C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-         ENDIF
+          PC = PC !- exQc
+          ENDIF
         ENDIF
 
-        diags(iVN  +j-1) = VN
         diags(iPChl+j-1) = PChl
-        diags(iMODE+j-1) = MODE
+        diags(iVN  +j-1) = VN
+        diags(iMODE+j-1) = MODE        
         diags(iFe_C+j-1) = Qfe(j)
-        diags(iexQc+j-1) = exQc
-        diags(iPCg +j-1) = PCg
+        diags(iexQc+j-1) = exQc        
+        diags(iPCg +j-1) = PCg        
+        diags(iCChl+j-1) = QC_chl
+        diags(iNChl+j-1) = QN_chl
+        diags(iNPho+j-1) = QN_pro_photo
+        diags(iNSyn+j-1) = QN_pro_bio
+        diags(iNPrn+j-1) = QN_pro_tot
+        diags(iNRNA+j-1) = QN_RNA
+        diags(iNDNA+j-1) = QN_DNA_plot
+        diags(iNSTO+j-1) = QN_store
+        diags(iNEXC+j-1) = QN_excess
+        diags(iPRNA+j-1) = QP_RNA
+        diags(iPDNA+j-1) = QP_DNA_plot
+        diags(iPTHY+j-1) = QP_thy
+        diags(iPCON+j-1) = QP_const_plot
+        diags(iPSTO+j-1) = QP_store
+        diags(iPEXC+j-1) = QP_excess
+        diags(iFPHO+j-1) = Qfe_pro_photo
+        diags(iFSTO+j-1) = Qfe_Store
+        diags(iFEXC+j-1) = Qfe_excess
 
-        diags(iCChl+j-1) = Cchl
-        diags(iNChl+j-1) = NChlCell
-        diags(iNPho+j-1) = Nphotosyn
-        diags(iNSyn+j-1) = Nbiosynth
-        diags(iNPrn+j-1) = Nprotein
-        diags(iNRNA+j-1) = Nrna
-        diags(iNDNA+j-1) = Ndna_plot
-        diags(iNSTO+j-1) = Nstore
-        diags(iNEXC+j-1) = Nexcess
-        diags(iPRNA+j-1) = Prna
-        diags(iPDNA+j-1) = Pdna_plot
-        diags(iPTHY+j-1) = Pthylakoid
-        diags(iPCON+j-1) = Pconst_plot
-        diags(iPSTO+j-1) = Pstore
-        diags(iPEXC+j-1) = Pexcess
-        diags(iFPHO+j-1) = Fephoto
-        diags(iFSTO+j-1) = Festore
-        diags(iFEXC+j-1) = Feexcess
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
 
@@ -2249,4 +2175,3 @@ C to DIC as if it had never been synthesized.
 
       RETURN
       END SUBROUTINE
-
