@@ -452,7 +452,6 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    synthcost,
      &    inhib_graz,
      &    inhib_graz_exp,
-     &    hillnumUptake,
      &    hillnumGraz,
      &    hollexp,
      &    phygrazmin,
@@ -571,7 +570,6 @@ C     &    yono2,
       _RL synthcost
       _RL inhib_graz
       _RL inhib_graz_exp
-      _RL hillnumUptake
       _RL hillnumGraz
       _RL hollexp
       _RL phygrazmin

@@ -484,7 +484,7 @@ c phosphorus
 #ifdef DARWIN_ALLOW_PQUOTA
         regQp = MAX(0., MIN(1., (Qpmax(j)-Qp(j))/
      &                          (Qpmax(j)-Qpmin(j)) ))
-        regQp = regQp**hillnumUptake
+        regQp = regQp**hillnumPO4(j)
 C       carbon-specific PO4 uptake rate
         uptakePO4 = vmaxPO4(j)*MM_PO4*regQp*uptakeTempFunc*X(j)
 c       normalized Droop limitation
@@ -513,7 +513,7 @@ c silica
 #ifdef DARWIN_ALLOW_SIQUOTA
         regQsi = MAX(0., MIN(1., (Qsimax(j) - Qsi(j))/
      &                           (Qsimax(j) - Qsimin(j)) ))
-        regQsi = regQsi**hillnumUptake
+        regQsi = regQsi**hillnumSiO2(j)
         uptakeSiO2 = vmaxSiO2(j)*MM_SiO2*regQsi*uptakeTempFunc*X(j)
 c       linear limitation
         limitsi = MAX(0., MIN(1., (Qsi(j) - Qsimin(j))/
@@ -540,7 +540,7 @@ c iron
 #ifdef DARWIN_ALLOW_FEQUOTA
         regQfe = MAX(0., MIN(1., (Qfemax(j)-Qfe(j))/
      &                           (Qfemax(j)-Qfemin(j)) ))
-        regQfe = regQfe**hillnumUptake
+        regQfe = regQfe**hillnumFeT(j)
         uptakeFeT = vmaxFeT(j)*MM_FeT*regQfe*uptakeTempFunc*X(j)
 c       normalized Droop limitation
         limitfe = MIN(1., (1.0-Qfemin(j)/MAX(Qfemin(j), Qfe(j)))/
@@ -568,7 +568,7 @@ c       have nitrogen quota
         MM_NO3 = NO3/(NO3 + ksatNO3(j))*inhibNH4
         regQn = MAX(0., MIN(1., (Qnmax(j)-Qn(j))/
      &                          (Qnmax(j)-Qnmin(j)) ))
-        regQn = regQn**hillnumUptake
+        regQn = regQn**hillnumDIN(j)
         uptakeNH4 = vmaxNH4(j)*MM_NH4*regQn*uptakeTempFunc*X(j)
         uptakeNO2 = vmaxNO2(j)*MM_NO2*regQn*uptakeTempFunc*X(j)
         uptakeNO3 = vmaxNO3(j)*MM_NO3*regQn*uptakeTempFunc*X(j)

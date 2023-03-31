@@ -193,7 +193,6 @@ C----
      &    synthcost,
      &    inhib_graz,
      &    inhib_graz_exp,
-     &    hillnumUptake,
      &    hillnumGraz,
      &    hollexp,
      &    phygrazmin,
@@ -480,7 +479,6 @@ C     O2crit from Lipschultz et al 1990, DSR 37, 1513-1541:
       synthcost = 0.0 _d 0
       inhib_graz = 1.0 _d 0
       inhib_graz_exp = 0.0 _d 0
-      hillnumUptake = 1.0 _d 0
       hillnumGraz = 1.0 _d 0
       hollexp = 1.0 _d 0
       phygrazmin = 120 _d -10

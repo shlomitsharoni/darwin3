@@ -365,6 +365,10 @@ C
      &    a_acclimtimescl_denom,
      &    a_ksatPON,
      &    a_ksatDON,
+     &    a_hillnumDIN,
+     &    a_hillnumPO4,
+     &    a_hillnumFeT,
+     &    a_hillnumSiO2,
      &    a_grazemax,
      &    a_grazemax_denom,
      &    b_grazemax,
@@ -497,6 +501,10 @@ C
       _RL a_acclimtimescl_denom(nGroup)
       _RL a_ksatPON(nGroup)
       _RL a_ksatDON(nGroup)
+      _RL a_hillnumDIN(nGroup)
+      _RL a_hillnumPO4(nGroup)
+      _RL a_hillnumFeT(nGroup)
+      _RL a_hillnumSiO2(nGroup)
       _RL a_grazemax(nGroup)
       _RL a_grazemax_denom(nGroup)
       _RL b_grazemax(nGroup)

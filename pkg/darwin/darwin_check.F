@@ -2004,9 +2004,6 @@ C--   Print parameters from DARWIN_PARAMS.h
      &'inhib_graz_exp =',
      &' /* exponent for grazing inhibition (0 to turn off inhibition) */
      &')
-      CALL WRITE_0D_RL(hillnumUptake,INDEX_NONE,
-     &'hillnumUptake =',
-     &' /* exponent for limiting quota uptake in nutrient uptake */')
       CALL WRITE_0D_RL(hillnumGraz,INDEX_NONE,
      &'hillnumGraz =',
      &' /* exponent for limiting quota uptake in grazing */')
@@ -2347,6 +2344,18 @@ C--   Print traits from DARWIN_TRAITS.h
      &'ksatFeT =',
      &' /* half-saturation conc. for iron uptake/limitation (mmol Fe m^-
      &3) */')
+      CALL WRITE_1D_RL(hillnumDIN,nphoto,INDEX_NONE,
+     &'hillnumDIN =',
+     &' /* exponent for limiting quota uptake in DIN uptake */')
+      CALL WRITE_1D_RL(hillnumPO4,nphoto,INDEX_NONE,
+     &'hillnumPO4 =',
+     &' /* exponent for limiting quota uptake in PO4 uptake */')
+      CALL WRITE_1D_RL(hillnumFeT,nphoto,INDEX_NONE,
+     &'hillnumFeT =',
+     &' /* exponent for limiting quota uptake in FeT uptake */')
+      CALL WRITE_1D_RL(hillnumSiO2,nphoto,INDEX_NONE,
+     &'hillnumSiO2 =',
+     &' /* exponent for limiting quota uptake in SiO2 uptake */')
       CALL WRITE_1D_RL(kexcc,nplank,INDEX_NONE,
      &'kexcc =',
      &' /* exudation rate for carbon (s^-1) */')

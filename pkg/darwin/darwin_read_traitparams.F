@@ -185,6 +185,10 @@
      &    a_acclimtimescl_denom,
      &    a_ksatPON,
      &    a_ksatDON,
+     &    a_hillnumDIN,
+     &    a_hillnumPO4,
+     &    a_hillnumFeT,
+     &    a_hillnumSiO2,
      &    a_grazemax,
      &    a_grazemax_denom,
      &    b_grazemax,
@@ -462,6 +466,10 @@ C     used to be 120D-20 for phyto
       a_acclimtimescl_denom = 1 _d 0
       a_ksatPON = 1 _d 0
       a_ksatDON = 1 _d 0
+      a_hillnumDIN = 1 _d 0
+      a_hillnumPO4 = 1 _d 0
+      a_hillnumFeT = 1 _d 0
+      a_hillnumSiO2 = 1 _d 0
       a_grazemax = 21.9 _d 0 / pday
       a_grazemax_denom = 1. _d 0
       b_grazemax = -0.16 _d 0

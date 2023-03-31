@@ -98,6 +98,10 @@
      &    ksatPO4,
      &    ksatSiO2,
      &    ksatFeT,
+     &    hillnumDIN,
+     &    hillnumPO4,
+     &    hillnumFeT,
+     &    hillnumSiO2,
      &    kexcc,
      &    kexcn,
      &    kexcp,
@@ -431,6 +435,11 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
         ksatPO4(jp) = DARWIN_UNUSED
         ksatSiO2(jp) = DARWIN_UNUSED
         ksatFeT(jp) = DARWIN_UNUSED
+
+        hillnumDIN(jp) = DARWIN_UNUSED
+        hillnumPO4(jp) = DARWIN_UNUSED
+        hillnumFeT(jp) = DARWIN_UNUSED
+        hillnumSiO2(jp) = DARWIN_UNUSED
 
 #ifdef DARWIN_ALLOW_GEIDER
         inhibGeider(jp) = DARWIN_UNUSED

@@ -259,6 +259,11 @@ C plankton sinking and swimming
         biosink(jp) = a_biosink(g) * biovol(jp)**b_biosink(g)
         bioswim(jp) = a_bioswim(g) * biovol(jp)**b_bioswim(g)
 
+        hillnumDIN(jp) = a_hillnumDIN(g)
+        hillnumPO4(jp) = a_hillnumPO4(g)
+        hillnumFeT(jp) = a_hillnumFeT(g)
+        hillnumSiO2(jp) = a_hillnumSiO2(g)
+
 C respRate rate is given in terms of carbon content
         qcarbon(jp) = a_qcarbon(g) * biovol(jp)**b_qcarbon(g)
         respRate(jp) = a_respRate_c(g)

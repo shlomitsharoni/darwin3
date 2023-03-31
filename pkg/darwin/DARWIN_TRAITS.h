@@ -217,6 +217,10 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    ksatPO4,
      &    ksatSiO2,
      &    ksatFeT,
+     &    hillnumDIN,
+     &    hillnumPO4,
+     &    hillnumFeT,
+     &    hillnumSiO2,
      &    kexcc,
      &    kexcn,
      &    kexcp,
@@ -300,6 +304,10 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
       _RL ksatPO4(nplank)
       _RL ksatSiO2(nplank)
       _RL ksatFeT(nplank)
+      _RL hillnumDIN(nplank)
+      _RL hillnumPO4(nplank)
+      _RL hillnumFeT(nplank)
+      _RL hillnumSiO2(nplank)
       _RL kexcc(nplank)
       _RL kexcn(nplank)
       _RL kexcp(nplank)
