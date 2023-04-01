@@ -227,6 +227,7 @@ c !LOCAL VARIABLES: ====================================================
       _RL tmp
 
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
+      _RL mmX, mmQn, mmQp, mmQfe
       _RL PChl
       _RL QC_chl_const
       _RL QC_chl_D
@@ -766,6 +767,18 @@ C==== Photosynthesis ===================================================
 
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
 
+        IF (X(j) .GT. DARWIN_EPS) THEN
+         mmQn  = Qn(j)
+         mmQp  = Qp(j)
+         mmQfe = Qfe(j)
+         mmX   = X(j)
+        ELSE
+         mmQn = 0 _d 0
+         mmQp = 0 _d 0
+         mmQfe = 0 _d 0
+         mmX = 0 _d 0
+        ENDIF
+
 C       set up Chl and N requirements as a function of growth rate PC
 C       then solve for PC
 
@@ -827,11 +840,11 @@ C        Kei3-1: For Fe limitation
 
 
 C        Kei4: For N, P and Fe limitation
-       Qn_exc = MAX(0 _d 0, Qn(j) - Qn_D0)
+       Qn_exc = MAX(0 _d 0, mmQn - Qn_D0)
        PC_n = 2*Qn_exc/(Qn_D1 + SQRT(Qn_D1*Qn_D1 + 4*Qn_D2*Qn_exc))
-       Qp_exc = Max(0 _d 0, Qp(j) - Qp_D0)
+       Qp_exc = Max(0 _d 0, mmQp - Qp_D0)
        PC_p = 2*Qp_exc/(Qp_D1 + SQRT(Qp_D1*Qp_D1 + 4*Qp_D2*Qp_exc))
-       Qfe_exc = Max(0 _d 0, Qfe(j) - Qfe_D0)
+       Qfe_exc = Max(0 _d 0, mmQfe - Qfe_D0)
        PC_fe = Qfe_exc/Qfe_D1
 
 
@@ -880,10 +893,10 @@ C       !   IF ( PChl .GT. VI_min(j) ) THEN
 
 C        if growth rate is zero
         IF (PC .EQ. 0. _d 0) THEN
-         QC_chlN = (Qn(j) - QnNoChl(j))
+         QC_chlN = (mmQn - QnNoChl(j))
      &         /(Y_NC_chl(j) + A_pho(j)/Y_CN_protein(j))
-         QC_chlP = (Qp(j) - QpNoChl(j))/Y_THY_P(j)
-         QC_chlF = (Qfe(j) - QfeNoChl(j))
+         QC_chlP = (mmQp - QpNoChl(j))/Y_THY_P(j)
+         QC_chlF = (mmQfe - QfeNoChl(j))
      &         /(A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j))
          QC_chl = MAX(0., MIN(QC_chlN,QC_chlP,QC_chlF,QC_chlMax(j)))
         ENDIF
@@ -938,12 +951,12 @@ c=======================================
       PCmin = QpNoChl(j)
       FCmin = QfeNoChl(j)
 
-      IF (Qn(j).LT.NCmin) THEN
+      IF (mmQn.LT.NCmin) THEN
         Nlim = 1 _d 0
-        QN_pro_const = Qn(j)*QN_pro_other(j)/QnNoChl(j)
+        QN_pro_const = mmQn*QN_pro_other(j)/QnNoChl(j)
         QN_pro_tot = QN_pro_const
-        QN_RNA = Qn(j)*QN_RNA_min(j)/QnNoChl(j)
-        QN_DNA_plot = Qn(j)*QN_DNA(j)/QnNoChl(j)
+        QN_RNA = mmQn*QN_RNA_min(j)/QnNoChl(j)
+        QN_DNA_plot = mmQn*QN_DNA(j)/QnNoChl(j)
 
         QN_essential = QN_pro_const + QN_RNA + QN_DNA_plot
         QN_max = QN_essential + QN_sto_max(j)
@@ -959,20 +972,20 @@ c=======================================
         QP_DNA_plot = QN_DNA(j)*Y_PN_nucacid(j)
       ENDIF
 
-      IF (Qp(j).LT.PCmin) THEN
+      IF (mmQp.LT.PCmin) THEN
         Plim = 1 _d 0
-        QP_rna0 = Qp(j)*QN_RNA_min(j)*Y_PN_nucacid(j)/QpNoChl(j)
+        QP_rna0 = mmQp*QN_RNA_min(j)*Y_PN_nucacid(j)/QpNoChl(j)
         QP_RNA = MIN(QP_rna0,QP_RNA)
-        QP_DNA_plot0 = Qp(j)*QN_DNA(j)*Y_PN_nucacid(j)/QpNoChl(j)
+        QP_DNA_plot0 = mmQp*QN_DNA(j)*Y_PN_nucacid(j)/QpNoChl(j)
         QP_DNA_plot = MIN(QP_DNA_plot0,QP_DNA_plot)
-        QP_const_plot = MIN(Qp(j) - QP_RNA - QP_DNA_plot,  QP_other(j))
+        QP_const_plot = MIN(mmQp - QP_RNA - QP_DNA_plot,  QP_other(j))
         QP_essential = QP_RNA + QP_DNA_plot + QP_const_plot
 
         QN_RNA = QP_RNA/Y_PN_nucacid(j)
         QN_DNA_plot = QP_DNA_plot/Y_PN_nucacid(j)
 
 C       !re-compute Npro_const as Nrna and Ndna might be reduced.
-        QN_pro_const0 = Qn(j) - QN_RNA - QN_DNA_plot
+        QN_pro_const0 = mmQn - QN_RNA - QN_DNA_plot
         QN_pro_const = MIN(QN_pro_const0, QN_pro_other(j))
         QN_pro_tot = QN_pro_const
         QN_essential = QN_pro_const + QN_RNA + QN_DNA_plot
@@ -983,7 +996,7 @@ C       !re-compute Npro_const as Nrna and Ndna might be reduced.
         QP_const_plot =  QP_other(j)
       ENDIF
 
-      IF (Qfe(j).LT.FCmin) THEN
+      IF (mmQfe.LT.FCmin) THEN
         Flim = 1 _d 0
       ELSE
         Flim = 0 _d 0
@@ -992,45 +1005,45 @@ C       !re-compute Npro_const as Nrna and Ndna might be reduced.
 C Storage calculation -----------------
 
         !If P is smaller than max
-        IF (Qp(j).LT.Qp_max(j)) THEN
-         QP_store = Qp(j) - QP_essential
+        IF (mmQp.LT.Qp_max(j)) THEN
+         QP_store = mmQp - QP_essential
          QP_excess = 0 _d 0
         
         !If P is greater than max and  P essential > max
         ELSE IF (QP_essential.GT.Qp_max(j)) THEN
          QP_store = 0 _d 0
-         QP_excess = Qp(j) - QP_essential
+         QP_excess = mmQp - QP_essential
         
         !If P is great than max but P essential < max  
         Else  
          QP_store = Qp_max(j) - QP_essential
-         QP_excess = Qp(j) - Qp_max(j)
+         QP_excess = mmQp - Qp_max(j)
         ENDIF
 
-        IF (Qn(j).LT.QN_max) THEN
-         QN_store = Qn(j) - QN_essential
+        IF (mmQn.LT.QN_max) THEN
+         QN_store = mmQn - QN_essential
          QN_excess = 0 _d 0
         ELSE
          QN_store = QN_sto_max(j)
-         QN_excess = Qn(j) - QN_max
+         QN_excess = mmQn - QN_max
         ENDIF
         
-        IF (Qfe(j).LT.Qfe_max(j)) THEN
-         Qfe_Store = Qfe(j) - Qfe_essential
+        IF (mmQfe.LT.Qfe_max(j)) THEN
+         Qfe_Store = mmQfe - Qfe_essential
          Qfe_excess = 0 _d 0
         ELSE IF (Qfe_essential.GT.Qfe_max(j)) THEN
          Qfe_Store = 0 _d 0
-         Qfe_excess = Qfe(j) - Qfe_essential
+         Qfe_excess = mmQfe - Qfe_essential
         ELSE
          Qfe_Store = Qfe_max(j) - Qfe_essential
-         Qfe_excess = Qfe(j) - Qfe_max(j)
+         Qfe_excess = mmQfe - Qfe_max(j)
         ENDIF
 
         Qc_essential_and_Nstore = QC_essential + QN_store* Y_CN_cyano(j)
 
         IF (Qc_essential_and_Nstore.GT.1) THEN
          QN_store = (1.0 _d 0 - Qc_Essential)/ Y_CN_cyano(j)
-         QN_excess = Qn(j)  - QN_store - QN_essential
+         QN_excess = mmQn  - QN_store - QN_essential
 
         ENDIF
 C
@@ -1038,10 +1051,10 @@ C
 C       exude excess nitrogen to NO3
         IF (tauExN(j) .NE. 0 _d 0) THEN
           IF (Nlim .NE. 1 _d 0) THEN
-          QnExc = Qn(j) - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
+          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
           exQn = MAX(0 _d 0, QnExc)/tauExN(j)
-          uptakeN = uptakeN - exQn*X(j)
-          uptakeNO3 = uptakeNO3 - exQn*X(j)
+          uptakeN = uptakeN - exQn*mmX
+          uptakeNO3 = uptakeNO3 - exQn*mmX
           VN = VN - exQn
           ELSE
           exQn = 0 _d 0
@@ -1050,20 +1063,20 @@ C       exude excess nitrogen to NO3
        ! Kei6: Exudation of P and Fe
          IF (tauExP(j) .NE. 0 _d 0) THEN
           IF (Plim .NE. 1 _d 0) THEN
-          QpExc = Qp(j) - (QP_essential+QP_store)
+          QpExc = mmQp - (QP_essential+QP_store)
           exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
-C         uptakeP = uptakeP - exQp*X(j)
-          uptakePO4 = uptakePO4 - exQp*X(j)
+C         uptakeP = uptakeP - exQp*mmX
+          uptakePO4 = uptakePO4 - exQp*mmX
           VP = VP - exQp
           ENDIF
         ENDIF
 
         IF (tauExFe(j) .NE. 0 _d 0) THEN
           IF (Flim .NE. 1 _d 0) THEN
-          QfeExc = Qfe(j) - (Qfe_essential+Qfe_Store)
+          QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
           exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
-C         uptakeFe = uptakeFe - exQfe*X(j)
-          uptakeFeT = uptakeFeT - exQfe*X(j)
+C         uptakeFe = uptakeFe - exQfe*mmX
+          uptakeFeT = uptakeFeT - exQfe*mmX
           Vfe = Vfe - exQfe
           ENDIF
         ENDIF
@@ -1076,7 +1089,7 @@ C         uptakeFe = uptakeFe - exQfe*X(j)
           Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
      &     + QN_chl_const + QN_photo_const
 
-          QcnExc = 1 - Qn(j)/Qn_min
+          QcnExc = 1 - mmQn/Qn_min
           exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
 C          PC = PC !- exQc
         ELSE
@@ -1086,7 +1099,7 @@ C          PC = PC !- exQc
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iMODE+j-1) = MODE        
-        diags(iFe_C+j-1) = Qfe(j)
+        diags(iFe_C+j-1) = mmQfe
         diags(iexQc+j-1) = exQc        
         diags(iPCg +j-1) = PCg        
         diags(iCChl+j-1) = QC_chl
@@ -1311,8 +1324,8 @@ C==== Apply phototrophy tendencies =====================================
 
         gTr(ic+j-1)=gTr(ic+j-1)  + growth
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-        gTr(ic+j-1)=gTr(ic+j-1)  - X(j)*exQc
-        gTr(iDOC) = gTr(iDOC) + X(j)*exQc
+        gTr(ic+j-1)=gTr(ic+j-1)  - mmX*exQc
+        gTr(iDOC) = gTr(iDOC) + mmX*exQc
 #endif
 #ifdef DARWIN_ALLOW_CSTORE
         gTr(ich+j-1)=gTr(ich+j-1)  + storeC
