@@ -132,10 +132,10 @@ c     reminFun = 1. _d 0
 c      mortFun = 1.0 _d 0
 c      mort2Fun = 1.0 _d 0
       uptakeFun = 1.0 _d 0
-c      macromolFun = exp(-8437.0 _d 0*(1.0 _d 0/(Temp+Tkel) -
-c     &                       1.0 _d 0/(TemprefArr) ) )
-c      macromolFun =  max(macromolFun , 1. _d -10)
-      macromolFun = 1. _d 0
+      macromolFun = exp(-8437.0 _d 0*(1.0 _d 0/(Temp+Tkel) -
+     &                       1.0 _d 0/(TemprefArr) ) )
+      macromolFun =  max(macromolFun , 1. _d -10)
+c      macromolFun = 1. _d 0
 c ++++++++++++++ END VERSION 2 +++++++++++++++++++++++++++++++++++++++
 
 #elif DARWIN_TEMP_VERSION == 3
