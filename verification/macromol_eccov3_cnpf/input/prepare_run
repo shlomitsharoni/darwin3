@@ -9,9 +9,10 @@ ln -sf /nfs/micklab002/jahn/forcing/eccov3/OPTICS_COEFF
 ln -sf /nfs/micklab002/jahn/forcing/eccov3/eccov3
 ln -sf /nfs/micklab002/jahn/forcing/eccov3/input_ecco
 ln -sf /nfs/micklab005/jahn/work/kei/gitlab/setups/natgeo/run/pickup*.darwin.* .
-ln -s ../../../utils/python/MITgcmutils/scripts/gluemncbig .
+ln -s /home/ssharoni/gud-InomuraGlobalPatterns/utils/python/MITgcmutils/scripts/gluemncbig .
 cp ../build/mitgcmuv .
 SBATCH --mail-user=ssharoni@mit.edu
 SBATCH --mail-type=BEGIN,END,FAIL  %email me when it starts/end
 sbatch -p sched_mit_darwin2 -n 144 --mem=0 --wrap "mpirun -n 144 ./mitgcmuv"
-# ./gluemncbig -o 3d.nc ecco_gud_*/3d.*.nc
+# ./gluemncbig -o 3d.nc mnc_test_*/3d.*.nc
+
