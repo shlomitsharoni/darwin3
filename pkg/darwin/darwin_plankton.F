@@ -233,7 +233,7 @@ c !LOCAL VARIABLES: ====================================================
       _RL QC_chl_D
       _RL QN_chl_D1
       _RL QN_chl_D0
-C      _RL QN_photo_const
+      _RL QN_photo_const
 C      _RL QN_bio_D
       _RL QN_pro_D1
       _RL QN_pro_D0
@@ -926,19 +926,19 @@ C===========================
       QN_max = QN_essential + QN_sto_max(j)
 
 C     under light limitation
-C      IF ( PChl .LE. VI_min(j) ) THEN
-C         QC_chl_const = QC_chlMax(j)
-C         QN_chl_D0 = QC_chl_const*Y_NC_chl(j)
-C         QN_photo_const = QC_chl_const*A_pho(j)/Y_CN_protein(j)
-C         QN_pro_D0 = QN_photo_const + QN_pro_other(j)
-C         QC_thy_D0 = QC_chl_const*A_thy(j)
-C         QC_pro_const = QN_pro_D0*Y_CN_protein(j)
-C         QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
-C         Qc_D0 = QC_chl_const + QC_pro_const + QC_RNA_min + QC_thy_D0
-C      &         + QC_DNA(j) + QC_other(j)
-C         Qc_D1 = 0 _d 0
-C         Qc_D2 = 0 _d 0
-C       ENDIF
+      IF ( PChl .LE. VI_min(j) ) THEN
+         QC_chl_const = QC_chlMax(j)
+         QN_chl_D0 = QC_chl_const*Y_NC_chl(j)
+         QN_photo_const = QC_chl_const*A_pho(j)/Y_CN_protein(j)
+         QN_pro_D0 = QN_photo_const + QN_pro_other(j)
+         QC_thy_D0 = QC_chl_const*A_thy(j)
+         QC_pro_const = QN_pro_D0*Y_CN_protein(j)
+         QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
+         Qc_D0 = QC_chl_const + QC_pro_const + QC_RNA_min + QC_thy_D0
+      &         + QC_DNA(j) + QC_other(j)
+         Qc_D1 = 0 _d 0
+         Qc_D2 = 0 _d 0
+       ENDIF
 
       QC_essential = Qc_D0 + Qc_D1*PC + Qc_D2*PC*PC
 
