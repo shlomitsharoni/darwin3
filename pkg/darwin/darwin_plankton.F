@@ -266,10 +266,10 @@ C      _RL QN_bio_D
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 CKei1-0: New values for P limitation
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      _RL A_P
-      _RL B_P
-      _RL L_P
-      _RL M_P
+      _RL QP_rna_D1
+      _RL QP_rna_D2
+      _RL QP_thy_D0
+      _RL QP_thy_D1
       _RL Qp_D0
       _RL Qp_D1
       _RL Qp_D2
@@ -806,39 +806,42 @@ C        nitrogen pools in mol N (mol C)-1
          Qn_D1 = QN_chl_D1 + QN_pro_D1 + QN_rna_D1
          Qn_D2 = QN_rna_D2
 
+C        Phosphate restriction on growth rate
+         QP_rna_D1 = QN_rna_D1*Y_PN_nucacid(j)
+         QP_rna_D2 = QN_rna_D2*Y_PN_nucacid(j) 
+         QP_thy_D0 = maintConsum(j)/PChl*Y_THY_P(j)
+         QP_thy_D1 = (1 + ECo2Prod(j))/PChl*Y_THY_P(j)
 
-C        photosynthesis related protein
-C         QN_photo_const = QC_chl_const*A_pho(j)/Y_CN_protein(j)
-C         QN_photo_D     = QC_chl_D*A_pho(j)/Y_CN_protein(j)
-
-C        biosynthesis related protein
-C         QN_bio_D = (A_bio(j)/Y_CN_protein(j))/macromolTempFunc
-C         QN_protein_const = QN_photo_const + QN_pro_other(j)
-C         QN_protein_D     = QN_photo_D + QN_bio_D
-
-
+         Qp_D0 = QP_thy_D0 + QP_RNA_min(j)+ QP_DNA(j) + QP_other(j)
+         Qp_D1 = QP_thy_D1 + QP_rna_D1
+         Qp_D2 = QP_rna_D2
 
 C        Kei3: For P limitation
-        A_P = ((1 _d 0 + ECo2Prod(j))*A_pho(j)/Y_CN_protein(j))/PChl
-     &          + A_bio(j)/Y_CN_protein(j)/macromolTempFunc
-        B_P = QN_pro_other(j)
-     &          + (maintConsum(j)*A_pho(j)/Y_CN_protein(j))/PChl
-        L_P = ((1 _d 0 + ECo2Prod(j))*Y_THY_P(j))/PChl
-        M_P = (maintConsum(j)*Y_THY_P(j))/PChl
+C        A_P = ((1 _d 0 + ECo2Prod(j))*A_pho(j)/Y_CN_protein(j))/PChl
+C     &          + A_bio(j)/Y_CN_protein(j)/macromolTempFunc
+C        B_P = QN_pro_other(j)
+C     &          + (maintConsum(j)*A_pho(j)/Y_CN_protein(j))/PChl
+C        L_P = ((1 _d 0 + ECo2Prod(j))*Y_THY_P(j))/PChl
+C        M_P = (maintConsum(j)*Y_THY_P(j))/PChl
+C
+C        Qp_D0 = M_P + QN_RNA_min(j)*Y_PN_nucacid(j)
+C     &         + QN_DNA(j)*Y_PN_nucacid(j) + QP_other(j)
+C        Qp_D1 = L_P + B_P*AP_RNA(j)*Y_PN_nucacid(j)
+C     &         /macromolTempFunc
+C        Qp_D2 = A_P*AP_RNA(j)*Y_PN_nucacid(j)
+C     &         /macromolTempFunc
 
-        Qp_D0 = M_P + QN_RNA_min(j)*Y_PN_nucacid(j)
-     &         + QN_DNA(j)*Y_PN_nucacid(j) + QP_other(j)
-        Qp_D1 = L_P + B_P*AP_RNA(j)*Y_PN_nucacid(j)
-     &         /macromolTempFunc
-        Qp_D2 = A_P*AP_RNA(j)*Y_PN_nucacid(j)
-     &         /macromolTempFunc
-
+C        Iron restriction on growth
+         Qfe_D0 = A_pho(j)*maintConsum(j)/PChl/Y_CN_protein(j)
+     &      *Y_FeN_photo(j)
+         Qfe_D1 = A_pho(j)*(1 + ECo2Prod(j))/PChl/Y_CN_protein(j)
+     &      *Y_FeN_photo(j)
 
 C        Kei3-1: For Fe limitation
-       Qfe_D1=((1 _d 0 + ECo2Prod(j))*A_pho(j)/Y_CN_protein(j)
-     &      *Y_FeN_photo(j))/PChl
-       Qfe_D0 =(maintConsum(j)*A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j))
-     &      /PChl
+C       Qfe_D1=((1 _d 0 + ECo2Prod(j))*A_pho(j)/Y_CN_protein(j)
+C     &      *Y_FeN_photo(j))/PChl
+C       Qfe_D0 =(maintConsum(j)*A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j))
+C     &      /PChl
 
 
 C        Kei4: For N, P and Fe limitation
