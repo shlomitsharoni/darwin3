@@ -834,7 +834,8 @@ C         QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
 
          Qc_D0 =maintConsum(j)/PChl+QC_pro_D0+QN_RNA_min(j)*Y_CN_RNA(j)
      &          +QC_thy_D0 + QC_DNA(j) + QC_other(j)
-         Qc_D1 = (1 _d 0 + ECo2Prod(j))/PChl+QC_pro_D1+QC_thy_D1+QC_rna_D1
+         Qc_D1 = (1 _d 0 + ECo2Prod(j))/PChl + QC_pro_D1 + QC_thy_D1
+     &      +QC_rna_D1
          Qc_D2 = QC_rna_D2
 
 
