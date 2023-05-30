@@ -935,7 +935,7 @@ C     under light limitation
          QC_pro_const = QN_pro_D0*Y_CN_protein(j)
          QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
          Qc_D0 = QC_chl_const + QC_pro_const + QC_RNA_min + QC_thy_D0
-      &         + QC_DNA(j) + QC_other(j)
+     &         + QC_DNA(j) + QC_other(j)
          Qc_D1 = 0 _d 0
          Qc_D2 = 0 _d 0
        ENDIF
