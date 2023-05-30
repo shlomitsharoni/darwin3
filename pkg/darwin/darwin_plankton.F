@@ -253,8 +253,8 @@ C      _RL QN_bio_D
       _RL exQn
       _RL QC_thy_D0
       _RL QC_thy_D1
-      _RL QC_pro_const
-      _RL QC_protein_D1
+      _RL QC_pro_D0
+      _RL QC_pro_D1
       _RL QC_RNA_min
       _RL QC_rna_D1
       _RL QC_rna_D2
@@ -790,7 +790,7 @@ C       Case 1: Enought light, growth rate is a function of macromol allocation
 
 C        chlorophyll quota (mol C cell-1)
          QC_chl_const = maintConsum(j)/PChl
-         QC_chl_D     = (1 + ECo2Prod(j))/PChl
+         QC_chl_D     = (1 _d 0 + ECo2Prod(j))/PChl
 
 C        nitrogen pools in mol N (mol C)-1
          QN_chl_D0 = maintConsum(j)/PChl*Y_NC_chl(j)
@@ -810,84 +810,72 @@ C        Phosphate restriction on growth rate
          QP_rna_D1 = QN_rna_D1*Y_PN_nucacid(j)
          QP_rna_D2 = QN_rna_D2*Y_PN_nucacid(j) 
          QP_thy_D0 = maintConsum(j)/PChl*Y_THY_P(j)
-         QP_thy_D1 = (1 + ECo2Prod(j))/PChl*Y_THY_P(j)
+         QP_thy_D1 = (1 _d 0 + ECo2Prod(j))/PChl*Y_THY_P(j)
 
          Qp_D0 = QP_thy_D0 + QP_RNA_min(j)+ QP_DNA(j) + QP_other(j)
          Qp_D1 = QP_thy_D1 + QP_rna_D1
          Qp_D2 = QP_rna_D2
 
-C        Kei3: For P limitation
-C        A_P = ((1 _d 0 + ECo2Prod(j))*A_pho(j)/Y_CN_protein(j))/PChl
-C     &          + A_bio(j)/Y_CN_protein(j)/macromolTempFunc
-C        B_P = QN_pro_other(j)
-C     &          + (maintConsum(j)*A_pho(j)/Y_CN_protein(j))/PChl
-C        L_P = ((1 _d 0 + ECo2Prod(j))*Y_THY_P(j))/PChl
-C        M_P = (maintConsum(j)*Y_THY_P(j))/PChl
-C
-C        Qp_D0 = M_P + QN_RNA_min(j)*Y_PN_nucacid(j)
-C     &         + QN_DNA(j)*Y_PN_nucacid(j) + QP_other(j)
-C        Qp_D1 = L_P + B_P*AP_RNA(j)*Y_PN_nucacid(j)
-C     &         /macromolTempFunc
-C        Qp_D2 = A_P*AP_RNA(j)*Y_PN_nucacid(j)
-C     &         /macromolTempFunc
 
 C        Iron restriction on growth
          Qfe_D0 = A_pho(j)*maintConsum(j)/PChl/Y_CN_protein(j)
      &      *Y_FeN_photo(j)
-         Qfe_D1 = A_pho(j)*(1 + ECo2Prod(j))/PChl/Y_CN_protein(j)
+         Qfe_D1 = A_pho(j)*(1 _d 0 + ECo2Prod(j))/PChl/Y_CN_protein(j)
      &      *Y_FeN_photo(j)
 
-C        Kei3-1: For Fe limitation
-C       Qfe_D1=((1 _d 0 + ECo2Prod(j))*A_pho(j)/Y_CN_protein(j)
-C     &      *Y_FeN_photo(j))/PChl
-C       Qfe_D0 =(maintConsum(j)*A_pho(j)/Y_CN_protein(j)*Y_FeN_photo(j))
-C     &      /PChl
+C        carbon restriction on growth rate
+         QC_thy_D0 = maintConsum(j)/PChl*A_thy(j)
+         QC_thy_D1 = (1 _d 0 + ECo2Prod(j))/PChl*A_thy(j)
+         QC_pro_D0 = QN_pro_D0*Y_CN_protein(j)
+         QC_pro_D1 = QN_pro_D1*Y_CN_protein(j)
+C         QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
+         QC_rna_D1 = QN_rna_D1 *Y_CN_RNA(j)
+         QC_rna_D2 = QN_rna_D2*Y_CN_RNA(j)
+
+         Qc_D0 =maintConsum(j)/PChl+QC_pro_D0+QN_RNA_min(j)*Y_CN_RNA(j)
+     &          +QC_thy_D0 + QC_DNA(j) + QC_other(j)
+         Qc_D1 = (1 _d 0 + ECo2Prod(j))/PChl+QC_pro_D1+QC_thy_D1+QC_rna_D1
+         Qc_D2 = QC_rna_D2
 
 
-C        Kei4: For N, P and Fe limitation
-       Qn_exc = MAX(0 _d 0, mmQn - Qn_D0)
-       PC_n = 2*Qn_exc/(Qn_D1 + SQRT(Qn_D1*Qn_D1 + 4*Qn_D2*Qn_exc))
-       Qp_exc = Max(0 _d 0, mmQp - Qp_D0)
-       PC_p = 2*Qp_exc/(Qp_D1 + SQRT(Qp_D1*Qp_D1 + 4*Qp_D2*Qp_exc))
-       Qfe_exc = Max(0 _d 0, mmQfe - Qfe_D0)
-       PC_fe = Qfe_exc/Qfe_D1
+C        Calculate the growth rate as a function of macromolecular composition
+         Qn_exc = MAX(0 _d 0, mmQn - Qn_D0)
+         PC_n = 2*Qn_exc/(Qn_D1 + SQRT(Qn_D1*Qn_D1 + 4*Qn_D2*Qn_exc))
+         Qp_exc = Max(0 _d 0, mmQp - Qp_D0)
+         PC_p = 2*Qp_exc/(Qp_D1 + SQRT(Qp_D1*Qp_D1 + 4*Qp_D2*Qp_exc))
+         Qfe_exc = Max(0 _d 0, mmQfe - Qfe_D0)
+         PC_fe = Qfe_exc/Qfe_D1
+         Qc_exc = MAX(0 _d 0, Qc(j) - Qc_D0)
+         PCc = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
 
+         PC_all = (/ PC_p, PC_n, PC_fe, PCc /)
+         MODE = MINLOC (PC_all, DIM=1)
+         PC = MINVAL (PC_all)
+         QC_chl = maintConsum(j)/PChl + (1 + ECo2Prod(j))/PChl*PC
 
 C======================================
 C Determining what is limited
 C======================================
 
-C        carbon restriction on growth rate
-         QC_thy_D0 = QC_chl_const*A_thy(j)
-         QC_thy_D1 = QC_chl_D*A_thy(j)
-         QC_pro_const = QN_pro_D0*Y_CN_protein(j)
-         QC_protein_D1 = QN_pro_D1*Y_CN_protein(j)
-         QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
-         QC_rna_D1 = QN_rna_D1 *Y_CN_RNA(j)
-         QC_rna_D2 = QN_rna_D2*Y_CN_RNA(j)
 
-         Qc_D0 = QC_chl_const + QC_pro_const + QC_RNA_min + QC_thy_D0
-     &         + QC_DNA(j) + QC_other(j)
-         Qc_D1 = QC_chl_D + QC_protein_D1 + QC_thy_D1 + QC_rna_D1
-         Qc_D2 = QC_rna_D2
 
-         Qc_exc = MAX(0 _d 0, Qc(j) - Qc_D0)
-         PCc = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
+C         Qc_exc = MAX(0 _d 0, Qc(j) - Qc_D0)
+C         PCc = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
 
-         PC = MIN(PC_n,PC_p,PC_fe,PCc)
-         IF (PC_n.EQ.PC) THEN
-          MODE = 2 _d 0
-         ELSEIF (PC_p.EQ.PC) THEN
-          MODE = 1 _d 0
-         ELSEIF (PC_fe.EQ.PC) THEN
-          MODE = 3 _d 0
-         ELSEIF (PCc.EQ.PC) THEN
-          MODE = 4 _d 0
-         ELSE
-          MODE = 0 _d 0
-         ENDIF
+C         PC = MIN(PC_n,PC_p,PC_fe,PCc)
+C         IF (PC_n.EQ.PC) THEN
+C          MODE = 2 _d 0
+C         ELSEIF (PC_p.EQ.PC) THEN
+C          MODE = 1 _d 0
+C         ELSEIF (PC_fe.EQ.PC) THEN
+C          MODE = 3 _d 0
+C         ELSEIF (PCc.EQ.PC) THEN
+C          MODE = 4 _d 0
+C         ELSE
+C          MODE = 0 _d 0
+C         ENDIF
 
-         QC_chl = QC_chl_const + QC_chl_D*PC
+C         QC_chl = QC_chl_const + QC_chl_D*PC
 
 C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated based on cellular mass balance
         ELSE
@@ -935,9 +923,9 @@ C     under light limitation
          QN_photo_const = QC_chl_const*A_pho(j)/Y_CN_protein(j)
          QN_pro_D0 = QN_photo_const + QN_pro_other(j)
          QC_thy_D0 = QC_chl_const*A_thy(j)
-         QC_pro_const = QN_pro_D0*Y_CN_protein(j)
+         QC_pro_D0 = QN_pro_D0*Y_CN_protein(j)
          QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
-         Qc_D0 = QC_chl_const + QC_pro_const + QC_RNA_min + QC_thy_D0
+         Qc_D0 = QC_chl_const + QC_pro_D0 + QC_RNA_min + QC_thy_D0
      &         + QC_DNA(j) + QC_other(j)
          Qc_D1 = 0 _d 0
          Qc_D2 = 0 _d 0
