@@ -860,7 +860,6 @@ C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated base
         ELSE
          MODE = 5 _d 0
          PC = 0. _d 0
-C         QC_chl = QC_chlMax(j)
         ENDIF
 
 C        if growth rate is zero
@@ -883,15 +882,15 @@ C       convert to mg Chl m-3
         QN_pro_tot   = QN_pro_other(j) + QN_pro_photo + QN_pro_bio
         QN_RNA       = QN_RNA_min(j) + QN_pro_tot*AP_RNA(j)*PC
      &         /macromolTempFunc
-         QP_RNA = QN_RNA*Y_PN_nucacid(j)
-         QN_DNA_plot   = QN_DNA(j)
-         QP_DNA_plot   = QP_DNA(j)
-         QP_const_plot = QP_other(j)
-         QP_thy = QC_chl*Y_THY_P(j)
-         Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
+        QP_RNA = QN_RNA*Y_PN_nucacid(j)
+        QN_DNA_plot   = QN_DNA(j)
+        QP_DNA_plot   = QP_DNA(j)
+        QP_const_plot = QP_other(j)
+        QP_thy = QC_chl*Y_THY_P(j)
+        Qfe_pro_photo = QN_pro_photo*Y_FeN_photo(j)
 
-         NCmin = QnNoChl(j) 
-         PCmin = QpNoChl(j) 
+        NCmin = QnNoChl(j) 
+        PCmin = QpNoChl(j) 
 
 C       Case 3: if Qn, Qp, or Qfe are lower then the NCmin, PCmin: 
 C       when Qn<QnNoChl, then Qn_exc=0, PC=0, QC_chlN<0, QC_chl=0
@@ -906,118 +905,40 @@ C       when Qn<QnNoChl, then Qn_exc=0, PC=0, QC_chlN<0, QC_chl=0
          QP_const_plot = MIN(mmQp - QP_RNA - QP_DNA_plot,QP_other(j))
         ENDIF
 
-         PCmin = QP_RNA + QP_DNA_plot + QP_other(j)
-         NCmin = QN_RNA + QN_DNA_plot + QN_pro_tot
+        PCmin = QP_RNA + QP_DNA_plot + QP_other(j)
+        NCmin = QN_RNA + QN_DNA_plot + QN_pro_tot
 
-         QN_essential  = QN_chl + QN_pro_tot + QN_RNA + QN_DNA_plot
-         QN_max        = QN_essential + QN_sto_max(j)
-         QP_essential  = QP_thy + QP_RNA + QP_DNA_plot +  QP_const_plot
-         Qfe_essential = QN_pro_photo*Y_FeN_photo(j)
-         QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
+        QN_essential  = QN_chl + QN_pro_tot + QN_RNA + QN_DNA_plot
+        QN_max        = QN_essential + QN_sto_max(j)
+        QP_essential  = QP_thy + QP_RNA + QP_DNA_plot +  QP_const_plot
+        Qfe_essential = QN_pro_photo*Y_FeN_photo(j)
+        QC_essential  = QC_chl + QN_pro_tot*Y_CN_protein(j)
      &         + QN_RNA*Y_CN_RNA(j) + QN_DNA_plot*Y_CN_DNA(j)
      &         + QP_thy * Y_PC_pg(j) + QC_other(j)
         
-C===========================
-CRevising store amount
-C===========================
-C      QN_essential = QN_chl + QN_pro_tot + QN_RNA + QN_DNA(j)
-C      QP_essential = QP_thy + QP_RNA + QP_DNA(j) +  QP_other(j)
-C      Qfe_essential = Qfe_pro_photo
-C      QN_max = QN_essential + QN_sto_max(j)
-C
-C     under light limitation
-C      IF ( PChl .LE. VI_min(j) ) THEN
-C         QC_chl_const = QC_chlMax(j)
-C         QN_chl_D0 = QC_chl_const*Y_NC_chl(j)
-C         QN_photo_const = QC_chl_const*A_pho(j)/Y_CN_protein(j)
-C         QN_pro_D0 = QN_photo_const + QN_pro_other(j)
-C         QC_thy_D0 = QC_chl_const*A_thy(j)
-C         QC_pro_D0 = QN_pro_D0*Y_CN_protein(j)
-C         QC_RNA_min = QN_RNA_min(j)*Y_CN_RNA(j)
-C         Qc_D0 = QC_chl_const + QC_pro_D0 + QC_RNA_min + QC_thy_D0
-C     &         + QC_DNA(j) + QC_other(j)
-C         Qc_D1 = 0 _d 0
-C         Qc_D2 = 0 _d 0
-C       ENDIF
-C
-C      QC_essential = Qc_D0 + Qc_D1*PC + Qc_D2*PC*PC
-C
-Cc=======================================
-CcHere compute when N,P,or Fe are scarce
-Cc=======================================
-
-C      NCmin = QnNoChl(j)
-C      PCmin = QpNoChl(j)
-C      FCmin = QfeNoChl(j)
-
-C      IF (mmQn.LT.NCmin) THEN
-C        Nlim = 1 _d 0
-C        QN_pro_const = mmQn*QN_pro_other(j)/QnNoChl(j)
-C        QN_pro_tot = QN_pro_const
-C        QN_RNA = mmQn*QN_RNA_min(j)/QnNoChl(j)
-C        QN_DNA_plot = mmQn*QN_DNA(j)/QnNoChl(j)
-C
-C        QN_essential = QN_pro_const + QN_RNA + QN_DNA_plot
-C        QN_max = QN_essential + QN_sto_max(j)
-C
-C        QP_RNA = QN_RNA * Y_PN_nucacid(j)
-C        QP_DNA_plot = QN_DNA_plot * Y_PN_nucacid(j)
-C        QP_essential = QP_RNA + QP_DNA_plot +  QP_other(j)
-C        PCmin = QP_essential
-C      ELSE
-C        Nlim = 0 _d 0
-C        QN_pro_const = QN_pro_other(j)
-C        QN_DNA_plot = QN_DNA(j)
-C        QP_DNA_plot = QN_DNA(j)*Y_PN_nucacid(j)
-C      ENDIF
-
-C      IF (mmQp.LT.PCmin) THEN
-C        Plim = 1 _d 0
-C        QP_rna0 = mmQp*QN_RNA_min(j)*Y_PN_nucacid(j)/QpNoChl(j)
-C        QP_RNA = MIN(QP_rna0,QP_RNA)
-C        QP_DNA_plot0 = mmQp*QN_DNA(j)*Y_PN_nucacid(j)/QpNoChl(j)
-C        QP_DNA_plot = MIN(QP_DNA_plot0,QP_DNA_plot)
-C        QP_const_plot = MIN(mmQp - QP_RNA - QP_DNA_plot,  QP_other(j))
-C        QP_essential = QP_RNA + QP_DNA_plot + QP_const_plot
-C
-C        QN_RNA = QP_RNA/Y_PN_nucacid(j)
-C        QN_DNA_plot = QP_DNA_plot/Y_PN_nucacid(j)
-
-C       !re-compute Npro_const as Nrna and Ndna might be reduced.
-C        QN_pro_const0 = mmQn - QN_RNA - QN_DNA_plot
-C        QN_pro_const = MIN(QN_pro_const0, QN_pro_other(j))
-C        QN_pro_tot = QN_pro_const
-C        QN_essential = QN_pro_const + QN_RNA + QN_DNA_plot
-C        QN_max = QN_essential + QN_sto_max(j)
-C        NCmin = QN_essential
-C      ELSE
-C        Plim = 0 _d 0
-C        QP_const_plot =  QP_other(j)
-C      ENDIF
-
-C      IF (mmQfe.LT.FCmin) THEN
-C        Flim = 1 _d 0
-C      ELSE
-C        Flim = 0 _d 0
-C      ENDIF
 
 C Storage calculation -----------------
 
-        !If P is smaller than max
-        IF (mmQp.LT.Qp_max(j)) THEN
-         QP_store = mmQp - QP_essential
-         QP_excess = 0 _d 0
+C        !If P is smaller than max
+C        IF (mmQp.LT.Qp_max(j)) THEN
+C         QP_store = mmQp - QP_essential
+C         QP_excess = 0 _d 0
         
-        !If P is greater than max and  P essential > max
-        ELSE IF (QP_essential.GT.Qp_max(j)) THEN
-         QP_store = 0 _d 0
-         QP_excess = mmQp - QP_essential
+C        !If P is greater than max and  P essential > max
+C        ELSE IF (QP_essential.GT.Qp_max(j)) THEN
+C         QP_store = 0 _d 0
+C         QP_excess = mmQp - QP_essential
         
-        !If P is great than max but P essential < max  
-        Else  
-         QP_store = Qp_max(j) - QP_essential
-         QP_excess = mmQp - Qp_max(j)
-        ENDIF
+C        !If P is great than max but P essential < max  
+C        Else  
+C         QP_store = Qp_max(j) - QP_essential
+C         QP_excess = mmQp - Qp_max(j)
+C        ENDIF
+
+        QP_excess = mmQp - MAX(Qp_max(j), QP_essential)
+        QP_excess = MAX(0 _d 0, QP_excess)
+        QP_store = MIN(mmQp, Qp_max(j)) - QP_essential
+        QP_store = MAX(0 _d 0, QP_store)
 
         IF (mmQn.LT.QN_max) THEN
          QN_store = mmQn - QN_essential
