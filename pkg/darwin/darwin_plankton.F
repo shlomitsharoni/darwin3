@@ -972,26 +972,26 @@ C       !re-compute Npro_const as Nrna and Ndna might be reduced.
       ENDIF
 
 C Storage calculation -----------------
-        IF (Qn.EQ.QnNoChl(j) .OR.
+        IF (mmQn.EQ.QnNoChl(j) .OR.
      &      (QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN
-         QN_essential = Qn
+         QN_essential = mmQn
         ENDIF
 
-        QN_store = MIN(Qn - QN_essential,
+        QN_store = MIN(mmQn - QN_essential,
      &                  (Qc - Qc_essential)/Y_CN_cyano(j),
      &                  QN_sto_max(j))
         QN_store = MAX(0 _d 0, QN_store)
-        QN_excess = Qn - QN_essential - QN_store
+        QN_excess = mmQn - QN_essential - QN_store
         QN_excess = MAX(0 _d 0, QN_excess)
 
-        QP_excess = Qp - MAX(Qp_max(j), QP_essential)
+        QP_excess = mmQp - MAX(Qp_max(j), QP_essential)
         QP_excess = MAX(0 _d 0, QP_excess)
-        QP_store = MIN(Qp, Qp_max(j)) - QP_essential
+        QP_store = MIN(mmQp, Qp_max(j)) - QP_essential
         QP_store = MAX(0 _d 0, QP_store)
 
-        Qfe_excess = Qfe - MAX(Qfe_max(j), Qfe_essential)
+        Qfe_excess = mmQfe - MAX(Qfe_max(j), Qfe_essential)
         Qfe_excess = MAX(0 _d 0, Qfe_excess)
-        Qfe_store = MIN(Qfe, Qfe_max(j)) - Qfe_essential
+        Qfe_store = MIN(mmQfe, Qfe_max(j)) - Qfe_essential
         Qfe_store = MAX(0 _d 0, Qfe_store)
 
 C        !If P is smaller than max
