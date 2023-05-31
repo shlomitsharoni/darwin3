@@ -252,6 +252,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    ksatDOFe
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
      &   ,Y_CN_protein,
+     &    Y_PC_pg,
      &    Y_NC_chl,
      &    Y_CN_cyano,
      &    Y_PN_nucacid,
@@ -379,6 +380,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
       _RL ksatDOFe(nplank)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       _RL Y_CN_protein(nplank)
+      _RL Y_PC_pg(nplank)
       _RL Y_NC_chl(nplank)
       _RL Y_CN_cyano(nplank)
       _RL Y_PN_nucacid(nplank)
