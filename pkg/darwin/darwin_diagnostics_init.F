@@ -315,7 +315,20 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+     
+       WRITE(diagName,'(A,I4.4)')'RQ_N', j
+       WRITE(diagTitle,'(A)')'O2:C assuming not full oxidation'
+       diagUnits = 'mol O2 molP-1   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
+       WRITE(diagName,'(A,I4.4)')'Y_RQ', j
+       WRITE(diagTitle,'(A)')'O2:C ratio for respiration'
+       diagUnits = 'mol O2 molC-1   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
       ENDDO
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
