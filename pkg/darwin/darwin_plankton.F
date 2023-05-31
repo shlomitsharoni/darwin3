@@ -329,6 +329,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL NCmin
       _RL PCmin
       _RL FCmin
+      _RL Scal_coeff
       _RL QN_pro_const
       _RL QN_DNA_plot
       _RL QP_const_plot
