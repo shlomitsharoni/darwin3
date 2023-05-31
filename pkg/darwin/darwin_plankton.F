@@ -817,7 +817,6 @@ C        Phosphate restriction on growth rate
          Qp_D1 = QP_thy_D1 + QP_rna_D1
          Qp_D2 = QP_rna_D2
 
-
 C        Iron restriction on growth
          Qfe_D0 = A_pho(j)*maintConsum(j)/PChl/Y_CN_protein(j)
      &      *Y_FeN_photo(j)
@@ -855,35 +854,12 @@ C        Calculate the growth rate as a function of macromolecular composition
          PC = MINVAL (PC_all)
          QC_chl = maintConsum(j)/PChl + (1 + ECo2Prod(j))/PChl*PC
 
-C======================================
-C Determining what is limited
-C======================================
-
-
-
-C         Qc_exc = MAX(0 _d 0, Qc(j) - Qc_D0)
-C         PCc = 2*Qc_exc/(Qc_D1 + SQRT(Qc_D1*Qc_D1 + 4*Qc_D2*Qc_exc))
-
-C         PC = MIN(PC_n,PC_p,PC_fe,PCc)
-C         IF (PC_n.EQ.PC) THEN
-C          MODE = 2 _d 0
-C         ELSEIF (PC_p.EQ.PC) THEN
-C          MODE = 1 _d 0
-C         ELSEIF (PC_fe.EQ.PC) THEN
-C          MODE = 3 _d 0
-C         ELSEIF (PCc.EQ.PC) THEN
-C          MODE = 4 _d 0
-C         ELSE
-C          MODE = 0 _d 0
-C         ENDIF
-
-C         QC_chl = QC_chl_const + QC_chl_D*PC
 
 C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated based on cellular mass balance
         ELSE
          MODE = 5 _d 0
          PC = 0. _d 0
-         QC_chl = QC_chlMax(j)
+C         QC_chl = QC_chlMax(j)
         ENDIF
 
 C        if growth rate is zero
@@ -899,6 +875,7 @@ C        if growth rate is zero
 C       convert to mg Chl m-3
         chlout(j) = 893.49 _d 0*X(j)*QC_chl/55 _d 0
 
+         ! Calculate diagnostics and essentials
         QN_chl       = QC_chl*Y_NC_chl(j)
         QN_pro_photo = QC_chl*A_pho(j)/Y_CN_protein(j)
         QN_pro_bio   = A_bio(j)/Y_CN_protein(j)*PC/macromolTempFunc
@@ -995,49 +972,70 @@ C       !re-compute Npro_const as Nrna and Ndna might be reduced.
       ENDIF
 
 C Storage calculation -----------------
-
-        !If P is smaller than max
-        IF (mmQp.LT.Qp_max(j)) THEN
-         QP_store = mmQp - QP_essential
-         QP_excess = 0 _d 0
-        
-        !If P is greater than max and  P essential > max
-        ELSE IF (QP_essential.GT.Qp_max(j)) THEN
-         QP_store = 0 _d 0
-         QP_excess = mmQp - QP_essential
-        
-        !If P is great than max but P essential < max  
-        Else  
-         QP_store = Qp_max(j) - QP_essential
-         QP_excess = mmQp - Qp_max(j)
+        IF (Qn.EQ.QnNoChl(j) .OR.
+     &      (QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN
+         QN_essential = Qn
         ENDIF
 
-        IF (mmQn.LT.QN_max) THEN
-         QN_store = mmQn - QN_essential
-         QN_excess = 0 _d 0
-        ELSE
-         QN_store = QN_sto_max(j)
-         QN_excess = mmQn - QN_max
-        ENDIF
-        
-        IF (mmQfe.LT.Qfe_max(j)) THEN
-         Qfe_Store = mmQfe - Qfe_essential
-         Qfe_excess = 0 _d 0
-        ELSE IF (Qfe_essential.GT.Qfe_max(j)) THEN
-         Qfe_Store = 0 _d 0
-         Qfe_excess = mmQfe - Qfe_essential
-        ELSE
-         Qfe_Store = Qfe_max(j) - Qfe_essential
-         Qfe_excess = mmQfe - Qfe_max(j)
-        ENDIF
+        QN_store = MIN(Qn - QN_essential,
+     &                  (Qc - Qc_essential)/Y_CN_cyano(j),
+     &                  QN_sto_max(j))
+        QN_store = MAX(0 _d 0, QN_store)
+        QN_excess = Qn - QN_essential - QN_store
+        QN_excess = MAX(0 _d 0, QN_excess)
 
-        Qc_essential_and_Nstore = QC_essential + QN_store* Y_CN_cyano(j)
+        QP_excess = Qp - MAX(Qp_max(j), QP_essential)
+        QP_excess = MAX(0 _d 0, QP_excess)
+        QP_store = MIN(Qp, Qp_max(j)) - QP_essential
+        QP_store = MAX(0 _d 0, QP_store)
 
-        IF (Qc_essential_and_Nstore.GT.1) THEN
-         QN_store = (1.0 _d 0 - Qc_Essential)/ Y_CN_cyano(j)
-         QN_excess = mmQn  - QN_store - QN_essential
+        Qfe_excess = Qfe - MAX(Qfe_max(j), Qfe_essential)
+        Qfe_excess = MAX(0 _d 0, Qfe_excess)
+        Qfe_store = MIN(Qfe, Qfe_max(j)) - Qfe_essential
+        Qfe_store = MAX(0 _d 0, Qfe_store)
 
-        ENDIF
+C        !If P is smaller than max
+C        IF (mmQp.LT.Qp_max(j)) THEN
+C         QP_store = mmQp - QP_essential
+C         QP_excess = 0 _d 0
+C        
+C        !If P is greater than max and  P essential > max
+C        ELSE IF (QP_essential.GT.Qp_max(j)) THEN
+C         QP_store = 0 _d 0
+C         QP_excess = mmQp - QP_essential
+C        
+C        !If P is great than max but P essential < max  
+C        Else  
+C         QP_store = Qp_max(j) - QP_essential
+C         QP_excess = mmQp - Qp_max(j)
+C        ENDIF
+C
+C        IF (mmQn.LT.QN_max) THEN
+C         QN_store = mmQn - QN_essential
+C         QN_excess = 0 _d 0
+C        ELSE
+C         QN_store = QN_sto_max(j)
+C         QN_excess = mmQn - QN_max
+C        ENDIF
+C        
+C        IF (mmQfe.LT.Qfe_max(j)) THEN
+C         Qfe_Store = mmQfe - Qfe_essential
+C         Qfe_excess = 0 _d 0
+C        ELSE IF (Qfe_essential.GT.Qfe_max(j)) THEN
+C         Qfe_Store = 0 _d 0
+C         Qfe_excess = mmQfe - Qfe_essential
+C        ELSE
+C         Qfe_Store = Qfe_max(j) - Qfe_essential
+C         Qfe_excess = mmQfe - Qfe_max(j)
+C        ENDIF
+
+C        Qc_essential_and_Nstore = QC_essential + QN_store* Y_CN_cyano(j)
+
+C        IF (Qc_essential_and_Nstore.GT.1) THEN
+C         QN_store = (1.0 _d 0 - Qc_Essential)/ Y_CN_cyano(j)
+C         QN_excess = mmQn  - QN_store - QN_essential
+
+C        ENDIF
 C
 
 C       exude excess nitrogen to NO3
