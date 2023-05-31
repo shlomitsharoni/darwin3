@@ -935,6 +935,7 @@ C Storage calculation -----------------
         QP_store = MIN(mmQp, Qp_max(j)) - QP_essential
         QP_store = MAX(0 _d 0, QP_store)
 
+
         Qfe_excess = mmQfe - MAX(Qfe_max(j), Qfe_essential)
         Qfe_excess = MAX(0 _d 0, Qfe_excess)
         Qfe_store = MIN(mmQfe, Qfe_max(j)) - Qfe_essential
@@ -944,57 +945,50 @@ C Storage calculation -----------------
 C       Exudation
         IF (tauExN(j) .NE. 0 _d 0) THEN
           IF (mmQn.GT.NCmin) THEN
-C          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
-C          exQn = MAX(0 _d 0, QnExc)/tauExN(j)
-           exQn = QN_excess/tauExN(j)
-           uptakeN = uptakeN - exQn*mmX
-           uptakeNO3 = uptakeNO3 - exQn*mmX
-           VN = VN - exQn
+          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
+          exQn = MAX(0 _d 0, QnExc)/tauExN(j)
+          uptakeN = uptakeN - exQn*mmX
+          uptakeNO3 = uptakeNO3 - exQn*mmX
+          VN = VN - exQn
           ELSE
-           exQn = 0 _d 0
+          exQn = 0 _d 0
           ENDIF
         ENDIF
 
-         IF (tauExP(j) .NE. 0 _d 0) THEN
+          IF (tauExP(j) .NE. 0 _d 0) THEN
           IF (mmQp.GT.PCmin) THEN
-C          QpExc = mmQp - (QP_essential+QP_store)
-C          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
-C          uptakeP = uptakeP - exQp*mmX
-           exQp = QP_excess/tauExP(j)
-           uptakePO4 = uptakePO4 - exQp*mmX
-           VP = VP - exQp
+          QpExc = mmQp - (QP_essential+QP_store)
+          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
+C         uptakeP = uptakeP - exQp*mmX
+          uptakePO4 = uptakePO4 - exQp*mmX
+          VP = VP - exQp
           ENDIF
         ENDIF
 
         IF (tauExFe(j) .NE. 0 _d 0) THEN
           IF (mmQfe.GT.0 _d 0) THEN
-C          QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
-C          exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
+          QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
+          exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
 C         uptakeFe = uptakeFe - exQfe*mmX
-           exQfe = Qfe_excess/tauExFe(j)
-           uptakeFeT = uptakeFeT - exQfe*mmX
-           Vfe = Vfe - exQfe
+          uptakeFeT = uptakeFeT - exQfe*mmX
+          Vfe = Vfe - exQfe
           ENDIF
         ENDIF
 
 
 
         PCg = PC
-C        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
-        IF (tauExC(j) .NE. 0 _d 0) THEN
-          IF (exQn .EQ. 0 _d 0) THEN
-C           Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
-C     &         + QN_chl_D0 + QC_chl_const*A_pho(j)/Y_CN_protein(j)
-           Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j) 
-     &         + QC_chl*Y_NC_chl(j) + QC_chl*A_pho(j)/Y_CN_protein(j)
-           QcnExc = 1 - mmQn/Qn_min
-           exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
-           PC = PC !- exQc
-          ENDIF
+        ! Kei7: Exudation of C
+        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
+          Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
+     &     + QN_chl_D0 + QC_chl_const*A_pho(j)/Y_CN_protein(j)
+
+          QcnExc = 1 - mmQn/Qn_min
+          exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
+C          PC = PC !- exQc
+        ELSE
+          exQc = 0 _d 0
         ENDIF
-C        ELSE
-C          exQc = 0 _d 0
-C        ENDIF
 
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
