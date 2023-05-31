@@ -924,7 +924,7 @@ C Storage calculation -----------------
         ENDIF
 
         QN_store = MIN(mmQn - QN_essential,
-     &                  (Qc - QC_essential)/Y_CN_cyano(j),
+     &                  (Qc(j) - QC_essential)/Y_CN_cyano(j),
      &                  QN_sto_max(j))
         QN_store = MAX(0 _d 0, QN_store)
         QN_excess = mmQn - QN_essential - QN_store
