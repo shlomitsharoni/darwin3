@@ -48,7 +48,6 @@ C     msgBuf   :: Informational/error meesage buffer
       _RL bmean, bbmean
       _RL bbbratiomeas, bbbratioac
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-      _RL Y_PC_pg
       _RL QC_const
 #endif
 
@@ -375,7 +374,7 @@ C ----------------------------------------------------------------------
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
 
 C       Stoichiometric parameters
-        Y_PC_pg(jp) = 40.0 _d 0                                      ! (molC molP-1) C/P molar ratio of PG: Phosphatidyl glycerol
+        Y_PC_pg(jp) = 40.0 _d 0                                  ! (molC molP-1) C/P molar ratio of PG: Phosphatidyl glycerol 
         Y_CN_protein(jp) = 4.49 _d 0                             ! (molC molN-1) C/N molar ratio in protein
         Y_NC_chl(jp) = 4.0 _d 0/55.0 _d 0                        ! (molN molC-1) N/C molar ratio in chlorophyll
         Y_CN_cyano(jp) = 2.0 _d 0                                ! (molC molN-1) C/N molar ratio of cyanophycin
@@ -409,7 +408,7 @@ C       Constant parameters
         A_bio(jp) = 0.2711 _d 0*3600*24                          ! (molC (molC)-1 s) Constant for variable part of biosynthesis protein
         AP_RNA(jp) = 0.00423 _d 0*3600*24*Y_CN_protein(jp)
      &    /Y_PN_nucacid(jp)                                      ! (s) Constant for Variable part of RNA
-        A_thy(jp) = Y_THY_P(jp)*Y_PC_pg                          ! (molC (molC in chl)-1)
+        A_thy(jp) = Y_THY_P(jp)*Y_PC_pg(jp)                      ! (molC (molC in chl)-1)
 
         Sf(jp) = 1.0 _d 0
 
