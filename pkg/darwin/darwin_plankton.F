@@ -918,6 +918,17 @@ C       when Qn<QnNoChl, then Qn_exc=0, PC=0, QC_chlN<0, QC_chl=0
         
 
 C Storage calculation -----------------
+        IF (mmQn.EQ.QnNoChl(j) .OR.
+     &      (QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN
+         QN_essential = mmQn
+        ENDIF
+
+        QN_store = MIN(mmQn - QN_essential,
+     &                  (Qc - QC_essential)/Y_CN_cyano(j),
+     &                  QN_sto_max(j))
+        QN_store = MAX(0 _d 0, QN_store)
+        QN_excess = mmQn - QN_essential - QN_store
+        QN_excess = MAX(0 _d 0, QN_excess)
 
 C        !If P is smaller than max
 C        IF (mmQp.LT.Qp_max(j)) THEN
@@ -940,32 +951,35 @@ C        ENDIF
         QP_store = MIN(mmQp, Qp_max(j)) - QP_essential
         QP_store = MAX(0 _d 0, QP_store)
 
-        IF (mmQn.LT.QN_max) THEN
-         QN_store = mmQn - QN_essential
-         QN_excess = 0 _d 0
-        ELSE
-         QN_store = QN_sto_max(j)
-         QN_excess = mmQn - QN_max
-        ENDIF
+C        IF (mmQn.LT.QN_max) THEN
+C         QN_store = mmQn - QN_essential
+C         QN_excess = 0 _d 0
+C        ELSE
+C         QN_store = QN_sto_max(j)
+C         QN_excess = mmQn - QN_max
+C        ENDIF
         
-        IF (mmQfe.LT.Qfe_max(j)) THEN
-         Qfe_Store = mmQfe - Qfe_essential
-         Qfe_excess = 0 _d 0
-        ELSE IF (Qfe_essential.GT.Qfe_max(j)) THEN
-         Qfe_Store = 0 _d 0
-         Qfe_excess = mmQfe - Qfe_essential
-        ELSE
-         Qfe_Store = Qfe_max(j) - Qfe_essential
-         Qfe_excess = mmQfe - Qfe_max(j)
-        ENDIF
+C        IF (mmQfe.LT.Qfe_max(j)) THEN
+C         Qfe_Store = mmQfe - Qfe_essential
+C         Qfe_excess = 0 _d 0
+C        ELSE IF (Qfe_essential.GT.Qfe_max(j)) THEN
+C         Qfe_Store = 0 _d 0
+C         Qfe_excess = mmQfe - Qfe_essential
+C        ELSE
+C         Qfe_Store = Qfe_max(j) - Qfe_essential
+C         Qfe_excess = mmQfe - Qfe_max(j)
+C        ENDIF
 
-        Qc_essential_and_Nstore = QC_essential + QN_store* Y_CN_cyano(j)
+        Qfe_excess = mmQfe - MAX(Qfe_max(j), Qfe_essential)
+        Qfe_excess = MAX(0 _d 0, Qfe_excess)
+        Qfe_store = MIN(mmQfe, Qfe_max(j)) - Qfe_essential
+        Qfe_store = MAX(0 _d 0, Qfe_store)
+C        Qc_essential_and_Nstore = QC_essential + QN_store* Y_CN_cyano(j)
 
-        IF (Qc_essential_and_Nstore.GT.1) THEN
-         QN_store = (1.0 _d 0 - Qc_Essential)/ Y_CN_cyano(j)
-         QN_excess = mmQn  - QN_store - QN_essential
-
-        ENDIF
+C        IF (Qc_essential_and_Nstore.GT.1) THEN
+C         QN_store = (1.0 _d 0 - Qc_Essential)/ Y_CN_cyano(j)
+C         QN_excess = mmQn  - QN_store - QN_essential
+C        ENDIF
 C
 
 C       exude excess nitrogen to NO3
