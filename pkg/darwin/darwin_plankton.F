@@ -875,7 +875,7 @@ C        if growth rate is zero
 C       convert to mg Chl m-3
         chlout(j) = 893.49 _d 0*X(j)*QC_chl/55 _d 0
 
-         ! Calculate diagnostics and essentials
+        ! Calculate diagnostics and essentials
         QN_chl       = QC_chl*Y_NC_chl(j)
         QN_pro_photo = QC_chl*A_pho(j)/Y_CN_protein(j)
         QN_pro_bio   = A_bio(j)/Y_CN_protein(j)*PC/macromolTempFunc
@@ -972,70 +972,49 @@ C       !re-compute Npro_const as Nrna and Ndna might be reduced.
       ENDIF
 
 C Storage calculation -----------------
-        IF (mmQn.EQ.QnNoChl(j) .OR.
-     &      (QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN
-         QN_essential = mmQn
+
+        !If P is smaller than max
+        IF (mmQp.LT.Qp_max(j)) THEN
+         QP_store = mmQp - QP_essential
+         QP_excess = 0 _d 0
+        
+        !If P is greater than max and  P essential > max
+        ELSE IF (QP_essential.GT.Qp_max(j)) THEN
+         QP_store = 0 _d 0
+         QP_excess = mmQp - QP_essential
+        
+        !If P is great than max but P essential < max  
+        Else  
+         QP_store = Qp_max(j) - QP_essential
+         QP_excess = mmQp - Qp_max(j)
         ENDIF
 
-        QN_store = MIN(mmQn - QN_essential,
-     &                  (Qc - Qc_essential)/Y_CN_cyano(j),
-     &                  QN_sto_max(j))
-        QN_store = MAX(0 _d 0, QN_store)
-        QN_excess = mmQn - QN_essential - QN_store
-        QN_excess = MAX(0 _d 0, QN_excess)
+        IF (mmQn.LT.QN_max) THEN
+         QN_store = mmQn - QN_essential
+         QN_excess = 0 _d 0
+        ELSE
+         QN_store = QN_sto_max(j)
+         QN_excess = mmQn - QN_max
+        ENDIF
+        
+        IF (mmQfe.LT.Qfe_max(j)) THEN
+         Qfe_Store = mmQfe - Qfe_essential
+         Qfe_excess = 0 _d 0
+        ELSE IF (Qfe_essential.GT.Qfe_max(j)) THEN
+         Qfe_Store = 0 _d 0
+         Qfe_excess = mmQfe - Qfe_essential
+        ELSE
+         Qfe_Store = Qfe_max(j) - Qfe_essential
+         Qfe_excess = mmQfe - Qfe_max(j)
+        ENDIF
 
-        QP_excess = mmQp - MAX(Qp_max(j), QP_essential)
-        QP_excess = MAX(0 _d 0, QP_excess)
-        QP_store = MIN(mmQp, Qp_max(j)) - QP_essential
-        QP_store = MAX(0 _d 0, QP_store)
+        Qc_essential_and_Nstore = QC_essential + QN_store* Y_CN_cyano(j)
 
-        Qfe_excess = mmQfe - MAX(Qfe_max(j), Qfe_essential)
-        Qfe_excess = MAX(0 _d 0, Qfe_excess)
-        Qfe_store = MIN(mmQfe, Qfe_max(j)) - Qfe_essential
-        Qfe_store = MAX(0 _d 0, Qfe_store)
+        IF (Qc_essential_and_Nstore.GT.1) THEN
+         QN_store = (1.0 _d 0 - Qc_Essential)/ Y_CN_cyano(j)
+         QN_excess = mmQn  - QN_store - QN_essential
 
-C        !If P is smaller than max
-C        IF (mmQp.LT.Qp_max(j)) THEN
-C         QP_store = mmQp - QP_essential
-C         QP_excess = 0 _d 0
-C        
-C        !If P is greater than max and  P essential > max
-C        ELSE IF (QP_essential.GT.Qp_max(j)) THEN
-C         QP_store = 0 _d 0
-C         QP_excess = mmQp - QP_essential
-C        
-C        !If P is great than max but P essential < max  
-C        Else  
-C         QP_store = Qp_max(j) - QP_essential
-C         QP_excess = mmQp - Qp_max(j)
-C        ENDIF
-C
-C        IF (mmQn.LT.QN_max) THEN
-C         QN_store = mmQn - QN_essential
-C         QN_excess = 0 _d 0
-C        ELSE
-C         QN_store = QN_sto_max(j)
-C         QN_excess = mmQn - QN_max
-C        ENDIF
-C        
-C        IF (mmQfe.LT.Qfe_max(j)) THEN
-C         Qfe_Store = mmQfe - Qfe_essential
-C         Qfe_excess = 0 _d 0
-C        ELSE IF (Qfe_essential.GT.Qfe_max(j)) THEN
-C         Qfe_Store = 0 _d 0
-C         Qfe_excess = mmQfe - Qfe_essential
-C        ELSE
-C         Qfe_Store = Qfe_max(j) - Qfe_essential
-C         Qfe_excess = mmQfe - Qfe_max(j)
-C        ENDIF
-
-C        Qc_essential_and_Nstore = QC_essential + QN_store* Y_CN_cyano(j)
-
-C        IF (Qc_essential_and_Nstore.GT.1) THEN
-C         QN_store = (1.0 _d 0 - Qc_Essential)/ Y_CN_cyano(j)
-C         QN_excess = mmQn  - QN_store - QN_essential
-
-C        ENDIF
+        ENDIF
 C
 
 C       exude excess nitrogen to NO3
