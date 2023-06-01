@@ -33,7 +33,7 @@ C Contains indices into diagnostics array
       integer iCChl, iNChl, iNPho, iNSyn, iNPrn, iNRNA
       integer iNDNA, iNSTO, iNEXC
       integer iPRNA, iPDNA, iPTHY, iPCON, iPSTO, iPEXC
-      integer iFPHO, iFSTO, iFEXC, iRQ_N, iY_RQ
+      integer iFPHO, iFSTO, iFEXC, iRQ_N, iY_RQ, iTemp
       integer iMODE, iFe_C, iexQc, iPCg
 #endif
       integer iConsO2
@@ -114,7 +114,9 @@ C Contains indices into diagnostics array
       PARAMETER(iFEXC=   iFSTO+nPhoto)
       PARAMETER(iRQ_N=   iFEXC+nPhoto)
       PARAMETER(iY_RQ=   iRQ_N+nPhoto)
-      PARAMETER(iaMacro= iY_RQ+nPhoto)
+      PARAMETER(iTemp=   +nPhoto)
+      PARAMETER(iaMacro= iTemp+nPhoto)
+
 #else
       PARAMETER(iaMacro= 22)
 #endif

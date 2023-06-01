@@ -9,7 +9,7 @@ C !INTERFACE: ==========================================================
      O     chlout, diags,
      I     PAR, photoTempFunc, hetTempFunc, grazTempFunc, reminTempFunc,
      I     mortTempFunc, mort2TempFunc,
-     I     uptakeTempFunc, macromolTempFunc,
+     I     uptakeTempFunc, macromolTempFunc, mmTemp,
      I     omegaCl,
      I     k_debug,myTime,myIter,myThid)
 
@@ -1038,6 +1038,8 @@ C       ! shlomit: Calclate the O2:P ratio
         diags(iFEXC+j-1) = Qfe_excess
         diags(iRQ_N+j-1) = RQ_N
         diags(iY_RQ+j-1) = RQ
+        diags(iTemp+j-1) = mmTemp
+
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
 
