@@ -128,7 +128,6 @@ C     Dependent variables for sediment flux for validation
       _RL mort2TempFunc
       _RL uptakeTempFunc
       _RL macromolTempFunc
-      _RL mmTemp
       _RL omegaCl
       _RL tmp, tmpFac
       _RL sedFe(1-OLx:sNx+OLx,1-OLy:sNy+OLy,Nr)
@@ -606,7 +605,7 @@ C-      default (face fit into global-IO-array)
         CALL DARWIN_TEMPFUNC(Theta(i,j,k,bi,bj),
      &         photoTempFunc, hetTempFunc, grazTempFunc,
      &         reminTempFunc, mortTempFunc, mort2TempFunc,
-     &         uptakeTempFunc, macromolTempFunc, mmTemp, myThid)
+     &         uptakeTempFunc, macromolTempFunc, myThid)
         DO iTr=1,nDarwin
          ptr(iTr) = Ptracer(i, j, k, bi, bj, iTr)
          gtr(iTr) = gPtr(i, j, k, iTr)
@@ -628,7 +627,7 @@ C-      default (face fit into global-IO-array)
      I                 grazTempFunc,
      I                 reminTempFunc,
      I                 mortTempFunc, mort2TempFunc,
-     I                 uptakeTempFunc, macromolTempFunc, mmTemp,
+     I                 uptakeTempFunc, macromolTempFunc,
      I                 omegaCl,
      I                 k_debug,
      I                 subTime, myIter, myThid )
@@ -942,9 +941,6 @@ C === diagnostics ======================================================
      &          0,Nr,3,bi,bj,myThid)
         WRITE(diagname, '(A,I4.4)') 'Y_RQ', iTr
         CALL DIAGNOSTICS_FILL(diags(1,1,1,iY_RQ+iTr-1), diagname,
-     &          0,Nr,3,bi,bj,myThid)
-             WRITE(diagname, '(A,I4.4)') 'Temp', iTr
-        CALL DIAGNOSTICS_FILL(diags(1,1,1,iTemp+iTr-1), diagname,
      &          0,Nr,3,bi,bj,myThid)
        ENDDO
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */

@@ -330,12 +330,6 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
-       WRITE(diagName,'(A,I4.4)')'mmTemp', j
-       WRITE(diagTitle,'(A)')'sea-surface temperature'
-       diagUnits = 'K               '
-       diagCode  = 'SM P    MR      '
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
       ENDDO
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 

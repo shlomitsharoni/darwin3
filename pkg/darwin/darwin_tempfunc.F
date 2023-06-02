@@ -8,7 +8,7 @@ C !INTERFACE: ==========================================================
      I                  Temp,
      O                  photoFun, hetFun, grazFun,
      O                  reminFun, mortFun, mort2Fun,
-     O                  uptakeFun, macromolFun,mmTemp,
+     O                  uptakeFun, macromolFun,
      I                  myThid)
 
 C !DESCRIPTION: ========================================================
@@ -43,7 +43,6 @@ C            the predator ones for monod-style grazing
       _RL mort2Fun
       _RL uptakeFun
       _RL macromolFun
-      _RL mmTemp
 
 CEOP
 
@@ -63,7 +62,6 @@ c !LOCAL VARIABLES: ====================================================
       mort2Fun = 1.0 _d 0
       uptakeFun = 1.0 _d 0
       macromolFun = 1.0 _d 0
-      mmTemp = Temp
 #elif DARWIN_TEMP_VERSION == 1
 
 c +++++++++++++++++++ VERSION 1 +++++++++++++++++++++++++++++++++++++++
@@ -94,7 +92,6 @@ c    &             zooTempExp(j)*(Temp - zooTempOptimum(j)))
       mort2Fun = 1.0 _d 0
       uptakeFun = 1.0 _d 0
       macromolFun = 1.0 _d 0
-      mmTemp = Temp
 
 c ++++++++++++++ END VERSION 1 +++++++++++++++++++++++++++++++++++++++
 
@@ -140,7 +137,6 @@ c      mort2Fun = 1.0 _d 0
      &                       1.0 _d 0/(TemprefArr) ) )
       macromolFun =  max(macromolFun , 1. _d -10)
 c      macromolFun = 1. _d 0
-      mmTemp = Temp
 
 c ++++++++++++++ END VERSION 2 +++++++++++++++++++++++++++++++++++++++
 
