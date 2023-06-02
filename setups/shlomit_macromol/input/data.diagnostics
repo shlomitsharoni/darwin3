@@ -14,7 +14,7 @@
 #
   filename( 1) = '3d',
   frequency(1) = 2592000.,
-#  frequency(1) = 3600.,
+  frequency(1) = 3600.,
   fileflags(1) = 'D       ',
 # frequency(1) = 31104000.,
   fields( 1,1) = 'TRAC01  ',
@@ -119,7 +119,7 @@
 #
   filename( 2) = 'GC',
   frequency(2) = 2592000.,
-#  frequency(2) = 3600.,
+  frequency(2) = 3600.,
   fileflags(2) = 'D       ',
 # frequency(2) = 31104000.,
   fields( 1,2) = 'GC_Tr01 ',
