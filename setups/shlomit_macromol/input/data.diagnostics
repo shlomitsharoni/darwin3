@@ -112,7 +112,9 @@
   fields(93,1) = 'MODE0002', 
   fields(94,1) = 'Fe_C0002', 
   fields(95,1) = 'exQc0002', 
-  fields(96,1) = 'PCg0002',  
+  fields(96,1) = 'PCg0002 ',  
+  fields(97,1) = 'THETA   ',  
+
 
 #
   filename( 2) = 'GC',
