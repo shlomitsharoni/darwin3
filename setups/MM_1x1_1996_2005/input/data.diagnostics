@@ -13,10 +13,10 @@
  dumpatlast= .TRUE.,
 #
   filename( 1) = '3d',
-  frequency(1) = 2592000.,
+#  frequency(1) = 2592000.,
 #  frequency(1) = 3600.,
   fileflags(1) = 'D       ',
-# frequency(1) = 31104000.,
+  frequency(1) = 31104000.,
   fields( 1,1) = 'TRAC01  ',
   fields( 2,1) = 'TRAC02  ',
   fields( 3,1) = 'TRAC03  ',
@@ -118,7 +118,8 @@
 
 #
   filename( 2) = 'GC',
-  frequency(2) = 2592000.,
+#  frequency(2) = 2592000.,
+  frequency(2) = 0.,
 #  frequency(2) = 3600.,
   fileflags(2) = 'D       ',
 # frequency(2) = 31104000.,
@@ -161,7 +162,8 @@
 #
 #
   filename( 6) = 'iops',
-  frequency(6) = 2592000.,
+#  frequency(6) = 2592000.,
+  frequency(6) = 0.,
 # frequency(6) = 31104000.,
   fields(  1,6) = 'a001    ',
   fields(  2,6) = 'a002    ',
@@ -217,7 +219,8 @@
   fields( 52,6) = 'aCDOM013',
 #
   filename( 7) = 'par',
-  frequency(7) = 2592000.,
+#  frequency(7) = 2592000.,
+  frequency(7) = 0.,
 # frequency(7) = 31104000.,
 # levels(1:10,7) = 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
   fields(  1,7) = 'Ed001   ',
@@ -274,8 +277,8 @@
   fields( 52,7) = 'PAR013  ',
 #
   filename( 8) = '2d',
-  frequency(8) = 2592000.,
-# frequency(8) = 31104000.,
+#  frequency(8) = 2592000.,
+  frequency(8) = 31104000.,
   fields( 1,8) = 'fluxCO2 ',
   fields( 2,8) = 'gDICsurf',
   fields( 3,8) = 'gALKsurf',
