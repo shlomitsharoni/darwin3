@@ -332,7 +332,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Scal_coeff
       _RL QC_CSTO
       _RL RQ
-      _RL RQ_N
       _RL QN_pro_const
       _RL QN_DNA_plot
       _RL QP_const_plot
@@ -340,9 +339,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QP_rna0
       _RL QN_pro_const0
       _RL QP_DNA_plot0
-C      _RL Nlim
-C      _RL Plim
-C      _RL Flim
       _RL PCc
       _RL PCg
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -1003,15 +999,6 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) *  14.8775 /9.5
      &     + ( QN_store*Y_CN_cyano(j)) * 18.5000/ 10.
 
-! O2:C ratio without oxidation to NH3 (to compare to observations)
-       RQ_N = ( QN_pro_tot*Y_CN_protein(j))* 5.5800/5.3200 
-     &     + ( QC_other(j)/2 + Y_PC_pg(j) * QP_thy + QC_CSTO/2) * 56./43
-     &     + ( QC_other(j)/2 + QC_CSTO/2) * 6./6.
-     &     + ( QC_chl) * 67.5000/55.
-     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 8.2500/9.7500 
-     &     + ( QN_RNA*Y_CN_RNA(j)) *  7.38 /9.5
-     &     + ( QN_store*Y_CN_cyano(j)) * 8.5000/ 10.
-
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iMODE+j-1) = MODE        
@@ -1036,7 +1023,6 @@ C       ! shlomit: Calclate the O2:P ratio
         diags(iFPHO+j-1) = Qfe_pro_photo
         diags(iFSTO+j-1) = Qfe_Store
         diags(iFEXC+j-1) = Qfe_excess
-        diags(iRQ_N+j-1) = RQ_N
         diags(iY_RQ+j-1) = RQ
 
 
