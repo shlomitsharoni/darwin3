@@ -938,7 +938,7 @@ C === diagnostics ======================================================
      &          0,Nr,2,bi,bj,myThid)
         WRITE(diagname, '(A,I4.4)') 'Y_RQ', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iY_RQ+iTr-1),diagname,
-     &          0,Nr,3,bi,bj,myThid)
+     &          0,Nr,2,bi,bj,myThid)
        ENDDO
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
