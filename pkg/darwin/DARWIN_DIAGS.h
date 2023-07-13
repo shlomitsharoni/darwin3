@@ -34,7 +34,9 @@ C Contains indices into diagnostics array
       integer iNDNA, iNSTO, iNEXC
       integer iPRNA, iPDNA, iPTHY, iPCON, iPSTO, iPEXC
       integer iFPHO, iFSTO, iFEXC, iY_RQ
-      integer iMODE, iFe_C, iexQc, iPCg
+      integer iFe_C, iexQc, iPCg
+      integer iMOD1, iMOD2, iMOD3, iMOD4, iMOD5
+
 #endif
       integer iConsO2
       integer iProdO2
@@ -89,8 +91,12 @@ C Contains indices into diagnostics array
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       PARAMETER(iPChl=   22)
       PARAMETER(iVN=     iPChl+nPhoto)
-      PARAMETER(iMODE=   iVN  +nPhoto)
-      PARAMETER(iFe_C=   iMODE+nPhoto)
+      PARAMETER(iMOD1=   iVN  +nPhoto)
+      PARAMETER(iMOD2=   iMOD1+nPhoto)
+      PARAMETER(iMOD3=   iMOD2+nPhoto)
+      PARAMETER(iMOD4=   iMOD3+nPhoto)
+      PARAMETER(iMOD5=   iMOD4+nPhoto)
+      PARAMETER(iFe_C=   iMOD5+nPhoto)
       PARAMETER(iexQc=   iFe_C+nPhoto)
       PARAMETER(iPCg =   iexQC+nPhoto)
 

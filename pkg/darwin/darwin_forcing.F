@@ -870,8 +870,20 @@ C === diagnostics ======================================================
         WRITE(diagname, '(A,I4.4)') 'VN', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iVN+iTr-1),diagname,
      &          0,Nr,2,bi,bj,myThid)
-        WRITE(diagname, '(A,I4.4)') 'MODE', iTr
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iMODE+iTr-1),diagname,
+        WRITE(diagname, '(A,I4.4)') 'PLIM', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iMOD1+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'NLIM', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iMOD2+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'FLIM', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iMOD3+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'CLIM', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iMOD4+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'LLIM', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iMOD5+iTr-1),diagname,
      &          0,Nr,2,bi,bj,myThid)
         WRITE(diagname, '(A,I4.4)') 'Fe_C', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iFe_C+iTr-1),diagname,

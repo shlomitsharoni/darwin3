@@ -162,8 +162,36 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
-       WRITE(diagName,'(A,I4.4)')'MODE', j
-       WRITE(diagTitle,'(A)')'1: N, 2: P, 3: Fe limitation'
+       WRITE(diagName,'(A,I4.4)')'PLIM', j
+       WRITE(diagTitle,'(A)')'P limitation'
+       diagUnits = 'dimensionless   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'NLIM', j
+       WRITE(diagTitle,'(A)')'N limitation'
+       diagUnits = 'dimensionless   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'FLIM', j
+       WRITE(diagTitle,'(A)')'Fe limitation'
+       diagUnits = 'dimensionless   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'CLIM', j
+       WRITE(diagTitle,'(A)')'C limitation'
+       diagUnits = 'dimensionless   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'LLIM', j
+       WRITE(diagTitle,'(A)')'Light limitation'
        diagUnits = 'dimensionless   '
        diagCode  = 'SM P    MR      '
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
