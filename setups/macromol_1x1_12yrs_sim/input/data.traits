@@ -99,8 +99,8 @@
  ASSEFF=   16*0.7,
 #
  GRAZEMAX(3:4)=
- 1.0e-05,
- 1.0e-05,
+ 0.0e-06,
+ 0.0e-07,
 #
  EXPORTFRACPREYPRED= 16*0.1,
 #
