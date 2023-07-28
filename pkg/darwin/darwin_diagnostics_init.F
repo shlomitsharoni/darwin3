@@ -169,7 +169,6 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
        CALL DIAGNOSTICS_ADDTOLIST( diagNum, 
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
-
        WRITE(diagName,'(A,I4.4)')'Fe_C', j
        WRITE(diagTitle,'(A)')'Fe/C'
        diagUnits = 'mol Fe/mol C    '
