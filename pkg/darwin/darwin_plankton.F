@@ -317,10 +317,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QfeExc
       _RL uptakeFe
       INTEGER MODE
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 0845cf37e (Add different matrices for each limitation)
       REAL, DIMENSION(4) :: PC_all
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

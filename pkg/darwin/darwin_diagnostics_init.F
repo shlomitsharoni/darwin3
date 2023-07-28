@@ -166,11 +166,7 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
        WRITE(diagTitle,'(A)')'1: N, 2: P, 3: Fe limitation'
        diagUnits = 'dimensionless   '
        diagCode  = 'SM P    MR      '
-<<<<<<< HEAD
        CALL DIAGNOSTICS_ADDTOLIST( diagNum, 
-=======
-       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
->>>>>>> parent of 0845cf37e (Add different matrices for each limitation)
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
        WRITE(diagName,'(A,I4.4)')'Fe_C', j
