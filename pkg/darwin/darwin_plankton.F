@@ -317,11 +317,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QfeExc
       _RL uptakeFe
       INTEGER MODE
-      _RL MODE1
-      _RL MODE2
-      _RL MODE3
-      _RL MODE4
-      _RL MODE5
 
       REAL, DIMENSION(4) :: PC_all
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -867,23 +862,7 @@ C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated base
          PC = 0. _d 0
         ENDIF
          
-        MODE1 = 0 _d 0
-        MODE2 = 0 _d 0
-        MODE3 = 0 _d 0
-        MODE4 = 0 _d 0
-        MODE5 = 0 _d 0
-
-        IF (MODE .EQ.1 _d 0) THEN 
-         MODE1 = 1 _d 0
-        ELSEIF (MODE .EQ. 2 _d 0) THEN
-         MODE2 = 1 _d 0
-        ELSEIF (MODE .EQ. 3 _d 0) THEN
-         MODE3 = 1 _d 0
-        ELSEIF (MODE .EQ. 4 _d 0) THEN
-         MODE4 = 1 _d 0
-        ELSEIF (MODE .EQ. 5 _d 0) THEN
-         MODE5 = 1 _d 0
-        ENDIF
+ 
 
 C        if growth rate is zero
         IF (PC .EQ. 0. _d 0) THEN
@@ -1025,11 +1004,7 @@ C       ! shlomit: Calclate the O2:P ratio
 
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
-        diags(iMOD1+j-1) = MODE1
-        diags(iMOD2+j-1) = MODE2
-        diags(iMOD3+j-1) = MODE3
-        diags(iMOD4+j-1) = MODE4
-        diags(iMOD5+j-1) = MODE5
+        diags(iMODE+j-1) = MODE
         diags(iFe_C+j-1) = mmQfe
         diags(iexQc+j-1) = exQc
         diags(iPCg +j-1) = PCg
