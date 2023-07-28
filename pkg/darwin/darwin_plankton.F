@@ -317,7 +317,10 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QfeExc
       _RL uptakeFe
       INTEGER MODE
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 0845cf37e (Add different matrices for each limitation)
       REAL, DIMENSION(4) :: PC_all
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -861,8 +864,11 @@ C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated base
          MODE = 5 _d 0
          PC = 0. _d 0
         ENDIF
+<<<<<<< HEAD
          
  
+=======
+>>>>>>> parent of 0845cf37e (Add different matrices for each limitation)
 
 C        if growth rate is zero
         IF (PC .EQ. 0. _d 0) THEN
@@ -1004,10 +1010,14 @@ C       ! shlomit: Calclate the O2:P ratio
 
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
+<<<<<<< HEAD
         diags(iMODE+j-1) = MODE
+=======
+        diags(iMODE+j-1) = MODE        
+>>>>>>> parent of 0845cf37e (Add different matrices for each limitation)
         diags(iFe_C+j-1) = mmQfe
-        diags(iexQc+j-1) = exQc
-        diags(iPCg +j-1) = PCg
+        diags(iexQc+j-1) = exQc        
+        diags(iPCg +j-1) = PCg        
         diags(iCChl+j-1) = QC_chl
         diags(iNChl+j-1) = QN_chl
         diags(iNPho+j-1) = QN_pro_photo
