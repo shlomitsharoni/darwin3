@@ -30,11 +30,12 @@ C Contains indices into diagnostics array
       integer iaMacro
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       integer iPChl, iVN
-      integer iMODE, iFe_C, iexQc, iPCg
       integer iCChl, iNChl, iNPho, iNSyn, iNPrn, iNRNA
       integer iNDNA, iNSTO, iNEXC
       integer iPRNA, iPDNA, iPTHY, iPCON, iPSTO, iPEXC
       integer iFPHO, iFSTO, iFEXC, iY_RQ
+      integer iMODE, iFe_C, iexQc, iPCg
+
 #endif
       integer iConsO2
       integer iProdO2
