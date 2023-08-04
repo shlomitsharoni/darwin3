@@ -35,7 +35,6 @@ C Contains indices into diagnostics array
       integer iPRNA, iPDNA, iPTHY, iPCON, iPSTO, iPEXC
       integer iFPHO, iFSTO, iFEXC, iY_RQ
       integer iMODE, iFe_C, iexQc, iPCg
-
 #endif
       integer iConsO2
       integer iProdO2
