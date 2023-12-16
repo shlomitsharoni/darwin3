@@ -492,7 +492,7 @@ C
       _RL a_grazTempOptimum(nGroup)
       _RL a_grazDecayPower(nGroup)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-      _RL  a_R_PCpg(nGroup)
+      _RL a_R_PCpg(nGroup)
 #endif
 #ifdef DARWIN_ALLOW_GEIDER
       _RL a_mQyield(nGroup)
