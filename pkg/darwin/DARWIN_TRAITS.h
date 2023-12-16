@@ -289,7 +289,8 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    tauExN,
      &    tauExP,
      &    tauExFe,
-     &    tauExC
+     &    tauExC,
+     &    QC_const
 #endif
       _RL Xmin(nplank)
       _RL amminhib(nplank)
@@ -418,6 +419,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
       _RL tauExP(nplank)
       _RL tauExFe(nplank)
       _RL tauExC(nplank)
+      _RL QC_const(nplank)
 #endif
 
 C--   COMMON /DARWIN_DEPENDENT_TRAITS_i/ Dependent and constant (not read-in) parameters

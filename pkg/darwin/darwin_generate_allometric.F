@@ -47,9 +47,7 @@ C     msgBuf   :: Informational/error meesage buffer
       _RL bphy_cell_type
       _RL bmean, bbmean
       _RL bbbratiomeas, bbbratioac
-#ifdef DARWIN_MACROMOLECULAR_GROWTH
-      _RL QC_const
-#endif
+
 
 C ======================================================================
 C compute cell volumes in micrometer^3
