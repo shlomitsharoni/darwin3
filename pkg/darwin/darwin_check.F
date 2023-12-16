@@ -1697,6 +1697,9 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(TempAeArr,INDEX_NONE,
      &'TempAeArr =',
      &' /* slope for pseudo-Arrhenius (TEMP_VERSION 2) (K) */')
+      CALL WRITE_0D_RL(TempAeArr,INDEX_NONE,
+     &'TempAeArr =',
+     &' /* slope for pseudo-Arrhenius (TEMP_VERSION 2) (K) */')
       CALL WRITE_0D_RL(TemprefArr,INDEX_NONE,
      &'TemprefArr =',
      &' /* reference temp for pseudo-Arrhenius (TEMP_VERSION 2) (K) */')
