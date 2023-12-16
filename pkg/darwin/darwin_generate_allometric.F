@@ -375,40 +375,39 @@ C ----------------------------------------------------------------------
 
 C       Stoichiometric parameters
         Y_PC_pg(jp) = a_R_PCpg(g)
-        Y_CN_protein(jp) = 4.49 _d 0                             ! (molC molN-1) C/N molar ratio in protein
-        Y_NC_chl(jp) = 4.0 _d 0/55.0 _d 0                        ! (molN molC-1) N/C molar ratio in chlorophyll
-        Y_CN_cyano(jp) = 2.0 _d 0                                ! (molC molN-1) C/N molar ratio of cyanophycin
-        Y_PN_nucacid(jp) = 0.2644 _d 0                           ! (molP molN-1) P/N molar ratio of RNA
-        Y_CN_DNA(jp) = 2.9370 _d 0                               ! (molC molN-1) C/N molar ratio of DNA
-        Y_CN_RNA(jp) = 2.8277 _d 0                               ! (molC molN-1) C/N molar ratio of RNA
-        Y_THY_P(jp) = 0.028163 _d 0                              ! ((molP)/(molC in chl)-1) the shoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll
-        Y_FeN_photo(jp) = 0.00163 _d 0                           ! (molFe mol N-1) Fe/N ratio in photosystem iron
+        Y_CN_protein(jp) = a_PC_pg(g)
+        Y_NC_chl(jp) = a_NC_chl(g)
+        Y_CN_cyano(jp) = a_CN_cyano(g)
+        Y_PN_nucacid(jp) = a_PN_nucacid(g)
+        Y_CN_DNA(jp) = a_CN_DNA(g)
+        Y_CN_RNA(jp) = a_CN_RNA(g)
+        Y_THY_P(jp) = a_THY_P(g)
+        Y_FeN_photo(jp) = a_FeN_photo(g)
 
-C       Photosynthetic parameters
-        ECo2Prod(jp) = 0.774 _d 0                                ! (dimensionless) CO2 production ratio
-        maintConsum(jp) = 0.393 _d 0/3600/24                     ! (s-1) maintenance carbohydrate consumption
-        VI_max(jp) = 277 _d 0/3600/24                            ! (molC (molC in Chl)-1 s-1) carbon fixing rate
-        A_I(jp) = 0.0086 _d 0                                    ! (umol-1 m2 s) coefficient characterizing the absorption cross section
+        ECo2Prod(jp) = a_ECo2Prod(g)
+        maintConsum(jp) = a_maintConsum(g)
+        A_I(jp) = a_A_I(g)
 
-        QC_other(jp) = 0.0182 _d 0                               ! (molC molC-1) essential carbon (lipid membrane, etc.)
-        QC_pro_other(jp) = 0.24 _d 0                             ! (molC molC-1)
-        QP_other(jp) = 6.5344 _d -4                              ! (molP molC-1) Constant part of phosphorus
-        QP_RNA_min(jp) = 2.23 _d -4                              ! (molP molC-1)
-        QC_DNA(jp) = 9.41 _d -4                                  ! (molC molC-1) constant part of DNA in carbon
-        QN_pro_other(jp) = QC_pro_other(jp)/Y_CN_protein(jp)     ! (molN molC-1)
-        QN_RNA_min(jp) = QP_RNA_min(jp)/Y_PN_nucacid(jp)         ! (molN molC-1) constant part of RNA in nitrogen
-        QN_DNA(jp) = QC_DNA(jp)/Y_CN_DNA(jp)                     ! (molN molC-1) DNA in nitrogen
-        QP_DNA(jp) = QN_DNA(jp)*Y_PN_nucacid(jp)                 ! (molP molC-1) DNA in phosphorous
-        QN_sto_max(jp) = 0.035 _d 0                              ! (molN molC-1) maximum nitrogen storage
-        Qp_max(jp) = 0.0052 _d 0                                 ! (molP molC-1) maximum phosphorus quota
-        Qfe_max(jp) = 2.436 _d -4                                ! (molFe molC-1) maximum iron quota
+        QC_other(jp) = a_QC_other(g)
+        QC_pro_other(jp) = a_QC_pro_other(g)
+        QP_other(jp) = a_QP_other(g)
+        QP_RNA_min(jp) = a_QP_RNA_min(g)
+        QC_DNA(jp) = a_QC_DNA(g)
 
-C       Constant parameters
-        A_pho(jp) = 16.0 _d 0                                    ! ((molC)/(molC in chl)-1) A constant of proportionalty
-        A_bio(jp) = 0.2711 _d 0*3600*24                          ! (molC (molC)-1 s) Constant for variable part of biosynthesis protein
-        AP_RNA(jp) = 0.00423 _d 0*3600*24*Y_CN_protein(jp)
-     &    /Y_PN_nucacid(jp)                                      ! (s) Constant for Variable part of RNA
-        A_thy(jp) = Y_THY_P(jp)*Y_PC_pg(jp)                      ! (molC (molC in chl)-1)
+        VI_max(jp) = a_VI_max(g) * biovol(jp)**b_VI_max(g)
+        QN_sto_max(jp) = a_QN_max(g) * biovol(jp)**b_QN_max(g)
+        Qp_max(jp) = a_Qp_max(g) * biovol(jp)**b_Qp_max(g)
+        Qfe_max(jp) = a_Qfe_max(g) * biovol(jp)**b_Qfe_max(g)
+
+        A_pho(jp) = a_A_pho(g)
+        A_bio(jp) = a_A_bio(g)
+
+        QN_pro_other(jp) = QC_pro_other(jp)/Y_CN_protein(jp) 
+        QN_RNA_min(jp) = QP_RNA_min(jp)/Y_PN_nucacid(jp) 
+        QN_DNA(jp) = QC_DNA(jp)/Y_CN_DNA(jp) 
+        QP_DNA(jp) = QN_DNA(jp)*Y_PN_nucacid(jp)  
+        AP_RNA(jp) = a_AP_RNA(g)*Y_CN_protein(jp)/Y_PN_nucacid(jp) 
+        A_thy(jp) = Y_THY_P(jp)*Y_PC_pg(jp)  
 
         Sf(jp) = 1.0 _d 0
 

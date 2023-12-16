@@ -354,6 +354,33 @@ C
      &    a_grazDecayPower,
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
      &     a_R_PCpg,
+     &     a_PC_pg,
+     &     a_NC_chl,
+     &     a_CN_cyano,
+     &     a_PN_nucacid,
+     &     a_CN_DNA,
+     &     a_CN_RNA,
+     &     a_THY_P,
+     &     a_FeN_photo,
+     &     a_ECo2Prod,
+     &     a_maintConsum,
+     &     a_VI_max,
+     &     b_VI_max,
+     &     a_A_I,
+     &     a_QC_other,
+     &     a_QC_pro_other,
+     &     a_QP_other,
+     &     a_QP_RNA_min,
+     &     a_QC_DNA,
+     &     a_QN_max,
+     &     b_QN_max,
+     &     a_Qp_max,
+     &     b_Qp_max,
+     &     a_Qfe_max,
+     &     b_Qfe_max,
+     &     a_A_pho,
+     &     a_A_bio,
+     &     a_AP_RNA,
 #endif
 #ifdef DARWIN_ALLOW_GEIDER
      &    a_mQyield,
@@ -493,6 +520,33 @@ C
       _RL a_grazDecayPower(nGroup)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       _RL a_R_PCpg(nGroup)
+      _RL a_PC_pg(nGroup)
+      _RL a_NC_chl(nGroup)
+      _RL a_CN_cyano(nGroup)
+      _RL a_PN_nucacid(nGroup)
+      _RL a_CN_DNA(nGroup)
+      _RL a_CN_RNA(nGroup)
+      _RL a_THY_P(nGroup)
+      _RL a_FeN_photo(nGroup)
+      _RL a_ECo2Prod(nGroup)
+      _RL a_maintConsum(nGroup)
+      _RL a_VI_max(nGroup)
+      _RL b_VI_max(nGroup)
+      _RL a_A_I(nGroup)
+      _RL a_QC_other(nGroup)
+      _RL a_QC_pro_other(nGroup)
+      _RL a_QP_other(nGroup)
+      _RL a_QP_RNA_min(nGroup)
+      _RL a_QC_DNA(nGroup)
+      _RL a_QN_max(nGroup)
+      _RL b_QN_max(nGroup)
+      _RL a_Qp_max(nGroup)
+      _RL b_Qp_max(nGroup)
+      _RL a_Qfe_max(nGroup)
+      _RL b_Qfe_max(nGroup)
+      _RL a_A_pho(nGroup)
+      _RL a_A_bio(nGroup)
+      _RL a_AP_RNA(nGroup)
 #endif
 #ifdef DARWIN_ALLOW_GEIDER
       _RL a_mQyield(nGroup)

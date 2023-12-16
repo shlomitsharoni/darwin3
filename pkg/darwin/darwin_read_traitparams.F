@@ -458,6 +458,33 @@ C     used to be 120D-20 for phyto
       a_grazDecayPower = 4. _d 0
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       a_R_PCpg = 40. _d 0
+      a_PC_pg = 4.49 _d 0
+      a_NC_chl = 4.0 _d 0/55.0 _d 0
+      a_CN_cyano =  2.0 _d 0
+      a_PN_nucacid = 0.2644 _d 0
+      a_CN_DNA = 2.9370 _d 0
+      a_CN_RNA = 2.8277 _d 0
+      a_THY_P = 0.028163 _d 0
+      a_FeN_photo = 0.00163 _d 0
+      a_ECo2Prod = 0.774 _d 0
+      a_maintConsum = 0.393 _d 0/3600/24
+      a_VI_max = 277 _d 0/3600/24
+      b_VI_max = 0.
+      a_A_I = 0.0086 _d 0
+      a_QC_other = 0.0182 _d 0
+      a_QC_pro_other = 0.24 _d 0
+      a_QP_other = 6.5344 _d -4
+      a_QP_RNA_min = 2.23 _d -4
+      a_QC_DNA = 9.41 _d -4
+      a_QN_max = 0.035 _d 0
+      b_QN_max = 0
+      a_Qp_max = 0.0052 _d 0
+      b_Qp_max = 0
+      a_Qfe_max = 2.436 _d -4
+      b_Qfe_max = 0
+      a_A_pho = 16.0 _d 0
+      a_A_bio = 0.2711 _d 0*3600*24
+      a_AP_RNA = 0.00423 _d 0*3600*24
 #endif
 #ifdef DARWIN_ALLOW_GEIDER
       a_mQyield = 75 _d -6
