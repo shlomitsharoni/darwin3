@@ -210,10 +210,10 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
 C  compute minimum carbon fixing rate (zero growth)
-        QC_const = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
+        QC_const(jp) = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
      &    QC_DNA(jp) + QC_other(jp)
         VI_min(jp) = maintConsum(jp)*
-     &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const)
+     &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const(jp))
         QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
 
         QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
