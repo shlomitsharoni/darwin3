@@ -132,7 +132,7 @@
      &    ksatDOP,
      &    ksatDOFe
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &   ,Y_CN_protein,
+     &    Y_CN_protein,
      &    Y_PC_pg,
      &    Y_NC_chl,
      &    Y_CN_cyano,
@@ -170,7 +170,8 @@
      &    tauExN,
      &    tauExP,
      &    tauExFe,
-     &    tauExC
+     &    tauExC,
+     &    QC_const
 #endif
 
       NAMELIST/DARWIN_DEPENDENT_TRAITS/
