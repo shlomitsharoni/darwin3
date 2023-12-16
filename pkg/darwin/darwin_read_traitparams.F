@@ -172,6 +172,9 @@
      &    a_grazTempExp2,
      &    a_grazTempOptimum,
      &    a_grazDecayPower,
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+     &     a_R_PCpg,
+#endif
 #ifdef DARWIN_ALLOW_GEIDER
      &    a_mQyield,
      &    a_chl2cmax,
@@ -453,6 +456,9 @@ C     used to be 120D-20 for phyto
       a_grazTempExp2 = 0.001 _d 0
       a_grazTempOptimum = 2. _d 0
       a_grazDecayPower = 4. _d 0
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      a_R_PCpg = 40. _d 0
+#endif
 #ifdef DARWIN_ALLOW_GEIDER
       a_mQyield = 75 _d -6
       a_chl2cmax = .3 _d 0

@@ -352,6 +352,9 @@ C
      &    a_grazTempExp2,
      &    a_grazTempOptimum,
      &    a_grazDecayPower,
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+     &     a_R_PCpg,
+#endif
 #ifdef DARWIN_ALLOW_GEIDER
      &    a_mQyield,
      &    a_chl2cmax,
@@ -488,6 +491,9 @@ C
       _RL a_grazTempExp2(nGroup)
       _RL a_grazTempOptimum(nGroup)
       _RL a_grazDecayPower(nGroup)
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      _RL  a_R_PCpg(nGroup)
+#endif
 #ifdef DARWIN_ALLOW_GEIDER
       _RL a_mQyield(nGroup)
       _RL a_chl2cmax(nGroup)
