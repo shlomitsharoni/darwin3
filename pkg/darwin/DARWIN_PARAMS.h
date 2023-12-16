@@ -315,7 +315,8 @@ C     surfSiMin         :: [mmol Si m^-3]  minimum SiO2 for carbon solver during
 C     surfSiMax         :: [mmol Si m^-3]  maximum SiO2 for carbon solver during run
 C
 C     diaz_ini_fac      :: reduce tracer concentrations by this factor on initialization
-C
+C- MACROMOLECULAR_GROWTH parameters
+C     Y_PC_pg           :: (molC molP-1)    C/P molar ratio of PG: Phosphatidyl glycerol 
 C- Denitrification
 C     O2crit            :: [mmol O2 m-3]      critical oxygen for O2/NO3 remineralization
 C     denit_NP          :: [mmol N / mmol P]  ratio of n to p in denitrification process
