@@ -504,11 +504,11 @@ C     used to be 120D-20 for phyto
       a_QP_RNA_min = 2.23 _d -4
       a_QC_DNA = 9.41 _d -4
       a_QN_max = 0.035 _d 0
-      b_QN_max = 0
+      b_QN_max = 0.
       a_Qp_max = 0.0052 _d 0
-      b_Qp_max = 0
+      b_Qp_max = 0.
       a_Qfe_max = 2.436 _d -4
-      b_Qfe_max = 0
+      b_Qfe_max = 0.
       a_A_pho = 16.0 _d 0
       a_A_bio = 0.2711 _d 0*3600*24
       a_AP_RNA = 0.00423 _d 0*3600*24
