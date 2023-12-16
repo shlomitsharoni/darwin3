@@ -472,7 +472,7 @@ c ratio if not variable.
         IF (X(j) .GT. DARWIN_EPS) THEN
           Qn(j) = MAX(0 _d 0, Ptr(in+j-1))/X(j)
         ELSE
-          Qn(j) =* Qnmax(j)
+          Qn(j) = Qnmax(j)
         ENDIF
 #else
         Qn(j) = R_NC(j)
