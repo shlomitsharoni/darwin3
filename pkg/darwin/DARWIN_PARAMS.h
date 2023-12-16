@@ -230,6 +230,7 @@ C     parfrac           :: []               fraction Qsw that is PAR
 C     parconv           :: [uEin/s/W]       conversion from W/m2 to uEin/m2/s
 C     tempnorm          :: []               set temperature function (was 1.0)
 C     TempAeArr         :: [K]              slope for pseudo-Arrhenius (TEMP_VERSION 2)
+C     TempMMArr         :: [K]              temperature effect on protein biosynt (MACROMOL_GROWTH)
 C     TemprefArr        :: [K]              reference temp for pseudo-Arrhenius (TEMP_VERSION 2)
 C     TempCoeffArr      :: []               pre-factor for pseudo-Arrhenius (TEMP_VERSION 2)
 C     reminTempAe       :: [1/K]            temperature coefficient for remineralization (TEMP_VERSION 4)
@@ -358,6 +359,7 @@ C     depthdenit        :: [m]             not implemented (depth for denitrific
      &    parconv,
      &    tempnorm,
      &    TempAeArr,
+     &    TempMMArr,
      &    TemprefArr,
      &    TempCoeffArr,
      &    reminTempAe,
@@ -476,6 +478,7 @@ C     &    yono2,
       _RL parconv
       _RL tempnorm
       _RL TempAeArr
+      _RL TempMMArr
       _RL TemprefArr
       _RL TempCoeffArr
       _RL reminTempAe
