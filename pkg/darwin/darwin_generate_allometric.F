@@ -374,7 +374,7 @@ C ----------------------------------------------------------------------
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
 
 C       Stoichiometric parameters
-        Y_PC_pg(jp) = a_R_PCpg(g)                                ! (molC molP-1) C/P molar ratio of PG: Phosphatidyl glycerol 
+        Y_PC_pg(jp) = a_R_PCpg(g)
         Y_CN_protein(jp) = 4.49 _d 0                             ! (molC molN-1) C/N molar ratio in protein
         Y_NC_chl(jp) = 4.0 _d 0/55.0 _d 0                        ! (molN molC-1) N/C molar ratio in chlorophyll
         Y_CN_cyano(jp) = 2.0 _d 0                                ! (molC molN-1) C/N molar ratio of cyanophycin

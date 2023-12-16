@@ -316,7 +316,42 @@ C     surfSiMax         :: [mmol Si m^-3]  maximum SiO2 for carbon solver during
 C
 C     diaz_ini_fac      :: reduce tracer concentrations by this factor on initialization
 C- MACROMOLECULAR_GROWTH parameters
-C     Y_PC_pg           :: (molC molP-1)    C/P molar ratio of PG: Phosphatidyl glycerol 
+C     Y_PC_pg           :: [molC molP^-1]   C/P molar ratio of PG: Phosphatidyl glycerol 
+C     Y_CN_protein      :: [molC molN^-1]   C/N molar ratio in protein
+C     Y_NC_chl          :: [molN molC^-1]   N/C molar ratio in chlorophyll
+C     Y_CN_cyano        :: [molC molN^-1]   C/N molar ratio of cyanophycin
+C     Y_PN_nucacid      :: [molP molN^-1]   P/N molar ratio of RNA
+C     Y_CN_DNA          :: [molC molN^-1]   C/N molar ratio of DNA
+C     Y_CN_RNA          :: [molC molN^-1]   C/N molar ratio of RNA
+C     Y_THY_P           :: [(molP)/(molC in chl)^-1] the shoichiometric ratio for cell phosphorus in thylakoid membrane to chlorophyll
+C     Y_FeN_photo       :: [molFe mol N^-1] Fe/N ratio in photosystem iron
+C     ECo2Prod          :: [dimensionless]  CO2 production ratio
+C     maintConsum       :: [s^-1]           maintenance carbohydrate consumption
+C     VI_max            :: [molC (molC in Chl)^-1 s^-1] carbon fixing rate
+C     A_I               :: [umol^-1 m2 s]   coefficient characterizing the absorption cross section
+C     QC_other          :: [molC molC^-1]   essential carbon (lipid membrane, etc.)
+C     QC_pro_other      :: [molC molC^-1]
+C     QP_other          :: [molP molC^-1]   constant part of phosphorus
+C     QP_RNA_min        :: [molP molC^-1]
+C     QC_DNA            :: [molC molC^-1]   constant part of DNA in carbon
+C     QN_pro_other      :: [molN molC^-1]
+C     QN_RNA_min        :: [molN molC^-1]   constant part of RNA in nitrogen
+C     QN_DNA            :: [molN molC^-1]   DNA in nitrogen
+C     QP_DNA            :: [molP molC^-1]   DNA in phosphorous
+C     QN_sto_max        :: [molN molC^-1]   maximum nitrogen storage
+C     Qp_max            :: [molP molC^-1]   maximum phosphorus quota
+C     Qfe_max           :: [molFe molC^-1]  maximum iron quota
+C     A_pho             :: [(molC)/(molC in chl)^-1] A constant of proportionalty
+C     A_bio             :: [molC (molC)^-1 s]constant for variable part of biosynthesis protein
+C     AP_RNA            :: [s]               constant for Variable part of RNA
+C     A_thy             :: [molC (molC in chl)^-1]
+C     Sf                :: [unitless]        enhancement of photosynthesis due to size
+C     QC_const          :: [molC molC^-1]    consant portion of the cell
+C     VI_min            :: [molC (molC in Chl)^-1 s^-1] minimum photosynthesis rate 
+C     QC_chlMax         :: [molC molC^-1]    maximum chlorophyll concentration at minimum light
+C     QnNoChl           :: [molN molC^-1]    minimum QN at zero growth rate
+C     QpNoChl           :: [molP molC^-1]    minimum QP at zero growth rate
+C     QfeNoChl          :: [molFe molC^-1]   minimum QFe at zero growth rate
 C- Denitrification
 C     O2crit            :: [mmol O2 m-3]      critical oxygen for O2/NO3 remineralization
 C     denit_NP          :: [mmol N / mmol P]  ratio of n to p in denitrification process
