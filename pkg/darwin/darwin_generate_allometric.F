@@ -401,14 +401,12 @@ C       Stoichiometric parameters
         Qp_max(jp)       = a_Qp_max(g) * biovol(jp)**b_Qp_max(g)
         Qfe_max(jp)      = a_Qfe_max(g) * biovol(jp)**b_Qfe_max(g)
 
-
-
         QN_pro_other(jp) = QC_pro_other(jp)/Y_CN_protein(jp) 
-        QN_RNA_min(jp) = QP_RNA_min(jp)/Y_PN_nucacid(jp) 
-        QN_DNA(jp) = QC_DNA(jp)/Y_CN_DNA(jp) 
-        QP_DNA(jp) = QN_DNA(jp)*Y_PN_nucacid(jp)  
-        AP_RNA(jp) = a_AP_RNA(g)*Y_CN_protein(jp)/Y_PN_nucacid(jp) 
-        A_thy(jp) = Y_THY_P(jp)*Y_PC_pg(jp)  
+        QN_RNA_min(jp)   = QP_RNA_min(jp)/Y_PN_nucacid(jp) 
+        QN_DNA(jp)       = QC_DNA(jp)/Y_CN_DNA(jp) 
+        QP_DNA(jp)       = QN_DNA(jp)*Y_PN_nucacid(jp)  
+        A_thy(jp)        = Y_THY_P(jp)*Y_PC_pg(jp)  
+        AP_RNA(jp) = a_AP_RNA(g)*Y_CN_protein(jp)/Y_PN_nucacid(jp)
 
         Sf(jp) = 1.0 _d 0
 
