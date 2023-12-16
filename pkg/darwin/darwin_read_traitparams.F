@@ -497,7 +497,7 @@ C     used to be 120D-20 for phyto
       a_maintConsum = 0.393 _d 0/3600/24
       a_VI_max = 277 _d 0/3600/24
       b_VI_max = 0.
-      a_A_I = 0.0086 _d 0
+      a_A_I = 0.008633641 _d 0
       a_QC_other = 0.0182 _d 0
       a_QC_pro_other = 0.24 _d 0
       a_QP_other = 6.5344 _d -4

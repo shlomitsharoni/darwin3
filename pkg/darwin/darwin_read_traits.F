@@ -207,6 +207,21 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
       READ(UNIT=iUnit, NML=DARWIN_TRAITS)
 
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+C  compute minimum carbon fixing rate (zero growth)
+        QC_const = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
+     &    QC_DNA(jp) + QC_other(jp)
+        VI_min(jp) = maintConsum(jp)*
+     &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const)
+        QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
+
+        QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
+        QpNoChl(jp) = QN_RNA_min(jp)*Y_PN_nucacid(jp)
+     &         + QN_DNA(jp)*Y_PN_nucacid(jp) + QP_other(jp)
+        QfeNoChl(jp) = 0.0 _d 0
+
+        ksatPAR(jp) = A_I(jp)
+#endif 
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C     DARWIN_RADTRANS_TRAITS
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC

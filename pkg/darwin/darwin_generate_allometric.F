@@ -410,20 +410,6 @@ C       Stoichiometric parameters
 
         Sf(jp) = 1.0 _d 0
 
-C       compute minimum carbon fixing rate (zero growth)
-        QC_const = QC_pro_other(jp) + QN_RNA_min(jp)*Y_CN_RNA(jp) +
-     &    QC_DNA(jp) + QC_other(jp)
-        VI_min(jp) = maintConsum(jp)*
-     &    (1. + A_thy(jp) + A_pho(jp))/(1 - QC_const)
-        QC_chlMax(jp) = maintConsum(jp)/VI_min(jp)
-
-        QnNoChl(jp) = QN_DNA(jp) + QN_RNA_min(jp) + QN_pro_other(jp)
-        QpNoChl(jp) = QN_RNA_min(jp)*Y_PN_nucacid(jp)
-     &         + QN_DNA(jp)*Y_PN_nucacid(jp) + QP_other(jp)
-        QfeNoChl(jp) = 0.0 _d 0
-
-        ksatPAR(jp) = 0.008633641 _d 0
-
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
 
 # ifdef DARWIN_ALLOW_GEIDER
