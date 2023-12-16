@@ -1699,7 +1699,7 @@ C--   Print parameters from DARWIN_PARAMS.h
      &' /* slope for pseudo-Arrhenius (TEMP_VERSION 2) (K) */')
      CALL WRITE_0D_RL(TempMMArr,INDEX_NONE,
      &'TempMMArr =',
-     &' /* temperature effect on protein biosynt (MACROMOL_GROWTH) (K) */')
+     &' /* T effect on protein biosynt (MACROMOL_GROWTH) (K) */')
       CALL WRITE_0D_RL(TemprefArr,INDEX_NONE,
      &'TemprefArr =',
      &' /* reference temp for pseudo-Arrhenius (TEMP_VERSION 2) (K) */')
