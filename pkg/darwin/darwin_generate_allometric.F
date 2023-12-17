@@ -387,6 +387,7 @@ C       Stoichiometric parameters
         A_I(jp)          = a_A_I(g)
         A_pho(jp)        = a_A_pho(g)
         A_bio(jp)        = a_A_bio(g)
+        ksatPAR(jp)      = a_A_I(g)
 
         QC_other(jp)     = a_QC_other(g)
         QC_pro_other(jp) = a_QC_pro_other(g)
