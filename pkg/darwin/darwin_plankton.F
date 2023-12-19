@@ -990,6 +990,7 @@ C          PC = PC !- exQc
         ELSE
           exQc = 0 _d 0
         ENDIF
+        
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
 
