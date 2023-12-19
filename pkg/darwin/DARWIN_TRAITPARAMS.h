@@ -343,6 +343,7 @@ C
      &    a_phytoTempExp1,
      &    a_phytoTempAe,
      &    a_phytoTempOptimum,
+     &    a_phytoMMTemp,
      &    a_phytoDecayPower,
      &    a_hetTempAe,
      &    a_hetTempExp2,
@@ -509,6 +510,7 @@ C
       _RL a_phytoTempAe(nGroup)
       _RL a_phytoTempExp2(nGroup)
       _RL a_phytoTempOptimum(nGroup)
+      _RL a_phytoMMTemp(nGroup)
       _RL a_phytoDecayPower(nGroup)
       _RL a_hetTempAe(nGroup)
       _RL a_hetTempExp2(nGroup)

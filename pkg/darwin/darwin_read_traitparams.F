@@ -163,6 +163,7 @@
      &    a_phytoTempAe,
      &    a_phytoTempExp2,
      &    a_phytoTempOptimum,
+     &    a_phytoMMTemp,
      &    a_phytoDecayPower,
      &    a_hetTempAe,
      &    a_hetTempExp2,
@@ -474,6 +475,7 @@ C     used to be 120D-20 for phyto
       a_phytoTempAe = 0.0438 _d 0
       a_phytoTempExp2 = 0.001 _d 0
       a_phytoTempOptimum = 2. _d 0
+      a_phytoMMTemp = -8437 _d 0
       a_phytoDecayPower = 4. _d 0
       a_hetTempAe = 0.0438 _d 0
       a_hetTempExp2 = 0.001 _d 0

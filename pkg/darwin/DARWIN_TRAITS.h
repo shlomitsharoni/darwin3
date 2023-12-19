@@ -80,6 +80,7 @@ C     phytoTempExp1      :: [exp(1/degrees C)]         see :numref:`pkg_darwin_t
 C     phytoTempAe        :: [1/degrees C]              see :numref:`pkg_darwin_temperature_params`
 C     phytoTempExp2      :: []                         see :numref:`pkg_darwin_temperature_params`
 C     phytoTempOptimum   :: [degrees C]                see :numref:`pkg_darwin_temperature_params`
+C     phytoMMTemp        :: [degrees K]                see :numref:`pkg_darwin_temperature_params`
 C     phytoDecayPower    :: []                         see :numref:`pkg_darwin_temperature_params`
 C     hetTempAe          :: [1/degrees C]              see :numref:`pkg_darwin_temperature_params`
 C     hetTempExp2        :: []                         see :numref:`pkg_darwin_temperature_params`
@@ -177,6 +178,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
      &    phytoTempAe,
      &    phytoTempExp2,
      &    phytoTempOptimum,
+     &    phytoMMTemp,
      &    phytoDecayPower,
      &    hetTempAe,
      &    hetTempExp2,
@@ -306,6 +308,7 @@ C     ksatDOFe           :: [mmol Fe m^-3]  half-saturation of DOFe for bacteria
       _RL phytoTempAe(nplank)
       _RL phytoTempExp2(nplank)
       _RL phytoTempOptimum(nplank)
+      _RL phytoMMTemp(nplank)
       _RL phytoDecayPower(nplank)
       _RL hetTempAe(nplank)
       _RL hetTempExp2(nplank)

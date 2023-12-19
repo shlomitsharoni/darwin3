@@ -235,6 +235,7 @@ C temperature function parameters
         phytoTempAe(jp)      = a_phytoTempAe(g)
         phytoTempExp2(jp)    = a_phytoTempExp2(g)
         phytoTempOptimum(jp) = a_phytoTempOptimum(g)
+        phytoMMTemp(jp)      = a_phytoMMTemp(g)
         phytoDecayPower(jp)  = a_phytoDecayPower(g)
 
         hetTempAe(jp)        = a_hetTempAe(g)

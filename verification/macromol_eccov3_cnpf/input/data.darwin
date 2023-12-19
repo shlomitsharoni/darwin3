@@ -23,7 +23,7 @@
  darwin_seed= 56,
  darwin_read_phos= F,
  tempCoeffArr= 0.8,
-# TempMMArr= 0.0,
+# phytoMMTemp= 0.0,
  PARmin= 0.1,
  alpfe= 1.0,
  freefemax = .1E-3,
