@@ -928,19 +928,13 @@ C Storage calculation -----------------
      &                  (Qc(j) - QC_essential)/Y_CN_cyano(j),
      &                  QN_sto_max(j))
         QN_store = MAX(0 _d 0, QN_store)
-        QN_excess = mmQn - QN_essential - QN_store
-        QN_excess = MAX(0 _d 0, QN_excess)
+        QN_excess = MAX(0 _d 0, mmQn - QN_essential - QN_store)
 
-        QP_excess = mmQp - MAX(Qp_max(j), QP_essential)
-        QP_excess = MAX(0 _d 0, QP_excess)
-        QP_store = MIN(mmQp, Qp_max(j)) - QP_essential
-        QP_store = MAX(0 _d 0, QP_store)
+        QP_excess = MAX(0 _d 0, mmQp - MAX(Qp_max(j), QP_essential))
+        QP_store = MAX(0 _d 0, MIN(mmQp, Qp_max(j)) - QP_essential)
 
-
-        Qfe_excess = mmQfe - MAX(Qfe_max(j), Qfe_essential)
-        Qfe_excess = MAX(0 _d 0, Qfe_excess)
-        Qfe_store = MIN(mmQfe, Qfe_max(j)) - Qfe_essential
-        Qfe_store = MAX(0 _d 0, Qfe_store)
+        Qfe_excess = MAX(0 _d 0,mmQfe - MAX(Qfe_max(j), Qfe_essential))
+        Qfe_store = MAX(0 _d 0, MIN(mmQfe, Qfe_max(j)) - Qfe_essential)
  
 
 C       Exudation
