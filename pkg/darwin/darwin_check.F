@@ -1652,6 +1652,12 @@ C--   Print parameters from DARWIN_PARAMS.h
      &'oC0 =',
      &' /* Coefficient for determining saturation O2 */')
 #endif
+#ifdef DARWIN_MACROMOLECULAR_GROWTH
+      CALL WRITE_0D_RL(phytoMMTemp,INDEX_NONE,
+     &'phytoMMTemp =',
+     &' /* temp effect on protein biosyn (MACROMOL GROWTH) (K) */')
+#endif
+
       CALL WRITE_0D_C(darwin_pickupSuff,-1,INDEX_NONE,
      &'darwin_pickupSuff =',
      &' /* pickup suffix for darwin; set to '' '' to disable reading at'
@@ -1697,9 +1703,6 @@ C--   Print parameters from DARWIN_PARAMS.h
       CALL WRITE_0D_RL(TempAeArr,INDEX_NONE,
      &'TempAeArr =',
      &' /* slope for pseudo-Arrhenius (TEMP_VERSION 2) (K) */')
-      CALL WRITE_0D_RL(phytoMMTemp,INDEX_NONE,
-     &'phytoMMTemp =',
-     &' /* temp effect on protein biosyn (MACROMOL GROWTH) (K) */')
       CALL WRITE_0D_RL(TemprefArr,INDEX_NONE,
      &'TemprefArr =',
      &' /* reference temp for pseudo-Arrhenius (TEMP_VERSION 2) (K) */')
