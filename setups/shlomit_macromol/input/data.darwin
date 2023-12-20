@@ -141,6 +141,7 @@
  a_grazemax(9)= 3.4722000000000000E-05,  ! prowe values
  b_grazemax(9)= -0.16,
 #
+
  a_mort(:)= 8*6e-07, 2e-7  ! 1/7days, 1/50days
  a_mort2(:)= 8*6.e-7, 8.e-7,  ! 16*.6/120/day
  a_phytoTempExp2= 8*.0003,
