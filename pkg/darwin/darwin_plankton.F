@@ -938,37 +938,50 @@ C Storage calculation -----------------
  
 
 C       Exudation
-        IF (tauExN(j) .NE. 0 _d 0) THEN
-          IF (mmQn.GT.NCmin) THEN
-          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
-          exQn = MAX(0 _d 0, QnExc)/tauExN(j)
-          uptakeN = uptakeN - exQn*mmX
-          uptakeNO3 = uptakeNO3 - exQn*mmX
-          VN = VN - exQn
-          ELSE
-          exQn = 0 _d 0
-          ENDIF
-        ENDIF
+        regQn = 1 - mmQN/(QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
+        VN = VN * regQn
+        uptakeN = VN * mmX
+        uptakeNO3 =  VNO3 * mmX
 
-          IF (tauExP(j) .NE. 0 _d 0) THEN
-          IF (mmQp.GT.PCmin) THEN
-          QpExc = mmQp - (QP_essential+QP_store)
-          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
-C         uptakeP = uptakeP - exQp*mmX
-          uptakePO4 = uptakePO4 - exQp*mmX
-          VP = VP - exQp
-          ENDIF
-        ENDIF
+C        IF (tauExN(j) .NE. 0 _d 0) THEN
+C          IF (mmQn.GT.NCmin) THEN
+C          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
+C          exQn = MAX(0 _d 0, QnExc)/tauExN(j)
+C          uptakeN = uptakeN - exQn*mmX
+C          uptakeNO3 = uptakeNO3 - exQn*mmX
+C          VN = VN - exQn
+C          ELSE
+C          exQn = 0 _d 0
+C          ENDIF
+C        ENDIF
 
-        IF (tauExFe(j) .NE. 0 _d 0) THEN
-          IF (mmQfe.GT.0 _d 0) THEN
-          QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
-          exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
-C         uptakeFe = uptakeFe - exQfe*mmX
-          uptakeFeT = uptakeFeT - exQfe*mmX
-          Vfe = Vfe - exQfe
-          ENDIF
-        ENDIF
+        regQp = 1 - mmQp/(QP_essential+QP_store)
+        VP = VP * regQp 
+        uptakePO4 = VP * mmX 
+
+C          IF (tauExP(j) .NE. 0 _d 0) THEN
+C          IF (mmQp.GT.PCmin) THEN
+C          QpExc = mmQp - (QP_essential+QP_store)
+C          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
+CC         uptakeP = uptakeP - exQp*mmX
+C          uptakePO4 = uptakePO4 - exQp*mmX
+C          VP = VP - exQp
+C          ENDIF
+C        ENDIF
+
+        regQfe = 1 - mmQfe/(Qfe_essential+Qfe_Store)
+        Vfe = Vfe * regQfe
+        uptakeFeT = Vfe * mmX
+
+C        IF (tauExFe(j) .NE. 0 _d 0) THEN
+C          IF (mmQfe.GT.0 _d 0) THEN
+C          QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
+C          exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
+CC         uptakeFe = uptakeFe - exQfe*mmX
+C          uptakeFeT = uptakeFeT - exQfe*mmX
+C          Vfe = Vfe - exQfe
+C          ENDIF
+C        ENDIF
 
 
 
