@@ -341,6 +341,8 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QP_DNA_plot0
       _RL PCc
       _RL PCg
+      _RL BC_all
+      _RL BC
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
@@ -991,6 +993,18 @@ C          ENDIF
 C        ENDIF
 
   
+C Adding carbon exudation term --shlomit--
+C If photosynthesis rate is larger then biosythesis C-requiermemnets
+C  PCg photosynthesis rate (depends only on light) mmolC mmolC-1 s-2 
+C  BC biosynthesis C requirements mmolC mmolC-1 s-1
+
+        IF (NCmin.GT.mmQn) THEN
+          PCg = PChl * QC_chl 
+          BC_all = (/ VN/mmQC, VP/mmQP, Vfe/mmQfe /)
+          BC     = MAX(MINVAL (BC_all), 0 _d 0)
+          exQc   = MAX(0 _d 0 , PCg - BC)/(86400 _d 0)
+        ENDIF
+
 
 C        PCg = PC
 C        ! Kei7: Exudation of C
