@@ -341,7 +341,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QP_DNA_plot0
       _RL PCc
       _RL PCg
-      REAL, DIMENSION(4) :: BC_all
+      REAL, DIMENSION(3) :: BC_all
       _RL BC
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
