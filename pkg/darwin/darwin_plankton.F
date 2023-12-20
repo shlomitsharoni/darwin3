@@ -1000,7 +1000,7 @@ C  BC biosynthesis C requirements mmolC mmolC-1 s-1
 
         IF (NCmin.GT.mmQn) THEN
           PCg = PChl * QC_chl 
-          BC_all = (/ VN/mmQC, VP/mmQP, Vfe/mmQfe /)
+          BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
           BC     = MAX(MINVAL (BC_all), 0 _d 0)
           exQc   = MAX(0 _d 0 , PCg - BC)/(86400 _d 0)
         ENDIF
