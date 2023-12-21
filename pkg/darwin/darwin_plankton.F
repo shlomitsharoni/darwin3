@@ -962,7 +962,7 @@ C        ENDIF
         ENDIF
 
         IF (mmQp.GT.PCmin) THEN
-          regQp = 1 - mmQp/(QP_essential+QP_store)
+          regQp = MAX(0., 1 - mmQp/(QP_essential+QP_store))
           VP = VP * regQp 
           uptakePO4 = VP * mmX 
         ENDIF
