@@ -332,6 +332,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Scal_coeff
       _RL QC_CSTO
       _RL RQ
+      _RL dROP
       _RL QN_pro_const
       _RL QN_DNA_plot
       _RL QP_const_plot
@@ -1031,6 +1032,8 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) *  14.8775 /9.5
      &     + ( QN_store*Y_CN_cyano(j)) * 18.5000/ 10.
 
+        dROP = RQ/mmQp
+
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iVP  +j-1) = VP
@@ -1057,6 +1060,7 @@ C       ! shlomit: Calclate the O2:P ratio
         diags(iFSTO+j-1) = Qfe_Store
         diags(iFEXC+j-1) = Qfe_excess
         diags(iY_RQ+j-1) = RQ
+        diags(idROP+j-1) = dROP
 
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */

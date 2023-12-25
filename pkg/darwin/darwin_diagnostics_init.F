@@ -330,6 +330,13 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
+       WRITE(diagName,'(A,I4.4)')'dROP', j
+       WRITE(diagTitle,'(A)')'O2:P ratio for respiration'
+       diagUnits = 'mol O2 molP-1   '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
       ENDDO
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
