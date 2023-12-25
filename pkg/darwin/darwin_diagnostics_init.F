@@ -162,6 +162,13 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
+       WRITE(diagName,'(A,I4.4)')'VP', j
+       WRITE(diagTitle,'(A)')'Carbon-specific phosphate uptake rate'
+       diagUnits = 'mmol P/mmol C/s '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I            diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
        WRITE(diagName,'(A,I4.4)')'MODE', j
        WRITE(diagTitle,'(A)')'1: N, 2: P, 3: Fe limitation'
        diagUnits = 'dimensionless   '

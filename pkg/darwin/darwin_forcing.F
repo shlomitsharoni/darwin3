@@ -870,6 +870,9 @@ C === diagnostics ======================================================
         WRITE(diagname, '(A,I4.4)') 'VN', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iVN+iTr-1),diagname,
      &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'VP', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iVP+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
         WRITE(diagname, '(A,I4.4)') 'MODE', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iMODE+iTr-1),diagname,
      &          0,Nr,2,bi,bj,myThid)

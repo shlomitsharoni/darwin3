@@ -1033,6 +1033,7 @@ C       ! shlomit: Calclate the O2:P ratio
 
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
+        diags(iVP  +j-1) = VP
         diags(iMODE+j-1) = MODE
         diags(iFe_C+j-1) = mmQfe
         diags(iexQc+j-1) = exQc        
