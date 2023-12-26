@@ -1032,7 +1032,7 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) *  14.8775 /9.5
      &     + ( QN_store*Y_CN_cyano(j)) * 18.5000/ 10.
 
-        dROP = RQ/mmQp
+        dROP = RQ/(QP_essential+QP_store)
 
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
