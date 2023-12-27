@@ -962,22 +962,21 @@ C        ENDIF
           ENDIF
         ENDIF
 
-C        IF (mmQp.GT.PCmin) THEN
-C          regQp = MAX(0., 1 - mmQp/(QP_essential+QP_store))
-C          regQp = MIN(1., regQp)
-C          VP = VP * regQp 
-C          uptakePO4 = VP * mmX 
-C        ENDIF
-
-        IF (tauExP(j) .NE. 0 _d 0) THEN
-          IF (mmQp.GT.PCmin) THEN
-          QpExc = mmQp - (QP_essential+QP_store)
-          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as N
-C            uptakeP = uptakeP - exQp*mmX
-          uptakePO4 = uptakePO4 - exQp*mmX
-          VP = VP - exQp
-          ENDIF
+        IF (mmQp.GT.PCmin) THEN
+          regQp = MIN(1., 1 - mmQp/(QP_essential+QP_store))
+          VP = VP * regQp 
+          uptakePO4 = VP * mmX 
         ENDIF
+
+C        IF (tauExP(j) .NE. 0 _d 0) THEN
+C          IF (mmQp.GT.PCmin) THEN
+C          QpExc = mmQp - (QP_essential+QP_store)
+C          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as Nc
+C       !  uptakeP = uptakeP - exQp*mmX
+C          uptakePO4 = uptakePO4 - exQp*mmX
+C          VP = VP - exQp
+C          ENDIF
+C        ENDIF
 
 C        IF (mmQfe.GT.0 _d 0) THEN
 C          regQfe = 1 - mmQfe/(Qfe_essential+Qfe_Store)
