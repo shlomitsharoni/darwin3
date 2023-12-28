@@ -262,7 +262,7 @@ C      _RL QN_bio_D
       _RL Qc_D1
       _RL Qc_D2
       _RL Qc_exc
-
+      _RL regQpMM
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 CKei1-0: New values for P limitation
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -909,7 +909,7 @@ C       when Qn<QnNoChl, then Qn_exc=0, PC=0, QC_chlN<0, QC_chl=0
          QP_const_plot = MIN(mmQp - QP_RNA - QP_DNA_plot,QP_other(j))
         ENDIF
 
-        PCmin = QP_RNA + QP_DNA_plot + QP_other(j)
+        PCmin = QP_RNA + QP_DNA_plot + QP_const_plot(j)
         NCmin = QN_RNA + QN_DNA_plot + QN_pro_tot
 
         QN_essential  = QN_chl + QN_pro_tot + QN_RNA + QN_DNA_plot
@@ -963,8 +963,8 @@ C        ENDIF
         ENDIF
 
         IF (mmQp.GT.PCmin) THEN
-          regQp = MIN(1., 1 - mmQp/(QP_essential+QP_store))
-          VP = VP * regQp 
+          regQpMM = MIN(1., 1 - mmQp/(QP_essential+QP_store))
+          VP = VP * regQpMM 
           uptakePO4 = VP * mmX 
         ENDIF
 
