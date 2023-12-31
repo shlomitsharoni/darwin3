@@ -262,7 +262,6 @@ C      _RL QN_bio_D
       _RL Qc_D1
       _RL Qc_D2
       _RL Qc_exc
-      _RL regQpMM
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 CKei1-0: New values for P limitation
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -962,11 +961,10 @@ C        ENDIF
           ENDIF
         ENDIF
 
-        IF (mmQp.GT.PCmin) THEN
-          regQpMM = MIN(1., 1 - mmQp/(QP_essential+QP_store))
-          VP = VP * regQpMM 
+C        IF (mmQp.GT.PCmin) THEN
+          VP = VP * MAX(MIN(1., 1 - mmQp/(Qp_max(j))),0 _d 0)
           uptakePO4 = VP * mmX 
-        ENDIF
+C        ENDIF
 
 C        IF (tauExP(j) .NE. 0 _d 0) THEN
 C          IF (mmQp.GT.PCmin) THEN
