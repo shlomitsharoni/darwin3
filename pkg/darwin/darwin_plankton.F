@@ -961,10 +961,10 @@ C        ENDIF
           ENDIF
         ENDIF
 
-C        IF (mmQp.GT.PCmin) THEN
+        IF (mmQp.GT.PCmin) THEN
           VP = VP * MAX(MIN(1., 1 - mmQp/(Qp_max(j))),0 _d 0)
           uptakePO4 = VP * mmX 
-C        ENDIF
+        ENDIF
 
 C        IF (tauExP(j) .NE. 0 _d 0) THEN
 C          IF (mmQp.GT.PCmin) THEN
