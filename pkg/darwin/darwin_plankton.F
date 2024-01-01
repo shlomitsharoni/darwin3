@@ -770,9 +770,9 @@ C==== Photosynthesis ===================================================
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
 
         IF (X(j) .GT. DARWIN_EPS) THEN
-         mmQn  = Qn(j)
-         mmQp  = Qp(j)
-         mmQfe = Qfe(j)
+         mmQn  = MIN(Qn(j),100 _d 0)
+         mmQp  = MIN(Qp(j),1000 _d 0)
+         mmQfe = MIN(Qfe(j),1 _d -5)
          mmX   = X(j)
         ELSE
          mmQn = 0 _d 0
@@ -942,9 +942,7 @@ C Storage calculation -----------------
 C       Exudation
 C       Nutrient regulation terms --shlomit--
 C        IF (mmQn.GT.NCmin) THEN
-C          regQn = 1 - mmQN/(QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
-C          regQn = MAX(MIN(regQn,1),0)
-C          VN = VN * regQn
+C          VN = VN * MAX(0 _d 0, MIN(1_d 0, 1-mmQp))
 C          uptakeN = VN * mmX
 C          uptakeNO3 =  VNO3 * mmX
 C        ENDIF
@@ -961,20 +959,20 @@ C        ENDIF
           ENDIF
         ENDIF
 
-        IF (mmQp.GT.PCmin) THEN
-          VP = VP * MAX(MIN(1., 1 - mmQp/(Qp_max(j))),0 _d 0)
-          uptakePO4 = VP * mmX 
-        ENDIF
-
-C        IF (tauExP(j) .NE. 0 _d 0) THEN
-C          IF (mmQp.GT.PCmin) THEN
-C          QpExc = mmQp - (QP_essential+QP_store)
-C          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as Nc
-C       !  uptakeP = uptakeP - exQp*mmX
-C          uptakePO4 = uptakePO4 - exQp*mmX
-C          VP = VP - exQp
-C          ENDIF
+C        IF (mmQp.GT.PCmin) THEN
+C          VP = VP * MAX(MIN(1., 1 - mmQp/(Qp_max(j))),0 _d 0)
+C          uptakePO4 = VP * mmX 
 C        ENDIF
+
+        IF (tauExP(j) .NE. 0 _d 0) THEN
+          IF (mmQp.GT.PCmin) THEN
+          QpExc = mmQp - (QP_essential+QP_store)
+          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as Nc
+C       !  uptakeP = uptakeP - exQp*mmX
+          uptakePO4 = uptakePO4 - exQp*mmX
+          VP = VP - exQp
+          ENDIF
+        ENDIF
 
 C        IF (mmQfe.GT.0 _d 0) THEN
 C          regQfe = 1 - mmQfe/(Qfe_essential+Qfe_Store)
