@@ -908,7 +908,7 @@ C       when Qn<QnNoChl, then Qn_exc=0, PC=0, QC_chlN<0, QC_chl=0
          QP_const_plot = MIN(mmQp - QP_RNA - QP_DNA_plot,QP_other(j))
         ENDIF
 
-        PCmin = QP_RNA + QP_DNA_plot + QP_const_plot(j)
+        PCmin = QP_RNA + QP_DNA_plot + QP_other(j)
         NCmin = QN_RNA + QN_DNA_plot + QN_pro_tot
 
         QN_essential  = QN_chl + QN_pro_tot + QN_RNA + QN_DNA_plot
