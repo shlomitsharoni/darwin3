@@ -1028,7 +1028,8 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_store*Y_CN_cyano(j)) * 18.5000/ 10.
 
         dROP = RQ/(Qp(j))
-
+        R_OP = dROP 
+        
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iVP  +j-1) = VP
