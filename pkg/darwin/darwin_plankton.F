@@ -989,7 +989,7 @@ C       Nutrient regulation terms --shlomit--
         IF (mmQn.GT.NCmin) THEN
 C          regQn = 1 _d 0 - (QN_excess)/(QN_essential + QN_store)
           QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
-          regQn = 1 _d 0 - QnExc/tauExN/VN
+          regQn = 1 _d 0 - QnExc/tauExN(j)/VN
           regQn = MIN( 1 _d 0 , regQn)
           VN = VN*regQn
           uptakeN = VN * mmX
@@ -1002,7 +1002,7 @@ C          regQn = 1 _d 0 - (QN_excess)/(QN_essential + QN_store)
 C          regQp = 1 _d 0 - (( mmQp - QP_essential - QP_store)/
 C     &                  (QP_essential + QP_store))
           QpExc = mmQp - (QP_essential+QP_store)
-          regQp = 1 _d 0 - QpExc/tauExP/VP
+          regQp = 1 _d 0 - QpExc/tauExP(j)/VP
           regQp = MIN(1 _d 0, regQp)
           VP = VP*regQp 
           uptakePO4 = VP * mmX 
@@ -1012,7 +1012,7 @@ C     &                  (QP_essential + QP_store))
 C          regQfe = 1 - ((mmQfe - Qfe_essential - Qfe_Store)/
 C     &                  (Qfe_essential + Qfe_Store))
           QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
-          regQfe = 1 _d 0 - QfeExc/tauExFe/Vfe 
+          regQfe = 1 _d 0 - QfeExc/tauExFe(j)/Vfe 
           regQfe = MIN (1 _d 0, regQfe)
           Vfe = Vfe * regQfe
           uptakeFeT = Vfe * mmX
