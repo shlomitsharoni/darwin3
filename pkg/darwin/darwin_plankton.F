@@ -973,7 +973,20 @@ C          Vfe = Vfe - exQfe
 C          ENDIF
 C        ENDIF
 
-  
+C          PCg = PC
+C        ! Kei7: Exudation of C
+C        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
+C          Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
+C     &     + QN_chl_D0 + QC_chl_const*A_pho(j)/Y_CN_protein(j)
+C
+C          QcnExc = 1 - mmQn/Qn_min
+C          exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
+C             PC = PC !- exQc
+C        ELSE
+C          exQc = 0 _d 0
+C        ENDIF
+
+
 C Adding carbon exudation term --shlomit--
 C If photosynthesis rate is larger then biosythesis C-requiermemnets
 C  PCg photosynthesis rate (depends only on light) mmolC mmolC-1 s-2 
@@ -994,8 +1007,6 @@ C          regQn = 1 _d 0 - (QN_excess)/(QN_essential + QN_store)
           VN = VN*regQn
           uptakeN = VN * mmX
           uptakeNO3 =  VNO3 * mmX
-        ELSE 
-          regQn = 1 _d 0
         ENDIF
 
         IF (mmQp.GT.PCmin) THEN
@@ -1020,7 +1031,7 @@ C     &                  (Qfe_essential + Qfe_Store))
 
         PCg = PC
 C        ! Kei7: Exudation of C
-        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
+        IF (tauExC(j) .NE. 0 _d 0 .AND. mmQn.LE.NCmin) THEN
           Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
      &     + QN_chl_D0 + QC_chl_const*A_pho(j)/Y_CN_protein(j)
 
@@ -1030,6 +1041,7 @@ C             PC = PC !- exQc
         ELSE
           exQc = 0 _d 0
         ENDIF
+
         
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
