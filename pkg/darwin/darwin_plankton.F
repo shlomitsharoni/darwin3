@@ -1002,11 +1002,15 @@ C       Nutrient regulation terms --shlomit--
         IF (mmQn.GT.NCmin) THEN
 C          regQn = 1 _d 0 - (QN_excess)/(QN_essential + QN_store)
           QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
+          exQn = MAX(0 _d 0, QnExc)/tauExN(j)
           regQn = 1 _d 0 - QnExc/tauExN(j)/VN
           regQn = MIN( 1 _d 0 , regQn)
           VN = VN*regQn
+          VNO3 = VNO3*regQn
           uptakeN = VN * mmX
           uptakeNO3 =  VNO3 * mmX
+        ELSE 
+          exQn = 0 _d 0
         ENDIF
 
         IF (mmQp.GT.PCmin) THEN
@@ -1028,10 +1032,10 @@ C     &                  (Qfe_essential + Qfe_Store))
           Vfe = Vfe * regQfe
           uptakeFeT = Vfe * mmX
         ENDIF
-
+        
         PCg = PC
 C        ! Kei7: Exudation of C
-        IF (tauExC(j) .NE. 0 _d 0 .AND. mmQn.LE.NCmin) THEN
+        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
           Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
      &     + QN_chl_D0 + QC_chl_const*A_pho(j)/Y_CN_protein(j)
 
