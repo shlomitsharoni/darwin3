@@ -770,9 +770,9 @@ C==== Photosynthesis ===================================================
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
 
         IF (X(j) .GT. DARWIN_EPS) THEN
-         mmQn  = MIN(Qn(j),100 _d 0)
-         mmQp  = MIN(Qp(j),1000 _d 0)
-         mmQfe = MIN(Qfe(j),1 _d -5)
+         mmQn  = Qn(j)
+         mmQp  = Qp(j)
+         mmQfe = Qfe(j)
          mmX   = X(j)
         ELSE
          mmQn = 0 _d 0
