@@ -940,101 +940,41 @@ C Storage calculation -----------------
  
 
 C       Exudation 
-C        IF (tauExN(j) .NE. 0 _d 0) THEN
-C          IF (mmQn.GT.NCmin) THEN
-C          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
-C          exQn = MAX(0 _d 0, QnExc)/tauExN(j)
-C          uptakeN = uptakeN - exQn*mmX
-C          uptakeNO3 = uptakeNO3 - exQn*mmX
-C          VN = VN - exQn
-C          ELSE
-C          exQn = 0 _d 0
-C          ENDIF
-C        ENDIF
-
-
-C        IF (tauExP(j) .NE. 0 _d 0) THEN
-C          IF (mmQp.GT.PCmin) THEN
-C          QpExc = mmQp - (QP_essential+QP_store)
-C          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as Nc
-C       !  uptakeP = uptakeP - exQp*mmX
-C          uptakePO4 = uptakePO4 - exQp*mmX
-C          VP = VP - exQp
-C          ENDIF
-C        ENDIF
-
-C        IF (tauExFe(j) .NE. 0 _d 0) THEN
-C          IF (mmQfe.GT.0 _d 0) THEN
-C          QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
-C          exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
-C            uptakeFe = uptakeFe - exQfe*mmX
-C          uptakeFeT = uptakeFeT - exQfe*mmX
-C          Vfe = Vfe - exQfe
-C          ENDIF
-C        ENDIF
-
-C          PCg = PC
-C        ! Kei7: Exudation of C
-C        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
-C          Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
-C     &     + QN_chl_D0 + QC_chl_const*A_pho(j)/Y_CN_protein(j)
-C
-C          QcnExc = 1 - mmQn/Qn_min
-C          exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
-C             PC = PC !- exQc
-C        ELSE
-C          exQc = 0 _d 0
-C        ENDIF
-
-
-C Adding carbon exudation term --shlomit--
-C If photosynthesis rate is larger then biosythesis C-requiermemnets
-C  PCg photosynthesis rate (depends only on light) mmolC mmolC-1 s-2 
-C  BC biosynthesis C requirements mmolC mmolC-1 s-1
-C        IF (NCmin.GT.mmQn) THEN
-C          PCg = PChl * QC_chl 
-C          BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
-C          BC     = MAX(MINVAL (BC_all), 0 _d 0)
-C          exQc   = MAX(0 _d 0 , PCg - BC)/(86400 _d 0)
-C        ENDIF
-
-C       Nutrient regulation terms --shlomit--
-        IF (mmQn.GT.NCmin) THEN
-C          regQn = 1 _d 0 - (QN_excess)/(QN_essential + QN_store)
+        IF (tauExN(j) .NE. 0 _d 0) THEN
+          IF (mmQn.GT.NCmin) THEN
           QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
           exQn = MAX(0 _d 0, QnExc)/tauExN(j)
-          regQn = 1 _d 0 - QnExc/tauExN(j)/VN
-          regQn = MIN( 1 _d 0 , regQn)
-          VN = VN*regQn
-          VNO3 = VNO3*regQn
-          uptakeN = VN * mmX
-          uptakeNO3 =  VNO3 * mmX
-        ELSE 
+          uptakeN = uptakeN - exQn*mmX
+          uptakeNO3 = uptakeNO3 - exQn*mmX
+          VN = VN - exQn
+          ELSE
           exQn = 0 _d 0
+          ENDIF
         ENDIF
 
-        IF (mmQp.GT.PCmin) THEN
-C          regQp = 1 _d 0 - (( mmQp - QP_essential - QP_store)/
-C     &                  (QP_essential + QP_store))
+
+        IF (tauExP(j) .NE. 0 _d 0) THEN
+          IF (mmQp.GT.PCmin) THEN
           QpExc = mmQp - (QP_essential+QP_store)
-          regQp = 1 _d 0 - QpExc/tauExP(j)/VP
-          regQp = MIN(1 _d 0, regQp)
-          VP = VP*regQp 
-          uptakePO4 = VP * mmX 
+          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as Nc
+C       !  uptakeP = uptakeP - exQp*mmX
+          uptakePO4 = uptakePO4 - exQp*mmX
+          VP = VP - exQp
+          ENDIF
         ENDIF
 
-        IF (mmQfe.GT.0 _d 0) THEN
-C          regQfe = 1 - ((mmQfe - Qfe_essential - Qfe_Store)/
-C     &                  (Qfe_essential + Qfe_Store))
+        IF (tauExFe(j) .NE. 0 _d 0) THEN
+          IF (mmQfe.GT.0 _d 0) THEN
           QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
-          regQfe = 1 _d 0 - QfeExc/tauExFe(j)/Vfe 
-          regQfe = MIN (1 _d 0, regQfe)
-          Vfe = Vfe * regQfe
-          uptakeFeT = Vfe * mmX
+          exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
+          uptakeFe = uptakeFe - exQfe*mmX
+          uptakeFeT = uptakeFeT - exQfe*mmX
+          Vfe = Vfe - exQfe
+          ENDIF
         ENDIF
-        
-        PCg = PC
-C        ! Kei7: Exudation of C
+
+          PCg = PC
+        ! Kei7: Exudation of C
         IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
           Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
      &     + QN_chl_D0 + QC_chl_const*A_pho(j)/Y_CN_protein(j)
@@ -1045,7 +985,6 @@ C             PC = PC !- exQc
         ELSE
           exQc = 0 _d 0
         ENDIF
-
         
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
@@ -1059,7 +998,7 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_store*Y_CN_cyano(j)) * 18.5000/ 10.
 
         dROP = RQ/(Qp(j))
-        R_OP = dROP 
+C        R_OP = dROP 
 
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
