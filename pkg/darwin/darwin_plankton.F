@@ -1042,11 +1042,11 @@ C        R_OP = dROP
         diags(iFEXC+j-1) = Qfe_excess
         diags(iY_RQ+j-1) = RQ
         diags(idROP+j-1) = dROP
-        diags(idROP+j-1) = LIMP
-        diags(idROP+j-1) = LIMN
-        diags(idROP+j-1) = LIMF
-        diags(idROP+j-1) = LIMC
-        diags(idROP+j-1) = LIML
+        diags(iLIMP+j-1) = LIMP
+        diags(iLIMN+j-1) = LIMN
+        diags(iLIMF+j-1) = LIMF
+        diags(iLIMC+j-1) = LIMC
+        diags(iLIML+j-1) = LIML
 
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
