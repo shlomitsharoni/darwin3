@@ -945,6 +945,21 @@ C === diagnostics ======================================================
         WRITE(diagname, '(A,I4.4)') 'dROP', iTr
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,idROP+iTr-1),diagname,
      &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'LIMP', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iLIMP+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'LIMN', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iLIMN+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'LIMF', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iLIMF+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'LIMC', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iLIMC+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
+        WRITE(diagname, '(A,I4.4)') 'LIML', iTr
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iLIML+iTr-1),diagname,
+     &          0,Nr,2,bi,bj,myThid)
        ENDDO
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 

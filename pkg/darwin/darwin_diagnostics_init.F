@@ -337,6 +337,41 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
        CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
+       WRITE(diagName,'(A,I4.4)')'LIMP', j
+       WRITE(diagTitle,'(A)')'P limitation'
+       diagUnits = '                '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'LIMN', j
+       WRITE(diagTitle,'(A)')'N limitation'
+       diagUnits = '                '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'LIMF', j
+       WRITE(diagTitle,'(A)')'Fe limitation'
+       diagUnits = '                '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+   
+       WRITE(diagName,'(A,I4.4)')'LIMC', j
+       WRITE(diagTitle,'(A)')'C limitation'
+       diagUnits = '                '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+       WRITE(diagName,'(A,I4.4)')'LIML', j
+       WRITE(diagTitle,'(A)')'Light limitation'
+       diagUnits = '                '
+       diagCode  = 'SM P    MR      '
+       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+     
       ENDDO
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 

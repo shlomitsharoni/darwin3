@@ -35,6 +35,7 @@ C Contains indices into diagnostics array
       integer iPRNA, iPDNA, iPTHY, iPCON, iPSTO, iPEXC
       integer iFPHO, iFSTO, iFEXC, iY_RQ, idROP
       integer iMODE, iFe_C, iexQc, iPCg
+      integer iLIMP, iLIMN, iLIMF, iLIMC, iLIML
 #endif
       integer iConsO2
       integer iProdO2
@@ -114,8 +115,12 @@ C Contains indices into diagnostics array
       PARAMETER(iFEXC=   iFSTO+nPhoto)
       PARAMETER(iY_RQ=   iFEXC+nPhoto)
       PARAMETER(idROP=   iY_RQ+nPhoto)
-      PARAMETER(iaMacro= idROP+nPhoto)
-
+      PARAMETER(iLIMP=   idROP+nPhoto)
+      PARAMETER(iLIMN=   iLIMP+nPhoto)
+      PARAMETER(iLIMF=   iLIMN+nPhoto)
+      PARAMETER(iLIMC=   iLIMF+nPhoto)
+      PARAMETER(iLIML=   iLIMC+nPhoto)
+      PARAMETER(iaMacro= iLIML+nPhoto)
 #else
       PARAMETER(iaMacro= 22)
 #endif

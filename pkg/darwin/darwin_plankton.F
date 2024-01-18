@@ -317,6 +317,11 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL uptakeFe
       INTEGER MODE
       REAL, DIMENSION(4) :: PC_all
+      _RL LIMP
+      _RL LIMN
+      _RL LIMF
+      _RL LIMC
+      _RL LIML
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -853,13 +858,23 @@ C        Calculate the growth rate as a function of macromolecular composition
 
          PC_all = (/ PC_p, PC_n, PC_fe, PCc /)
          MODE = MINLOC (PC_all, DIM=1)
+         IF (MODE .EQ. 1. _d 0) THEN
+           LIMP = 1 _d 0
+         ELSEIF (MODE .EQ. 2. _d 0) THEN
+           LIMN = 1 _d 0
+         ELSEIF (MODE .EQ. 3. _d 0) THEN
+           LIMF = 1 _d 0
+         ELSEIF (MODE .EQ. 5. _d 0) THEN
+           LIMC = 1 _d 0
+         ENDIF
+
          PC = MINVAL (PC_all)
          QC_chl = maintConsum(j)/PChl + (1 + ECo2Prod(j))/PChl*PC
- 
 
 C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated based on cellular mass balance
         ELSE
-         MODE = 5 _d 0
+C         MODE = 5 _d 0
+         LIML = 1 _d 0
          PC = 0. _d 0
         ENDIF
          
@@ -1027,6 +1042,11 @@ C        R_OP = dROP
         diags(iFEXC+j-1) = Qfe_excess
         diags(iY_RQ+j-1) = RQ
         diags(idROP+j-1) = dROP
+        diags(idROP+j-1) = LIMP
+        diags(idROP+j-1) = LIMN
+        diags(idROP+j-1) = LIMF
+        diags(idROP+j-1) = LIMC
+        diags(idROP+j-1) = LIML
 
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
