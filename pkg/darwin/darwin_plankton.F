@@ -855,7 +855,7 @@ C        Calculate the growth rate as a function of macromolecular composition
          MODE = MINLOC (PC_all, DIM=1)
          PC = MINVAL (PC_all)
          QC_chl = maintConsum(j)/PChl + (1 + ECo2Prod(j))/PChl*PC
-
+ 
 
 C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated based on cellular mass balance
         ELSE
