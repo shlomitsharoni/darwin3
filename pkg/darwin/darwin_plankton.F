@@ -973,8 +973,8 @@ C       Exudation
           QpExc = mmQp - (QP_essential+QP_store)
           exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as Nc
 C       !  uptakeP = uptakeP - exQp*mmX
-          uptakePO4 = uptakePO4 - exQp*mmX
           VP = VP - exQp
+          uptakePO4 = VP*mmX
           ENDIF
         ENDIF
 
