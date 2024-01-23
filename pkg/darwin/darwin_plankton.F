@@ -289,7 +289,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Qc_essential_and_Nstore
       _RL QpExc
       _RL exQp
-      _RL uptakeP
+      _RL MMregQp
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -969,11 +969,15 @@ C       Exudation
 
         IF (tauExP(j) .NE. 0 _d 0) THEN
           IF (mmQp.GT.PCmin) THEN
-          QpExc = mmQp - (QP_essential+QP_store)
-          exQp = MAX(0 _d 0, QpExc)/tauExP(j)  !applying the same rate as Nc
-C       !  uptakeP = uptakeP - exQp*mmX
-          VP = VP - exQp
-          uptakePO4 = VP*mmX
+            QpExc = mmQp - (QP_essential+QP_store)
+            exQp = MAX(0 _d 0, QpExc)/tauExP(j)
+            IF (VP .NE. O _d 0)
+              MMregQp = (1 - exQp/VP)
+            ELSE 
+              MMregQp = 1
+            ENDIF
+            VP = VP*MMregQp
+            uptakePO4 = VP*mmX
           ENDIF
         ENDIF
 
@@ -1017,7 +1021,7 @@ C        R_OP = dROP
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iVP  +j-1) = VP
-        diags(iMODE+j-1) = MODE
+        diags(iMODE+j-1) = MMregQp
         diags(iFe_C+j-1) = mmQfe
         diags(iexQc+j-1) = exQc        
         diags(iPCg +j-1) = PCg        
