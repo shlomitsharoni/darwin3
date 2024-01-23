@@ -973,7 +973,7 @@ C       Exudation
           IF (mmQp.GT.PCmin) THEN
             QpExc = mmQp - (QP_essential+QP_store)
             exQp = MAX(0 _d 0, QpExc)/tauExP(j)
-            IF (VP .NE. 0 _d 0)
+            IF (VP .NE. 0 _d 0) THEN
               MMregQp = (1 - exQp/VP)
             ELSE 
               MMregQp = 1
