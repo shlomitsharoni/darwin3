@@ -981,7 +981,7 @@ C       Exudation
             MMMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
      &                  /(QP_essential+QP_store))
             MMMregQp = MIN(1 _d 0, MMMregQp)
-            VP = VP*MMregQp
+            VP = VP*MMMregQp
             uptakePO4 = VP*mmX
           ENDIF
         ENDIF
