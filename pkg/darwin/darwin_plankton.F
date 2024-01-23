@@ -978,9 +978,13 @@ C       Exudation
             ELSE 
               MMregQp = 1
             ENDIF
-            MMMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
+            IF ((QP_essential+QP_store) .NE. 0 _d 0) THEN
+              MMMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
      &                  /(QP_essential+QP_store))
-            MMMregQp = MIN(1 _d 0, MMMregQp)
+              MMMregQp = MIN(1 _d 0, MMMregQp)
+            ELSE
+              MMMregQp = 1
+            ENDIF
             VP = VP*MMMregQp
             uptakePO4 = VP*mmX
           ENDIF
