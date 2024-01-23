@@ -290,6 +290,8 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QpExc
       _RL exQp
       _RL MMregQp
+      _RL MMMregQp
+
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -976,6 +978,9 @@ C       Exudation
             ELSE 
               MMregQp = 1
             ENDIF
+            MMMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
+     &                  /(QP_essential+QP_store))
+            MMMregQp = MIN(1 _d 0, MMMregQp)
             VP = VP*MMregQp
             uptakePO4 = VP*mmX
           ENDIF
@@ -1048,7 +1053,7 @@ C        R_OP = dROP
         diags(iLIMP+j-1) = LIMP
         diags(iLIMN+j-1) = LIMN
         diags(iLIMF+j-1) = LIMF
-        diags(iLIMC+j-1) = LIMC
+        diags(iLIMC+j-1) = MMMregQp
         diags(iLIML+j-1) = LIML
 
 
