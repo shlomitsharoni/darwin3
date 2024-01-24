@@ -1037,7 +1037,6 @@ C       ! shlomit: Calclate the O2:P ratio
         dROP = RQ/(Qp(j))
 C        R_OP = dROP 
 
-C Hello my name is Shlomit
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iVP  +j-1) = VP
