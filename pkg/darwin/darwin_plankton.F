@@ -993,6 +993,7 @@ C       Exudation
             IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN   
               MMregQFe = 1 _d 0 - 10*((mmQfe - (Qfe_essential+Qfe_Store))
      &                  /(Qfe_essential+Qfe_Store))
+              MMregQFe = MIN(1 _d 0, MMregQFe)
             ELSE
               MMregQFe = 1 _d 0
             ENDIF
@@ -1059,7 +1060,7 @@ C        R_OP = dROP
         diags(iLIMP+j-1) = LIMP
         diags(iLIMN+j-1) = LIMN
         diags(iLIMF+j-1) = LIMF
-        diags(iLIMC+j-1) = LIMC
+        diags(iLIMC+j-1) = MMregQFe
         diags(iLIML+j-1) = LIML
 
 
