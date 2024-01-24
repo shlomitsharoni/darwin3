@@ -978,7 +978,7 @@ C       Exudation
      &                  /(QP_essential+QP_store))
               MMregQp = MIN(1 _d 0, MMregQp)
             ELSE
-              MMregQp = 1
+              MMregQp = 1 _d 0
             ENDIF
             VP = VP*MMregQp
             uptakePO4 = VP*mmX
@@ -994,7 +994,7 @@ C       Exudation
               MMregQFe = 1 _d 0 - 10*((mmQfe - (Qfe_essential+Qfe_Store))
      &                  /(Qfe_essential+Qfe_Store))
             ELSE
-              MMregQFe = 1
+              MMregQFe = 1 _d 0
             ENDIF
             Vfe = Vfe*MMregQFe        
             uptakeFe = Vfe*mmX
