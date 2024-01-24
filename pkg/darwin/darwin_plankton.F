@@ -991,7 +991,7 @@ C       Exudation
             QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
             exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
             IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN   
-              MMregQFe = 1 _d 0 - 10*((mmQfe - (Qfe_essential+Qfe_Store))
+              MMregQFe = 1 _d 0-10*((mmQfe - (Qfe_essential+Qfe_Store))
      &                  /(Qfe_essential+Qfe_Store))
               MMregQFe = MIN(1 _d 0, MMregQFe)
             ELSE
