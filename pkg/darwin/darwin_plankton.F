@@ -291,6 +291,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL exQp
       _RL MMregQp
       _RL MMregQFe
+      _RL MMregQn
 
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -935,7 +936,6 @@ C       when Qn<QnNoChl, then Qn_exc=0, PC=0, QC_chlN<0, QC_chl=0
      &         + QN_RNA*Y_CN_RNA(j) + QN_DNA_plot*Y_CN_DNA(j)
      &         + QP_thy * Y_PC_pg(j) + QC_other(j)
         
-
 C Storage calculation -----------------
         IF (mmQn.EQ.QnNoChl(j) .OR.
      &      (QC_Chl.GT.0 _d 0 .AND. QC_chl.EQ.QC_chlN)) THEN
@@ -958,11 +958,18 @@ C Storage calculation -----------------
 C       Exudation 
         IF (tauExN(j) .NE. 0 _d 0) THEN
           IF (mmQn.GT.NCmin) THEN
-          QnExc = mmQn - (QN_chl+QN_pro_tot+QN_RNA+QN_DNA(j)+QN_store)
-          exQn = MAX(0 _d 0, QnExc)/tauExN(j)
-          uptakeN = uptakeN - exQn*mmX
-          uptakeNO3 = uptakeNO3 - exQn*mmX
-          VN = VN - exQn
+            QnExc = mmQn - (QN_essential+QN_store)
+            exQn = MAX(0 _d 0, QnExc)/tauExN(j)
+            IF ((QN_essential+QN_store) .NE. 0 _d 0) THEN
+              MMregQn = 1 _d 0 - 10*((mmQn - (QN_essential+QN_store))
+     &                  /(QN_essential+QN_store))
+              MMregQn = MIN(1 _d 0, MMregQn)
+            ELSE
+              MMregQn = 1 _d 0
+            ENDIF
+            VN = VN*MMregQn
+            uptakeN = VN*mmX
+            uptakeNO3 = VN*mmX
           ELSE
           exQn = 0 _d 0
           ENDIF
