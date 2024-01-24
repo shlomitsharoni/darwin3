@@ -290,7 +290,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QpExc
       _RL exQp
       _RL MMregQp
-      _RL MMMregQp
+      _RL MMregQFe
 
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -973,30 +973,32 @@ C       Exudation
           IF (mmQp.GT.PCmin) THEN
             QpExc = mmQp - (QP_essential+QP_store)
             exQp = MAX(0 _d 0, QpExc)/tauExP(j)
-            IF (VP .NE. 0 _d 0) THEN
-              MMregQp = (1 - exQp/VP)
-            ELSE 
+            IF ((QP_essential+QP_store) .NE. 0 _d 0) THEN
+              MMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
+     &                  /(QP_essential+QP_store))
+              MMregQp = MIN(1 _d 0, MMregQp)
+            ELSE
               MMregQp = 1
             ENDIF
-            IF ((QP_essential+QP_store) .NE. 0 _d 0) THEN
-              MMMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
-     &                  /(QP_essential+QP_store))
-              MMMregQp = MIN(1 _d 0, MMMregQp)
-            ELSE
-              MMMregQp = 1
-            ENDIF
-            VP = VP*MMMregQp
+            VP = VP*MMregQp
             uptakePO4 = VP*mmX
           ENDIF
         ENDIF
 
+
         IF (tauExFe(j) .NE. 0 _d 0) THEN
           IF (mmQfe.GT.0 _d 0) THEN
-          QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
-          exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
-          uptakeFe = uptakeFe - exQfe*mmX
-          uptakeFeT = uptakeFeT - exQfe*mmX
-          Vfe = Vfe - exQfe
+            QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
+            exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
+            IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN   
+              MMregQFe = 1 _d 0 - 10*((mmQfe - (Qfe_essential+Qfe_Store))
+     &                  /(Qfe_essential+Qfe_Store))
+            ELSE
+              MMregQFe = 1
+            ENDIF
+            Vfe = Vfe*MMregQFe        
+            uptakeFe = Vfe*mmX
+            uptakeFeT = Vfe*mmX
           ENDIF
         ENDIF
 
@@ -1057,7 +1059,7 @@ C        R_OP = dROP
         diags(iLIMP+j-1) = LIMP
         diags(iLIMN+j-1) = LIMN
         diags(iLIMF+j-1) = LIMF
-        diags(iLIMC+j-1) = MMMregQp
+        diags(iLIMC+j-1) = LIMC
         diags(iLIML+j-1) = LIML
 
 
