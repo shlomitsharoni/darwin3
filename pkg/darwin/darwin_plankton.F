@@ -292,7 +292,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL MMregQp
       _RL MMregQFe
       _RL MMregQn
-      _RL mm_Qp_max
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -988,9 +987,8 @@ C            ELSE
 C              MMregQp = 1 _d 0
 C            ENDIF
 
-C             mm_Qp_max = QP_essential+QP_store
-             IF ((mm_Qp_max-PCmin) .NE. 0 _d 0) THEN
-               MMregQp = (mm_Qp_max - mmQP)/(mm_Qp_max-PCmin)
+             IF (QP_store .NE. 0 _d 0) THEN
+               MMregQp = ((QP_essential+QP_store) - mmQP)/QP_store
                MMregQp = MAX (0., MIN(1., MMregQp))
              ELSE
                MMregQp = 1 _d 0
