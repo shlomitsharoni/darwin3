@@ -1007,22 +1007,31 @@ C            ENDIF
 C        ENDIF
 
 
-        IF (tauExFe(j) .NE. 0 _d 0) THEN
+C        IF (tauExFe(j) .NE. 0 _d 0) THEN
           IF (mmQfe.GT.0 _d 0) THEN
             QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
             exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
-            IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN   
-              MMregQFe = 1 _d 0-10*((mmQfe - (Qfe_essential+Qfe_Store))
-     &                  /(Qfe_essential+Qfe_Store))
-              MMregQFe = MIN(1 _d 0, MMregQFe)
+C            IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN   
+C              MMregQFe = 1 _d 0-10*((mmQfe - (Qfe_essential+Qfe_Store))
+C     &                  /(Qfe_essential+Qfe_Store))
+C              MMregQFe = MIN(1 _d 0, MMregQFe)
+C            ELSE
+C              MMregQFe = 1 _d 0
+C            ENDIF
+
+            IF (Qfe_Store .NE. 0 _d 0) THEN
+              MMregQFe = ((Qfe_essential+Qfe_Store) - mmQfe)/Qfe_Store
+              MMregQFe = MAX (0., MIN(1., MMregQFe))
             ELSE
               MMregQFe = 1 _d 0
             ENDIF
+
+            
             Vfe = Vfe*MMregQFe        
             uptakeFe = Vfe*mmX
             uptakeFeT = Vfe*mmX
           ENDIF
-        ENDIF
+C        ENDIF
 
           PCg = PC
         ! Kei7: Exudation of C
