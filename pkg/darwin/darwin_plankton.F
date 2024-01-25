@@ -988,9 +988,9 @@ C            ELSE
 C              MMregQp = 1 _d 0
 C            ENDIF
 
-             mm_Qp_max = QP_essential+QP_store
-             IF ((mm_Qp_max-QP_essential) .NE. 0 _d 0) THEN
-               MMregQp = (mm_Qp_max - mmQP)/(mm_Qp_max-QP_essential)
+C             mm_Qp_max = QP_essential+QP_store
+             IF ((mm_Qp_max-PCmin) .NE. 0 _d 0) THEN
+               MMregQp = (mm_Qp_max - mmQP)/(mm_Qp_max-PCmin)
                MMregQp = MAX (0., MIN(1., MMregQp))
              ELSE
                MMregQp = 1 _d 0
