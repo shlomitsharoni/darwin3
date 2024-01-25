@@ -955,24 +955,32 @@ C Storage calculation -----------------
  
 
 C       Exudation 
-        IF (tauExN(j) .NE. 0 _d 0) THEN
+C        IF (tauExN(j) .NE. 0 _d 0) THEN
           IF (mmQn.GT.NCmin) THEN
             QnExc = mmQn - (QN_essential+QN_store)
             exQn = MAX(0 _d 0, QnExc)/tauExN(j)
-            IF ((QN_essential+QN_store) .NE. 0 _d 0) THEN
-              MMregQn = 1 _d 0 - 10*((mmQn - (QN_essential+QN_store))
-     &                  /(QN_essential+QN_store))
-              MMregQn = MIN(1 _d 0, MMregQn)
+C            IF ((QN_essential+QN_store) .NE. 0 _d 0) THEN
+C              MMregQn = 1 _d 0 - 10*((mmQn - (QN_essential+QN_store))
+C     &                  /(QN_essential+QN_store))
+C              MMregQn = MIN(1 _d 0, MMregQn)
+C            ELSE
+C              MMregQn = 1 _d 0
+C            ENDIF
+            
+            IF (QN_store .NE. 0 _d 0) THEN
+              MMregQn = ((QN_essential+QN_store) - mmQn)/QN_store
+              MMregQn = MAX (0., MIN(1., MMregQn))
             ELSE
               MMregQn = 1 _d 0
             ENDIF
+
             VN = VN*MMregQn
             uptakeN = VN*mmX
             uptakeNO3 = VN*mmX
           ELSE
           exQn = 0 _d 0
           ENDIF
-        ENDIF
+C        ENDIF
 
 
 C        IF (tauExP(j) .NE. 0 _d 0) THEN
