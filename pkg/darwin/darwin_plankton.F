@@ -292,7 +292,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL MMregQp
       _RL MMregQFe
       _RL MMregQn
-
+      _RL mm_Qp_max
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -976,21 +976,29 @@ C       Exudation
         ENDIF
 
 
-        IF (tauExP(j) .NE. 0 _d 0) THEN
+C        IF (tauExP(j) .NE. 0 _d 0) THEN
           IF (mmQp.GT.PCmin) THEN
             QpExc = mmQp - (QP_essential+QP_store)
             exQp = MAX(0 _d 0, QpExc)/tauExP(j)
-            IF ((QP_essential+QP_store) .NE. 0 _d 0) THEN
-              MMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
-     &                  /(QP_essential+QP_store))
-              MMregQp = MIN(1 _d 0, MMregQp)
-            ELSE
-              MMregQp = 1 _d 0
-            ENDIF
+C            IF ((QP_essential+QP_store) .NE. 0 _d 0) THEN
+C              MMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
+C     &                  /(QP_essential+QP_store))
+C              MMregQp = MIN(1 _d 0, MMregQp)
+C            ELSE
+C              MMregQp = 1 _d 0
+C            ENDIF
+
+             mm_Qp_max = QP_essential+QP_store
+             IF ((mm_Qp_max-QP_essential) .NE. 0 _d 0) THEN
+               MMregQp = (mm_Qp_max - mmQP)/(mm_Qp_max-QP_essential)
+               MMregQp = MAX (0., MIN(1., MMregQp))
+             ELSE
+               MMregQp = 1 _d 0
+             ENDIF  
             VP = VP*MMregQp
             uptakePO4 = VP*mmX
           ENDIF
-        ENDIF
+C        ENDIF
 
 
         IF (tauExFe(j) .NE. 0 _d 0) THEN
