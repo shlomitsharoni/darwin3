@@ -967,8 +967,9 @@ C            ELSE
 C              MMregQn = 1 _d 0
 C            ENDIF
             
-            IF (QN_store .NE. 0 _d 0) THEN
-              MMregQn = ((QN_essential+QN_store) - mmQn)/QN_store
+            IF ((QN_essential+QN_store-NCmin) .NE. 0 _d 0) THEN
+              MMregQn = (QN_essential+QN_store - mmQn)/
+     &                  (QN_essential+QN_store-NCmin)
               MMregQn = MAX (0., MIN(1., MMregQn))
             ELSE
               MMregQn = 1 _d 0
@@ -995,8 +996,9 @@ C            ELSE
 C              MMregQp = 1 _d 0
 C            ENDIF
 
-             IF (QP_store .NE. 0 _d 0) THEN
-               MMregQp = ((QP_essential+QP_store) - mmQP)/QP_store
+             IF ( (QP_essential+QP_store-PCmin) .NE. 0 _d 0) THEN
+               MMregQp = (QP_essential+QP_store - mmQP)/
+     &                    (QP_essential+QP_store-PCmin)
                MMregQp = MAX (0., MIN(1., MMregQp))
              ELSE
                MMregQp = 1 _d 0
@@ -1019,8 +1021,9 @@ C            ELSE
 C              MMregQFe = 1 _d 0
 C            ENDIF
 
-            IF (Qfe_Store .NE. 0 _d 0) THEN
-              MMregQFe = ((Qfe_essential+Qfe_Store) - mmQfe)/Qfe_Store
+            IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN
+              MMregQFe = (Qfe_essential+Qfe_Store - mmQfe)
+     &                  /(Qfe_essential+Qfe_Store)
               MMregQFe = MAX (0., MIN(1., MMregQFe))
             ELSE
               MMregQFe = 1 _d 0
