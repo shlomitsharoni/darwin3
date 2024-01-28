@@ -959,21 +959,21 @@ C        IF (tauExN(j) .NE. 0 _d 0) THEN
           IF (mmQn.GT.NCmin) THEN
             QnExc = mmQn - (QN_essential+QN_store)
             exQn = MAX(0 _d 0, QnExc)/tauExN(j)
-C            IF ((QN_essential+QN_store) .NE. 0 _d 0) THEN
-C              MMregQn = 1 _d 0 - 10*((mmQn - (QN_essential+QN_store))
-C     &                  /(QN_essential+QN_store))
-C              MMregQn = MIN(1 _d 0, MMregQn)
-C            ELSE
-C              MMregQn = 1 _d 0
-C            ENDIF
-            
-            IF ((QN_essential+QN_store-NCmin) .NE. 0 _d 0) THEN
-              MMregQn = (QN_essential+QN_store - mmQn)/
-     &                  (QN_essential+QN_store-NCmin)
-              MMregQn = MAX (0., MIN(1., MMregQn))
+            IF ((QN_essential+QN_store) .NE. 0 _d 0) THEN
+              MMregQn = 1 _d 0 - 10*((mmQn - (QN_essential+QN_store))
+     &                  /(QN_essential+QN_store))
+              MMregQn = MIN(1 _d 0, MMregQn)
             ELSE
               MMregQn = 1 _d 0
             ENDIF
+            
+C            IF ((QN_essential+QN_store-NCmin) .NE. 0 _d 0) THEN
+C              MMregQn = (QN_essential+QN_store - mmQn)/
+C     &                  (QN_essential+QN_store-NCmin)
+C              MMregQn = MAX (0., MIN(1., MMregQn))
+C            ELSE
+C              MMregQn = 1 _d 0
+C            ENDIF
 
             VN = VN*MMregQn
             uptakeN = VN*mmX
@@ -988,21 +988,22 @@ C        IF (tauExP(j) .NE. 0 _d 0) THEN
           IF (mmQp.GT.PCmin) THEN
             QpExc = mmQp - (QP_essential+QP_store)
             exQp = MAX(0 _d 0, QpExc)/tauExP(j)
-C            IF ((QP_essential+QP_store) .NE. 0 _d 0) THEN
-C              MMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
-C     &                  /(QP_essential+QP_store))
-C              MMregQp = MIN(1 _d 0, MMregQp)
-C            ELSE
-C              MMregQp = 1 _d 0
-C            ENDIF
+            IF ((QP_essential+QP_store) .NE. 0 _d 0) THEN
+              MMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
+     &                  /(QP_essential+QP_store))
+              MMregQp = MIN(1 _d 0, MMregQp)
+            ELSE
+              MMregQp = 1 _d 0
+            ENDIF
 
-             IF ( (QP_essential+QP_store-PCmin) .NE. 0 _d 0) THEN
-               MMregQp = (QP_essential+QP_store - mmQP)/
-     &                    (QP_essential+QP_store-PCmin)
-               MMregQp = MAX (0., MIN(1., MMregQp))
-             ELSE
-               MMregQp = 1 _d 0
-             ENDIF  
+C             IF ( (QP_essential+QP_store-PCmin) .NE. 0 _d 0) THEN
+C               MMregQp = (QP_essential+QP_store - mmQP)/
+C     &                    (QP_essential+QP_store-PCmin)
+C               MMregQp = MAX (0., MIN(1., MMregQp))
+C             ELSE
+C               MMregQp = 1 _d 0
+C             ENDIF  
+
             VP = VP*MMregQp
             uptakePO4 = VP*mmX
           ENDIF
@@ -1013,21 +1014,21 @@ C        IF (tauExFe(j) .NE. 0 _d 0) THEN
           IF (mmQfe.GT.0 _d 0) THEN
             QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
             exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
-C            IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN   
-C              MMregQFe = 1 _d 0-10*((mmQfe - (Qfe_essential+Qfe_Store))
-C     &                  /(Qfe_essential+Qfe_Store))
-C              MMregQFe = MIN(1 _d 0, MMregQFe)
-C            ELSE
-C              MMregQFe = 1 _d 0
-C            ENDIF
-
-            IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN
-              MMregQFe = (Qfe_essential+Qfe_Store - mmQfe)
-     &                  /(Qfe_essential+Qfe_Store)
-              MMregQFe = MAX (0., MIN(1., MMregQFe))
+            IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN   
+              MMregQFe = 1 _d 0-10*((mmQfe - (Qfe_essential+Qfe_Store))
+     &                  /(Qfe_essential+Qfe_Store))
+              MMregQFe = MIN(1 _d 0, MMregQFe)
             ELSE
               MMregQFe = 1 _d 0
             ENDIF
+
+C            IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN
+C              MMregQFe = (Qfe_essential+Qfe_Store - mmQfe)
+C     &                  /(Qfe_essential+Qfe_Store)
+C              MMregQFe = MAX (0., MIN(1., MMregQFe))
+C            ELSE
+C              MMregQFe = 1 _d 0
+C            ENDIF
 
             
             Vfe = Vfe*MMregQFe        
