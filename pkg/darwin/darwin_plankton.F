@@ -1065,7 +1065,7 @@ C       ! shlomit: Calclate the O2:P ratio
               dROP = RQ/mmQp
             ELSE
               dROP = 1 _d 0
-            END 
+            ENDIF 
 C        R_OP = dROP 
 
         diags(iPChl+j-1) = PChl
