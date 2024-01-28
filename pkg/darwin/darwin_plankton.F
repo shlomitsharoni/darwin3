@@ -1061,7 +1061,11 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) *  14.8775 /9.5
      &     + ( QN_store*Y_CN_cyano(j)) * 18.5000/ 10.
 
-        dROP = RQ/(Qp(j))
+            IF (mmQp .NE. 0 _d 0) THEN   
+              dROP = RQ/mmQp
+            ELSE
+              dROP = 1 _d 0
+            END 
 C        R_OP = dROP 
 
         diags(iPChl+j-1) = PChl
