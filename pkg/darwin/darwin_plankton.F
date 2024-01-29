@@ -962,7 +962,7 @@ C        IF (tauExN(j) .NE. 0 _d 0) THEN
             IF ((QN_essential+QN_store) .NE. 0 _d 0) THEN
               MMregQn = 1 _d 0 - 10*((mmQn - (QN_essential+QN_store))
      &                  /(QN_essential+QN_store))
-              MMregQn = MIN(1 _d 0, MMregQn)
+              MMregQn = MAX(0., MIN(1., MMregQn))
             ELSE
               MMregQn = 1 _d 0
             ENDIF
@@ -991,7 +991,7 @@ C        IF (tauExP(j) .NE. 0 _d 0) THEN
             IF ((QP_essential+QP_store) .NE. 0 _d 0) THEN
               MMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
      &                  /(QP_essential+QP_store))
-              MMregQp = MIN(1 _d 0, MMregQp)
+              MMregQp = MAX(0., MIN(1., MMregQp))
             ELSE
               MMregQp = 1 _d 0
             ENDIF
@@ -999,7 +999,7 @@ C        IF (tauExP(j) .NE. 0 _d 0) THEN
 C             IF ( (QP_essential+QP_store-PCmin) .NE. 0 _d 0) THEN
 C               MMregQp = (QP_essential+QP_store - mmQP)/
 C     &                    (QP_essential+QP_store-PCmin)
-C               MMregQp = MAX (0., MIN(1., MMregQp))
+C               MMregQp = MAX(0., MIN(1., MMregQp))
 C             ELSE
 C               MMregQp = 1 _d 0
 C             ENDIF  
@@ -1017,7 +1017,7 @@ C        IF (tauExFe(j) .NE. 0 _d 0) THEN
             IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN   
               MMregQFe = 1 _d 0-10*((mmQfe - (Qfe_essential+Qfe_Store))
      &                  /(Qfe_essential+Qfe_Store))
-              MMregQFe = MIN(1 _d 0, MMregQFe)
+              MMregQFe = MAX(0., MIN(1., MMregQFe))
             ELSE
               MMregQFe = 1 _d 0
             ENDIF
@@ -1098,7 +1098,7 @@ C        R_OP = dROP
         diags(iLIMP+j-1) = LIMP
         diags(iLIMN+j-1) = LIMN
         diags(iLIMF+j-1) = LIMF
-        diags(iLIMC+j-1) = MMregQFe
+        diags(iLIMC+j-1) = LIMC
         diags(iLIML+j-1) = LIML
 
 
