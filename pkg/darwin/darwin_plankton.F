@@ -1061,10 +1061,10 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) *  14.8775 /9.5
      &     + ( QN_store*Y_CN_cyano(j)) * 18.5000/ 10.
 
-            IF (mmQp .NE. 0 _d 0) THEN   
-              dROP = RQ/mmQp
-            ELSE
-              dROP = 1 _d 0
+            IF (Ptr(ip+j-1) .NE. 0 _d 0) THEN   
+              dROP = RQ * MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
+C            ELSE
+C              dROP = 1 _d 0
             ENDIF 
 C        R_OP = dROP 
 
