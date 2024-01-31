@@ -797,7 +797,7 @@ C       Carbohydrate fixation rate per chlorophyll (s-1)
 C       Case 1: Enought light, growth rate is a function of macromol allocation
         IF ( PChl .GT. VI_min(j) ) THEN
 
-C        chlorophyll quota (mol C cell-1)
+C        chlorophyll quota (mol C (mol C in Chl)-1)
          QC_chl_const = maintConsum(j)/PChl
          QC_chl_D     = (1 _d 0 + ECo2Prod(j))/PChl
 
@@ -1039,16 +1039,17 @@ C        ENDIF
 
           PCg = PC
         ! Kei7: Exudation of C
-        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
+C        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
           Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
      &     + QN_chl_D0 + QC_chl_const*A_pho(j)/Y_CN_protein(j)
 
           QcnExc = 1 - mmQn/Qn_min
-          exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
+C          exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
 C             PC = PC !- exQc
-        ELSE
-          exQc = 0 _d 0
-        ENDIF
+           exQc = MAX(0., PChl*QC_chl - PC)
+C        ELSE
+C          exQc = 0 _d 0
+C        ENDIF
         
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
