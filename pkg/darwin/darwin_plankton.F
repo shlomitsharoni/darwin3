@@ -1047,10 +1047,10 @@ C          PCg = PC
 C          QcnExc = 1 - mmQn/Qn_min
 C          exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
 C             PC = PC !- exQc
-C           BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
-           BC_all = (/ VN*MAX(0., X(j)/Ptr(in+j-1)), 
-     &                 VP*MAX(0., X(j)/Ptr(ip+j-1)), 
-     &                 Vfe*MAX(0., X(j)/Ptr(ife+j-1)) /)
+           BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
+C           BC_all = (/ VN*MAX(0., X(j)/Ptr(in+j-1)), 
+C     &                 VP*MAX(0., X(j)/Ptr(ip+j-1)), 
+C     &                 Vfe*MAX(0., X(j)/Ptr(ife+j-1)) /)
            BC = MAX(MINVAL(BC_all), 0 _d 0)
            exQc = MAX(0., PCg - BC)*0.7
          ELSE
