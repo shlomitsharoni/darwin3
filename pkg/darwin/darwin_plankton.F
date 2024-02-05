@@ -790,7 +790,7 @@ C==== Photosynthesis ===================================================
 C       set up Chl and N requirements as a function of growth rate PC
 C       then solve for PC
 
-C       Carbohydrate fixation rate per chlorophyll (s-1)
+C       Carbohydrate fixation rate per chlorophyll (mol C (mol C in chl s)-1)
         PChl = Sf(j)*VI_max(j)*(1 - EXP(-A_I(j)*PARtot))
 
         PCg = 0 _d 0
@@ -1037,19 +1037,25 @@ C            ENDIF
           ENDIF
 C        ENDIF
 
-          PCg = PC
+C          PCg = PC
+          PCg = PChl * QC_chl
         ! Kei7: Exudation of C
-C        IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
+         IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
           Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
      &     + QN_chl_D0 + QC_chl_const*A_pho(j)/Y_CN_protein(j)
 
-          QcnExc = 1 - mmQn/Qn_min
+C          QcnExc = 1 - mmQn/Qn_min
 C          exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
 C             PC = PC !- exQc
-           exQc = MAX(0., PChl*QC_chl - PC)
-C        ELSE
-C          exQc = 0 _d 0
-C        ENDIF
+C           BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
+           BC_all = (/ VN*MAX(0., X(j)/Ptr(in+j-1)), 
+     &                 VP*MAX(0., X(j)/Ptr(ip+j-1)), 
+     &                 Vfe*MAX(0., X(j)/Ptr(ife+j-1)) /)
+           BC = MAX(MINVAL(BC_all), 0 _d 0)
+           exQc = MAX(0., PCg - BC)*0.7
+         ELSE
+           exQc = 0 _d 0
+         ENDIF
         
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
