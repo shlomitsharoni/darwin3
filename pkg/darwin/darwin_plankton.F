@@ -953,7 +953,7 @@ C Storage calculation -----------------
         Qfe_store = MAX(0 _d 0, MIN(mmQfe, Qfe_max(j)) - Qfe_essential)
  
 
-C       Exudation 
+C       shlomit: new nutrient regulation terms 
 C        IF (tauExN(j) .NE. 0 _d 0) THEN
           IF (mmQn.GT.NCmin) THEN
             QnExc = mmQn - (QN_essential+QN_store)
@@ -1038,13 +1038,13 @@ C        ENDIF
 
           PCg = PChl * QC_chl
         ! shlomit: New C exudation term
-C         IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
+          IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
            BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
            BC = MAX(MINVAL(BC_all), 0 _d 0)
            exQc = MAX(0., PCg - BC)*0.7
-C         ELSE
-C           exQc = 0 _d 0
-C         ENDIF
+          ELSE
+            exQc = 0 _d 0
+          ENDIF
         
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
