@@ -1041,7 +1041,7 @@ C        ENDIF
           IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
            BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
            BC = MAX(MINVAL(BC_all), 0 _d 0)
-           exQc = MAX(0., PCg - BC)*0.7
+           exQc = MAX(0., PCg - BC)*0.3
           ELSE
             exQc = 0 _d 0
           ENDIF
