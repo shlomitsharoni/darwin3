@@ -297,7 +297,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 CKei1-1: New values for C exudation
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      _RL Qn_min
       _RL QcnExc
       _RL exQc
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -1037,25 +1036,15 @@ C            ENDIF
           ENDIF
 C        ENDIF
 
-C          PCg = PC
           PCg = PChl * QC_chl
-        ! Kei7: Exudation of C
-         IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
-          Qn_min = QN_RNA_min(j) + QN_pro_other(j) + QN_DNA(j)
-     &     + QN_chl_D0 + QC_chl_const*A_pho(j)/Y_CN_protein(j)
-
-C          QcnExc = 1 - mmQn/Qn_min
-C          exQc = MAX(0 _d 0, QcnExc)/tauExC(j) !Same rate as N
-C             PC = PC !- exQc
+        ! shlomit: New C exudation term
+C         IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
            BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
-C           BC_all = (/ VN*MAX(0., X(j)/Ptr(in+j-1)), 
-C     &                 VP*MAX(0., X(j)/Ptr(ip+j-1)), 
-C     &                 Vfe*MAX(0., X(j)/Ptr(ife+j-1)) /)
            BC = MAX(MINVAL(BC_all), 0 _d 0)
            exQc = MAX(0., PCg - BC)*0.7
-         ELSE
-           exQc = 0 _d 0
-         ENDIF
+C         ELSE
+C           exQc = 0 _d 0
+C         ENDIF
         
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
