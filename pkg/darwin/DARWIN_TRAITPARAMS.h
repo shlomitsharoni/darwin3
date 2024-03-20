@@ -355,7 +355,7 @@ C
      &    a_grazDecayPower,
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
      &    a_R_PCpg,
-     &    a_PC_pg,
+     &    a_CN_pro,
      &    a_NC_chl,
      &    a_CN_cyano,
      &    a_PN_nucacid,
@@ -522,7 +522,7 @@ C
       _RL a_grazDecayPower(nGroup)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       _RL a_R_PCpg(nGroup)
-      _RL a_PC_pg(nGroup)
+      _RL a_CN_pro(nGroup)
       _RL a_NC_chl(nGroup)
       _RL a_CN_cyano(nGroup)
       _RL a_PN_nucacid(nGroup)

@@ -374,7 +374,7 @@ C ----------------------------------------------------------------------
 
 C       Stoichiometric parameters
         Y_PC_pg(jp)      = a_R_PCpg(g)
-        Y_CN_protein(jp) = a_PC_pg(g)
+        Y_CN_protein(jp) = a_CN_pro(g)
         Y_NC_chl(jp)     = a_NC_chl(g)
         Y_CN_cyano(jp)   = a_CN_cyano(g)
         Y_PN_nucacid(jp) = a_PN_nucacid(g)

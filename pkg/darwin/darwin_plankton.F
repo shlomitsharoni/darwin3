@@ -1038,19 +1038,20 @@ C        ENDIF
 
           PCg = PChl * QC_chl
         ! shlomit: New C exudation term
-          IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
-           BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
-           BC = MAX(MINVAL(BC_all), 0 _d 0)
-           exQc = MAX(0., PCg - BC)*0.3
-          ELSE
+C          IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
+C           BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
+C           BC = MAX(MINVAL(BC_all), 0 _d 0)
+C           exQc = MAX(0., PCg - BC)*0.3
+C          ELSE
             exQc = 0 _d 0
-          ENDIF
+C          ENDIF
         
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
 
         RQ = ( QN_pro_tot*Y_CN_protein(j))* 8.4600/5.3200 
-     &     + ( QC_other(j)/2 + Y_PC_pg(j) * QP_thy + QC_CSTO/2) * 56./43
+     &     + ( QC_other(j)/2  + QC_CSTO/2) * 56./43
+     &     + ( Y_PC_pg(j) * QP_thy)* 56./43
      &     + ( QC_other(j)/2 + QC_CSTO/2) * 6./6.
      &     + ( QC_chl) * 75.5000/55.
      &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 15.7500/9.7500 
