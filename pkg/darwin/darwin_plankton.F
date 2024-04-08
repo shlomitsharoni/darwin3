@@ -864,7 +864,7 @@ C        Calculate the growth rate as a function of macromolecular composition
            LIMN = 1 _d 0
          ELSEIF (MODE .EQ. 3. _d 0) THEN
            LIMF = 1 _d 0
-         ELSEIF (MODE .EQ. 5. _d 0) THEN
+         ELSEIF (MODE .EQ. 4. _d 0) THEN
            LIMC = 1 _d 0
          ENDIF
 
