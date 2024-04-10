@@ -174,7 +174,7 @@
      &    a_grazTempOptimum,
      &    a_grazDecayPower,
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     &    a_R_PCpg,
+     &    Y_THY_P,
      &    a_CN_pro,
      &    a_NC_chl,
      &    a_CN_cyano,
@@ -486,7 +486,7 @@ C     used to be 120D-20 for phyto
       a_grazTempOptimum = 2. _d 0
       a_grazDecayPower = 4. _d 0
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-      a_R_PCpg = 40. _d 0
+      Y_THY_P = 40. _d 0
       a_CN_pro = 4.49 _d 0
       a_NC_chl = 4.0 _d 0/55.0 _d 0
       a_CN_cyano =  2.0 _d 0
