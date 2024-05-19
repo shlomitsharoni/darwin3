@@ -1037,7 +1037,7 @@ C            ENDIF
           ENDIF
 C        ENDIF
 
-       exQc = (PCc-PC)*0.3
+C       exQc = cc(PCc-PC)*0.3
 
 C          PCg = PChl * QC_chl
 C        ! shlomit: New C exudation term
@@ -1046,7 +1046,7 @@ C           BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
 C           BC = MAX(MINVAL(BC_all), 0 _d 0)
 C           exQc = MAX(0., PCg - BC)*0.3
 C          ELSE
-C            exQc = 0 _d 0
+            exQc = 0 _d 0
 C          ENDIF
         
 C       ! shlomit: Calclate the O2:P ratio 
