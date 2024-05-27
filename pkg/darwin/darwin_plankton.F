@@ -876,7 +876,7 @@ C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated base
 C         MODE = 5 _d 0
          LIML = 1 _d 0
          PC = 0. _d 0
-         PCc= 0; 
+         PCc= 0. _d 0 
         ENDIF
          
  
@@ -1066,8 +1066,9 @@ C       ! shlomit: Calclate the O2:P ratio
 C            ELSE
 C              dROP = 1 _d 0
             ENDIF 
+C #ifdef DARWIN_ALLOW_VARIABLE_RESP            
 C        R_OP = dROP 
-
+C #endif
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iVP  +j-1) = VP
@@ -1517,15 +1518,16 @@ C==== Add parameterized remineralization ===============================
 #endif
 C parameterized remineralization; want to set all K except KPOSi to zero
 C if running with bacteria
-      respDOC  = reminTempFunc*KDOC *DOC
-      respDON  = reminTempFunc*KDON *DON
-      respDOP  = reminTempFunc*KDOP *DOP
-      respDOFe = reminTempFunc*KDOFe*DOFe
-      respPOC  = reminTempFunc*KPOC *POC
-      respPON  = reminTempFunc*KPON *PON
-      respPOP  = reminTempFunc*KPOP *POP
-      respPOSi = reminTempFunc*KPOSi*POSi
-      respPOFe = reminTempFunc*KPOFe*POFe
+C shlomit: add O2-dependece respiration
+      respDOC  = reminTempFunc*KDOC *DOC*O2/(O2+10)
+      respDON  = reminTempFunc*KDON *DON*O2/(O2+10)
+      respDOP  = reminTempFunc*KDOP *DOP*O2/(O2+10)
+      respDOFe = reminTempFunc*KDOFe*DOFe*O2/(O2+10)
+      respPOC  = reminTempFunc*KPOC *POC*O2/(O2+10)
+      respPON  = reminTempFunc*KPON *PON*O2/(O2+10)
+      respPOP  = reminTempFunc*KPOP *POP*O2/(O2+10)
+      respPOSi = reminTempFunc*KPOSi*POSi*O2/(O2+10)
+      respPOFe = reminTempFunc*KPOFe*POFe*O2/(O2+10)
 
       consumDOC  = consumDOC  + respDOC
       consumDON  = consumDON  + respDON
