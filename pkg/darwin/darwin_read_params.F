@@ -375,7 +375,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       parfrac = 0.4 _d 0
       parconv = 1 _d 0/0.2174 _d 0
       tempnorm = 0.3 _d 0
-      TempAeArr = -4000.0 _d 0
+       = -4000.0 _d 0
       TemprefArr = 293.15 _d 0
       TempCoeffArr = 0.5882 _d 0
       reminTempAe = 0.0438 _d 0
