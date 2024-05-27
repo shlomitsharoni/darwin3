@@ -233,7 +233,7 @@ c !LOCAL VARIABLES: ====================================================
       _RL QC_chl_D
       _RL QN_chl_D1
       _RL QN_chl_D0
-      _RL QN_photo_const
+C      _RL QN_photo_const
 C      _RL QN_bio_D
       _RL QN_pro_D1
       _RL QN_pro_D0
@@ -286,7 +286,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QP_excess
       _RL QN_store
       _RL QN_excess
-      _RL Qc_essential_and_Nstore
+C      _RL Qc_essential_and_Nstore
       _RL QpExc
       _RL exQp
       _RL MMregQp
@@ -297,7 +297,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 CKei1-1: New values for C exudation
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-      _RL QcnExc
+C      _RL QcnExc
       _RL exQc
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
@@ -341,9 +341,9 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL QN_DNA_plot
       _RL QP_const_plot
       _RL QP_DNA_plot
-      _RL QP_rna0
-      _RL QN_pro_const0
-      _RL QP_DNA_plot0
+C      _RL QP_rna0
+C      _RL QN_pro_const0
+C      _RL QP_DNA_plot0
       _RL PCc
       _RL PCg
       REAL, DIMENSION(3) :: BC_all
