@@ -954,15 +954,14 @@ C Storage calculation -----------------
         Qfe_store = MAX(0 _d 0, MIN(mmQfe, Qfe_max(j)) - Qfe_essential)
  
 
-C       shlomit: new nutrient-uptake regulation terms: (Qmax-Q)/(Qmax-Qmin),
+C       shlomit: new nutrient-uptake regulation terms: reqQ =(Qmax-Q)/(Qmax-Qmin),
 C       where Qmax=Q_essential + Q_store, Qmin=Q_essential
 C       when phytoplankton starts to store, they reduce their nutrient-uptake: 
 
 C       Nitrogen:
-
             IF (QN_store .GT. 0 _d 0) THEN
               MMregQn = ( ( QN_essential + QN_store -
-     &                  min(mmQn(j),(QN_essential + QN_store)))/
+     &                  min(mmQn,(QN_essential + QN_store)))/
      &                          (QN_store))**hillnumDIN(j)
               MMregQn = MAX(0., MIN(1., MMregQn))
             ELSE
@@ -976,7 +975,7 @@ C       Carbon-specific NO3 uptake rate
 C       Phosphorous:                
             IF (QP_store .GT. 0 _d 0) THEN
               MMregQp = ((QP_essential+QP_store -
-     &                  min(mmQp(j),(QP_essential + QP_store)))/
+     &                  min(mmQp,(QP_essential + QP_store)))/
      &                          (QP_store))**hillnumPO4(j)
               MMregQp = MAX(0., MIN(1., MMregQp))
             ELSE
@@ -989,7 +988,7 @@ C       Carbon-specific PO4 uptake rate
 C       Iron:                
             IF (Qfe_Store .GT. 0 _d 0) THEN   
               MMregQFe =  ((Qfe_essential + Qfe_Store -
-     &                  min(mmQfe(j),(Qfe_essential + Qfe_Store)))/
+     &                  min(mmQfe,(Qfe_essential + Qfe_Store)))/
      &                          (Qfe_Store))**hillnumFeT(j)
               MMregQFe = MAX(0., MIN(1., MMregQFe))
             ELSE
