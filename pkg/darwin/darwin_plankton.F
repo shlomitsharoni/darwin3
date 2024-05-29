@@ -954,88 +954,52 @@ C Storage calculation -----------------
         Qfe_store = MAX(0 _d 0, MIN(mmQfe, Qfe_max(j)) - Qfe_essential)
  
 
-C       shlomit: new nutrient regulation terms 
-C        IF (tauExN(j) .NE. 0 _d 0) THEN
-          IF (mmQn.GT.NCmin) THEN
-            QnExc = mmQn - (QN_essential+QN_store)
-            exQn = MAX(0 _d 0, QnExc)/tauExN(j)
-            IF ((QN_essential+QN_store) .NE. 0 _d 0) THEN
-              MMregQn = 1 _d 0 - 10*((mmQn - (QN_essential+QN_store))
-     &                  /(QN_essential+QN_store))
+C       shlomit: new nutrient-uptake regulation terms: (Qmax-Q)/(Qmax-Qmin),
+C       where Qmax=Q_essential + Q_store, Qmin=Q_essential
+C       when phytoplankton starts to store, they reduce their nutrient-uptake: 
+
+C       Nitrogen:
+
+            IF (QN_store .GT. 0 _d 0) THEN
+              MMregQn = ( ( QN_essential + QN_store -
+     &                  min(mmQn(j),(QN_essential + QN_store)))/
+     &                          (QN_store))**hillnumDIN(j)
               MMregQn = MAX(0., MIN(1., MMregQn))
             ELSE
               MMregQn = 1 _d 0
             ENDIF
-            
-C            IF ((QN_essential+QN_store-NCmin) .NE. 0 _d 0) THEN
-C              MMregQn = (QN_essential+QN_store - mmQn)/
-C     &                  (QN_essential+QN_store-NCmin)
-C              MMregQn = MAX (0., MIN(1., MMregQn))
-C            ELSE
-C              MMregQn = 1 _d 0
-C            ENDIF
-
+C       Carbon-specific NO3 uptake rate
             VN = VN*MMregQn
             uptakeN = VN*mmX
             uptakeNO3 = VN*mmX
-          ELSE
-          exQn = 0 _d 0
-          ENDIF
-C        ENDIF
 
-
-C        IF (tauExP(j) .NE. 0 _d 0) THEN
-          IF (mmQp.GT.PCmin) THEN
-            QpExc = mmQp - (QP_essential+QP_store)
-            exQp = MAX(0 _d 0, QpExc)/tauExP(j)
-            IF ((QP_essential+QP_store) .NE. 0 _d 0) THEN
-              MMregQp = 1 _d 0 - 10*((mmQp - (QP_essential+QP_store))
-     &                  /(QP_essential+QP_store))
+C       Phosphorous:                
+            IF (QP_store .GT. 0 _d 0) THEN
+              MMregQp = ((QP_essential+QP_store -
+     &                  min(mmQp(j),(QP_essential + QP_store)))/
+     &                          (QP_store))**hillnumPO4(j)
               MMregQp = MAX(0., MIN(1., MMregQp))
             ELSE
               MMregQp = 1 _d 0
             ENDIF
-
-C             IF ( (QP_essential+QP_store-PCmin) .NE. 0 _d 0) THEN
-C               MMregQp = (QP_essential+QP_store - mmQP)/
-C     &                    (QP_essential+QP_store-PCmin)
-C               MMregQp = MAX(0., MIN(1., MMregQp))
-C             ELSE
-C               MMregQp = 1 _d 0
-C             ENDIF  
-
+C       Carbon-specific PO4 uptake rate
             VP = VP*MMregQp
             uptakePO4 = VP*mmX
-          ENDIF
-C        ENDIF
 
-
-C        IF (tauExFe(j) .NE. 0 _d 0) THEN
-          IF (mmQfe.GT.0 _d 0) THEN
-            QfeExc = mmQfe - (Qfe_essential+Qfe_Store)
-            exQfe = MAX(0 _d 0, QfeExc)/tauExFe(j)
-            IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN   
-              MMregQFe = 1 _d 0-10*((mmQfe - (Qfe_essential+Qfe_Store))
-     &                  /(Qfe_essential+Qfe_Store))
+C       Iron:                
+            IF (Qfe_Store .GT. 0 _d 0) THEN   
+              MMregQFe =  ((Qfe_essential + Qfe_Store -
+     &                  min(mmQfe(j),(Qfe_essential + Qfe_Store)))/
+     &                          (Qfe_Store))**hillnumFeT(j)
               MMregQFe = MAX(0., MIN(1., MMregQFe))
             ELSE
               MMregQFe = 1 _d 0
             ENDIF
-
-C            IF ((Qfe_essential+Qfe_Store) .NE. 0 _d 0) THEN
-C              MMregQFe = (Qfe_essential+Qfe_Store - mmQfe)
-C     &                  /(Qfe_essential+Qfe_Store)
-C              MMregQFe = MAX (0., MIN(1., MMregQFe))
-C            ELSE
-C              MMregQFe = 1 _d 0
-C            ENDIF
-
-            
+C       Carbon-specific FeT uptake rate
             Vfe = Vfe*MMregQFe        
             uptakeFe = Vfe*mmX
             uptakeFeT = Vfe*mmX
-          ENDIF
-C        ENDIF
+
 
 C       exQc = cc(PCc-PC)*0.3
 
