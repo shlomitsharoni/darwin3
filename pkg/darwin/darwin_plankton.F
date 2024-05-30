@@ -965,7 +965,7 @@ C       Nitrogen:
             IF (QN_store .GT. 0 _d 0) THEN
               MMregQn = ( ( QN_essential + QN_store -
      &                  min(mmQn,(QN_essential + QN_store)))/
-     &                          (QN_store))**tauExN(j)
+     &                          (QN_store))**tauExN
               MMregQn = MAX(0., MIN(1., MMregQn))
             ELSE
               MMregQn = 1 _d 0
@@ -979,7 +979,7 @@ C       Phosphorous:
             IF (QP_store .GT. 0 _d 0) THEN
               MMregQp = ((QP_essential+QP_store -
      &                  min(mmQp,(QP_essential + QP_store)))/
-     &                          (QP_store))**tauExP(j)
+     &                          (QP_store))**tauExP
               MMregQp = MAX(0., MIN(1., MMregQp))
             ELSE
               MMregQp = 1 _d 0
@@ -992,7 +992,7 @@ C       Iron:
             IF (Qfe_Store .GT. 0 _d 0) THEN   
               MMregQFe =  ((Qfe_essential + Qfe_Store -
      &                  min(mmQfe,(Qfe_essential + Qfe_Store)))/
-     &                          (Qfe_Store))**tauExFe(j)
+     &                          (Qfe_Store))**tauExFe
               MMregQFe = MAX(0., MIN(1., MMregQFe))
             ELSE
               MMregQFe = 1 _d 0
