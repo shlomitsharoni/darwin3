@@ -228,9 +228,6 @@ c !LOCAL VARIABLES: ====================================================
 
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       _RL mmX, mmQn, mmQp, mmQfe
-      _RL tauExN 
-      _RL tauExP
-      _RL tauExFe
       _RL PChl
       _RL QC_chl_const
       _RL QC_chl_D
@@ -965,7 +962,7 @@ C       Nitrogen:
             IF (QN_store .GT. 0 _d 0) THEN
               MMregQn = ( ( QN_essential + QN_store -
      &                  min(mmQn,(QN_essential + QN_store)))/
-     &                          (QN_store))**tauExN
+     &                          (QN_store))**tauExN(j)
               MMregQn = MAX(0., MIN(1., MMregQn))
             ELSE
               MMregQn = 1 _d 0
@@ -979,7 +976,7 @@ C       Phosphorous:
             IF (QP_store .GT. 0 _d 0) THEN
               MMregQp = ((QP_essential+QP_store -
      &                  min(mmQp,(QP_essential + QP_store)))/
-     &                          (QP_store))**tauExP
+     &                          (QP_store))**tauExP(j)
               MMregQp = MAX(0., MIN(1., MMregQp))
             ELSE
               MMregQp = 1 _d 0
@@ -992,7 +989,7 @@ C       Iron:
             IF (Qfe_Store .GT. 0 _d 0) THEN   
               MMregQFe =  ((Qfe_essential + Qfe_Store -
      &                  min(mmQfe,(Qfe_essential + Qfe_Store)))/
-     &                          (Qfe_Store))**tauExFe
+     &                          (Qfe_Store))**tauExFe(j)
               MMregQFe = MAX(0., MIN(1., MMregQFe))
             ELSE
               MMregQFe = 1 _d 0
