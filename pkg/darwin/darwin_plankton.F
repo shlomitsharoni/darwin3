@@ -959,10 +959,9 @@ C       where Qmax=Q_essential + Q_store, Qmin=Q_essential
 C       when phytoplankton starts to store, they reduce their nutrient-uptake: 
 
 C       Nitrogen:
-            IF (QN_store .GT. 0 _d 0) THEN
-              MMregQn = ( ( QN_essential + QN_store -
-     &                  min(mmQn,(QN_essential + QN_store)))/
-     &                          (QN_store))**tauExN(j)
+            IF ((QN_essential + QN_store) .GT. 0 _d 0) THEN
+              MMregQn = ((1.1*(QN_essential + QN_store) - mmQn)/
+     &                          (0.1*(QN_essential + QN_store)))
               MMregQn = MAX(0., MIN(1., MMregQn))
             ELSE
               MMregQn = 1 _d 0
@@ -973,10 +972,9 @@ C       Carbon-specific NO3 uptake rate
             uptakeNO3 = VN*mmX
 
 C       Phosphorous:                
-            IF (QP_store .GT. 0 _d 0) THEN
-              MMregQp = ((QP_essential+QP_store -
-     &                  min(mmQp,(QP_essential + QP_store)))/
-     &                          (QP_store))**tauExP(j)
+            IF ((QP_essential+QP_store) .GT. 0 _d 0) THEN
+              MMregQp = ((1.1*(QP_essential+QP_store) - mmQp)/
+     &                          (0.1*(QP_essential+QP_store)))
               MMregQp = MAX(0., MIN(1., MMregQp))
             ELSE
               MMregQp = 1 _d 0
@@ -986,10 +984,9 @@ C       Carbon-specific PO4 uptake rate
             uptakePO4 = VP*mmX
 
 C       Iron:                
-            IF (Qfe_Store .GT. 0 _d 0) THEN   
-              MMregQFe =  ((Qfe_essential + Qfe_Store -
-     &                  min(mmQfe,(Qfe_essential + Qfe_Store)))/
-     &                          (Qfe_Store))**tauExFe(j)
+            IF ((Qfe_essential + Qfe_Store) .GT. 0 _d 0) THEN   
+              MMregQFe = ((1.1*(Qfe_essential + Qfe_Store) - mmQfe)/
+     &                          (0.1*(Qfe_essential + Qfe_Store)))
               MMregQFe = MAX(0., MIN(1., MMregQFe))
             ELSE
               MMregQFe = 1 _d 0
