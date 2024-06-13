@@ -1553,10 +1553,10 @@ c NH4 -> NO2 -> NO3 by bacterial action, parameterized
       ENDIF
 
 C shlomit, no nitrogen chemistry, only DIN (nitrate)
-C #ifdef DARWIN_MACROMOLECULAR_GROWTH
-C       prodNO2 = 0.0
-C       prodNO3 = 0.0
-C #endif
+ #ifdef DARWIN_MACROMOLECULAR_GROWTH
+       prodNO2 = 0.0
+       prodNO3 = 0.0
+ #endif
 C==== CDOM =============================================================
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
@@ -1620,9 +1620,9 @@ c loss of O2 by remineralization
       gTr(iNO3 )=gTr(iNO3 ) + prodNO3
 
 C shlomit, remineralization goes directly to nitrate
-C #ifdef DARWIN_MACROMOLECULAR_GROWTH
-C       gTr(iNO3 )=gTr(iNO3 ) + reminDON
-C #endif
+ #ifdef DARWIN_MACROMOLECULAR_GROWTH
+       gTr(iNO3 )=gTr(iNO3 ) + reminDON
+ #endif
 
 #ifdef DARWIN_ALLOW_DENIT
       IF (O2 .LT. O2crit) THEN
@@ -1680,9 +1680,9 @@ C     DOC is created by #4 PA-assoc solubilization and consumed by #5
       gTr(iNH4 )=gTr(iNH4 ) + reminPON
 
 C shlomit, remineralization goes directly to nitrate
-C #ifdef DARWIN_MACROMOLECULAR_GROWTH
-C       gTr(iNO3 )=gTr(iNO3 ) + reminPON
-C #endif
+ #ifdef DARWIN_MACROMOLECULAR_GROWTH
+       gTr(iNO3 )=gTr(iNO3 ) + reminPON
+ #endif
       gTr(iPO4 )=gTr(iPO4 ) + reminPOP
       gTr(iFeT )=gTr(iFeT ) + reminPOFe
 #endif /* DARWIN_ALLOW_CDOM */
