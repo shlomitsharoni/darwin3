@@ -191,6 +191,11 @@ cswd -- temperature range
       mortFun   = EXP(mortTempAe*(Temp - Tempref))
       mort2Fun  = EXP(mort2TempAe*(Temp - Tempref))
       uptakeFun = EXP(uptakeTempAe*(Temp - Tempref))
+c ### shlomit: need to add: DARWIN_MACROMOLECULAR_ALLOW_TEMP 
+      macromolFun = exp(phytoMMTemp(j)*(1.0 _d 0/(Temp+Tkel) -
+     &                       1.0 _d 0/(TemprefArr) ) )
+      macromolFun =  max(macromolFun , 1. _d -10)
+c      macromolFun = 1. _d 0
 c ++++++++++++++ END VERSION 4 +++++++++++++++++++++++++++++++++++++++
 
 #else
