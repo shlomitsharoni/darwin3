@@ -1554,7 +1554,7 @@ c NH4 -> NO2 -> NO3 by bacterial action, parameterized
 
 C shlomit, no nitrogen chemistry, only DIN (nitrate)
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
-     prodNO2 =  0 _d 0
+      prodNO2 =  0 _d 0
       prodNO3 =  0 _d 0
 #endif
 C==== CDOM =============================================================
