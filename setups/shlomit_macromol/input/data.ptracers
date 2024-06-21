@@ -25,6 +25,13 @@
        PTRACERS_names(16)= 'POSi',
        PTRACERS_names(15)= 'POFe',
        PTRACERS_names(17)= 'PIC',
+
+# renumber shlomit
+       PTRACERS_names(17)= 'POO',
+       PTRACERS_names(17)= 'POH',
+       PTRACERS_names(17)= 'DOO',
+       PTRACERS_names(17)= 'DOH',
+
        PTRACERS_names(18)= 'ALK',
        PTRACERS_names(19)= 'O2',
        PTRACERS_names(20)= 'CDOM01',
