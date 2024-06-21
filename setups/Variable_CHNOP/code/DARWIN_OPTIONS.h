@@ -98,7 +98,7 @@ C enable GEIDER light code
 #undef  DARWIN_ALLOW_GEIDER
 
 C use rho instead of acclimated Chl:C for chlorophyll synthesis
-#define DARWIN_GEIDER_RHO_SYNTH
+#undef DARWIN_GEIDER_RHO_SYNTH
 
 C initialize chl as in darwin2 (with radtrans package)
 #undef  DARWIN_CHL_INIT_LEGACY
@@ -107,7 +107,7 @@ C scattering coefficients are per Chlorophyll (with radtrans package)
 #undef  DARWIN_SCATTER_CHL
 
 C make diagnostics for instrinsic optical properties available
-#define DARWIN_DIAG_IOP
+#undef DARWIN_DIAG_IOP
 
 
 C grazing
