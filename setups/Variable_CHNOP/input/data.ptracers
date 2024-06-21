@@ -1,12 +1,12 @@
  &PTRACERS_PARM01
- PTRACERS_numInUse= 36,
+ PTRACERS_numInUse= 39,
  PTRACERS_Iter0= 0,
 #
- PTRACERS_advScheme=36*33,
- PTRACERS_diffKh=36*0.E3,
- PTRACERS_diffKr=36*1.E-5,
- PTRACERS_useGMRedi=36*.TRUE.,
- PTRACERS_useKPP=36*.TRUE.,
+ PTRACERS_advScheme=39*33,
+ PTRACERS_diffKh=39*0.E3,
+ PTRACERS_diffKr=39*1.E-5,
+ PTRACERS_useGMRedi=39*.TRUE.,
+ PTRACERS_useKPP=39*.TRUE.,
 #
        PTRACERS_names(1)= 'DIC',
        PTRACERS_names(4)= 'NH4',
@@ -25,32 +25,28 @@
        PTRACERS_names(16)= 'POSi',
        PTRACERS_names(15)= 'POFe',
        PTRACERS_names(17)= 'PIC',
-
-# renumber shlomit
-       PTRACERS_names(17)= 'POO',
-       PTRACERS_names(17)= 'POH',
-       PTRACERS_names(17)= 'DOO',
-       PTRACERS_names(17)= 'DOH',
-
-       PTRACERS_names(18)= 'ALK',
-       PTRACERS_names(19)= 'O2',
-       PTRACERS_names(20)= 'CDOM01',
-       PTRACERS_names(21)= 'c01',
-       PTRACERS_names(22)= 'c02',
-       PTRACERS_names(23)= 'c03',
-       PTRACERS_names(24)= 'c04',
-       PTRACERS_names(25)= 'n01',
-       PTRACERS_names(26)= 'n02',
-       PTRACERS_names(27)= 'n03',
-       PTRACERS_names(28)= 'n04',
-       PTRACERS_names(29)= 'p01',
-       PTRACERS_names(30)= 'p02',
-       PTRACERS_names(31)= 'p03',
-       PTRACERS_names(32)= 'p04',
-       PTRACERS_names(33)= 'fe01',
-       PTRACERS_names(34)= 'fe02',
-       PTRACERS_names(35)= 'fe03',
-       PTRACERS_names(36)= 'fe04',
+       PTRACERS_names(18)= 'POO',
+       PTRACERS_names(19)= 'POH',
+       PTRACERS_names(20)= 'DOO',
+       PTRACERS_names(21)= 'DOH',
+       PTRACERS_names(22)= 'ALK',
+       PTRACERS_names(23)= 'O2',
+       PTRACERS_names(24)= 'c01',
+       PTRACERS_names(25)= 'c02',
+       PTRACERS_names(26)= 'c03',
+       PTRACERS_names(27)= 'c04',
+       PTRACERS_names(28)= 'n01',
+       PTRACERS_names(29)= 'n02',
+       PTRACERS_names(30)= 'n03',
+       PTRACERS_names(31)= 'n04',
+       PTRACERS_names(32)= 'p01',
+       PTRACERS_names(33)= 'p02',
+       PTRACERS_names(34)= 'p03',
+       PTRACERS_names(35)= 'p04',
+       PTRACERS_names(36)= 'fe01',
+       PTRACERS_names(37)= 'fe02',
+       PTRACERS_names(38)= 'fe03',
+       PTRACERS_names(39)= 'fe04',
 
 
  PTRACERS_initialFile(1)='input_ecco/glodap_tco2_ann-3d.bin',
@@ -70,23 +66,26 @@
  PTRACERS_initialFile(16)='DARWIN_ECCO_run17/posi_y2000.data',
  PTRACERS_initialFile(15)='DARWIN_ECCO_run17/pofe_y2000.data',
  PTRACERS_initialFile(17)='DARWIN_ECCO_run17/pic_y2000.data',
- PTRACERS_initialFile(18)='input_ecco/glodap_alk_ann-3d.bin',
- PTRACERS_initialFile(19)='input_ecco/lev01_oxygen_ann-3d.bin',
- PTRACERS_initialFile(20)='input_ecco/CDOM_run129abb4.bin',
- PTRACERS_initialFile(21)='DARWIN_ECCO_run17/phy_6species_y2000.data',
- PTRACERS_initialFile(22)='DARWIN_ECCO_run17/phy_6species_y2000.data',
- PTRACERS_initialFile(23)='DARWIN_ECCO_run17/phy_6species_y2000.data',
+ PTRACERS_initialFile(18)='DARWIN_ECCO_run17/poo_y2000.data',
+ PTRACERS_initialFile(19)='DARWIN_ECCO_run17/poh_y2000.data',
+ PTRACERS_initialFile(20)='DARWIN_ECCO_run17/doo_y2000.data',
+ PTRACERS_initialFile(21)='DARWIN_ECCO_run17/doh_y2000.data',
+ PTRACERS_initialFile(22)='input_ecco/glodap_alk_ann-3d.bin',
+ PTRACERS_initialFile(23)='input_ecco/lev01_oxygen_ann-3d.bin',
  PTRACERS_initialFile(24)='DARWIN_ECCO_run17/phy_6species_y2000.data',
- PTRACERS_initialFile(25)='DARWIN_ECCO_run17/phy_6speciesn_y2000.data',
- PTRACERS_initialFile(26)='DARWIN_ECCO_run17/phy_6speciesn_y2000.data',
- PTRACERS_initialFile(27)='DARWIN_ECCO_run17/phy_6speciesn_y2000.data',
+ PTRACERS_initialFile(25)='DARWIN_ECCO_run17/phy_6species_y2000.data',
+ PTRACERS_initialFile(26)='DARWIN_ECCO_run17/phy_6species_y2000.data',
+ PTRACERS_initialFile(27)='DARWIN_ECCO_run17/phy_6species_y2000.data',
  PTRACERS_initialFile(28)='DARWIN_ECCO_run17/phy_6speciesn_y2000.data',
- PTRACERs_initialFile(29)='DARWIN_ECCO_run17/phy_6speciesp_y2000.data'
- PTRACERs_initialFile(30)='DARWIN_ECCO_run17/phy_6speciesp_y2000.data'
- PTRACERs_initialFile(31)='DARWIN_ECCO_run17/phy_6speciesp_y2000.data'
+ PTRACERS_initialFile(29)='DARWIN_ECCO_run17/phy_6speciesn_y2000.data',
+ PTRACERS_initialFile(30)='DARWIN_ECCO_run17/phy_6speciesn_y2000.data',
+ PTRACERS_initialFile(31)='DARWIN_ECCO_run17/phy_6speciesn_y2000.data',
  PTRACERs_initialFile(32)='DARWIN_ECCO_run17/phy_6speciesp_y2000.data'
- PTRACERs_initialFile(33)='DARWIN_ECCO_run17/phy_6speciesfe_y2000.data'
- PTRACERs_initialFile(34)='DARWIN_ECCO_run17/phy_6speciesfe_y2000.data'
- PTRACERs_initialFile(35)='DARWIN_ECCO_run17/phy_6speciesfe_y2000.data'
+ PTRACERs_initialFile(33)='DARWIN_ECCO_run17/phy_6speciesp_y2000.data'
+ PTRACERs_initialFile(34)='DARWIN_ECCO_run17/phy_6speciesp_y2000.data'
+ PTRACERs_initialFile(35)='DARWIN_ECCO_run17/phy_6speciesp_y2000.data'
  PTRACERs_initialFile(36)='DARWIN_ECCO_run17/phy_6speciesfe_y2000.data'
+ PTRACERs_initialFile(37)='DARWIN_ECCO_run17/phy_6speciesfe_y2000.data'
+ PTRACERs_initialFile(38)='DARWIN_ECCO_run17/phy_6speciesfe_y2000.data'
+ PTRACERs_initialFile(39)='DARWIN_ECCO_run17/phy_6speciesfe_y2000.data'
  &
