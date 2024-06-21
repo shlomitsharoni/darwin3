@@ -84,6 +84,9 @@ C include code for reading nutrient runoff from files
 C enable macromolecular growth code; requires N, P and Fe quotas
 #undef DARWIN_MACROMOLECULAR_GROWTH
 
+C enable mvariable C:H:N:O:P code; requires DARWIN_MACROMOLECULAR_GROWTH
+#undef DARWIN_ALLOW_VARIABLE_CHNOP
+
 
 C light
 
