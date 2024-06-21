@@ -57,6 +57,9 @@ C enable RADI sediment model
 C enable macromolecular growth code; requires N, P and Fe quotas
 #define DARWIN_MACROMOLECULAR_GROWTH
 
+C enable mvariable C:H:N:O:P code; requires MACROMOLECULAR_GROWTH
+#define DARWIN_ALLOW_VARIABLE_CHNOP
+
 
 C optional bits
 
