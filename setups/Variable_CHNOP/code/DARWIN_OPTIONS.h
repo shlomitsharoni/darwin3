@@ -35,7 +35,7 @@ C enable internal c store for all phototrophs; also enables exudation
 #undef  DARWIN_ALLOW_CSTORE_DIAGS
 
 C enable a dynamic CDOM tracer
-#define  DARWIN_ALLOW_CDOM
+#undef  DARWIN_ALLOW_CDOM
 
 C enable air-sea carbon exchange and Alk and O2 tracers
 #define DARWIN_ALLOW_CARBON
@@ -64,7 +64,7 @@ C enable mvariable C:H:N:O:P code; requires MACROMOLECULAR_GROWTH
 C optional bits
 
 C enable denitrification code
-#define DARWIN_ALLOW_DENIT
+#undef DARWIN_ALLOW_DENIT
 
 C enable separate exudation of individual elements
 #undef  DARWIN_ALLOW_EXUDE
