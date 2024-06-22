@@ -372,8 +372,10 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL graz2POH
       _RL graz2OO
       _RL graz2OH
-      _RL predexpo, predexph
-
+      _RL predexpo
+      _RL predexph
+      _RL RQ_POC 
+      _RL RQ_POP
 #endif
 
 #ifdef DARWIN_ALLOW_CDOM
@@ -491,6 +493,8 @@ C==== Make all bio fields non-negative and compute quotas ==============
       POH  = MAX(0., Ptr(iPOH))
       DOO  = MAX(0., Ptr(iDOO))
       DOH  = MAX(0., Ptr(iDOH))
+      RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
+      RQ_DOC = (DOC+0.25*DOH+1.25*DON+1.25*DOP-0.5*DOO)/(DOC)
 #endif
 #ifdef DARWIN_ALLOW_CARBON
       O2   = MAX(0., Ptr(iO2))
@@ -1071,14 +1075,14 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23
      &     + ( QN_store*Y_CN_cyano(j)) * 1.901
 
-            IF (Ptr(ip+j-1) .NE. 0 _d 0) THEN   
-              dROP = RQ * MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
-C            ELSE
-C              dROP = 1 _d 0
+            IF (Qp(j) .NE. 0 _d 0) THEN   
+C        MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
+              dROP = RQ/Qp(j)
             ENDIF 
-C #ifdef DARWIN_ALLOW_VARIABLE_RESP            
-C        R_OP = dROP 
-C #endif
+
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP            
+        R_OP = dROP 
+#endif
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iVP  +j-1) = VP
@@ -1573,9 +1577,17 @@ C     endif O2, NO3 for DARWIN_ALLOW_DENIT
 
 #ifdef DARWIN_ALLOW_CARBON
       IF (O2 .GE. O2crit) THEN
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+        consumO2  = consumO2  + respDOC*RQ_DOC
+# else
         consumO2  = consumO2  + respDOP*R_OP
+#endif
 #ifndef DARWIN_ALLOW_CDOM
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+        consumO2  = consumO2  + respPOC*RQ_POC
+# else
         consumO2  = consumO2  + respPOP*R_OP
+#endif
 #endif
       ENDIF
 #endif
