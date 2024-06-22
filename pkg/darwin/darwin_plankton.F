@@ -360,6 +360,10 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL POH
       _RL DOO 
       _RL DOH
+      _RL exude_POO
+      _RL exude_POH
+      _RL exude_DOO
+      _RL exude_DOH
 #endif
 
 #ifdef DARWIN_ALLOW_CDOM
@@ -2003,7 +2007,12 @@ C==== Mortality and parameterized exudation ============================
       respirP    = 0.0 _d 0
       respirFe   = 0.0 _d 0
       respirSi   = 0.0 _d 0
-
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      exude_POO  = 0.0 _d 0
+      exude_POH  = 0.0 _d 0
+      exude_DOO  = 0.0 _d 0
+      exude_DOH  = 0.0 _d 0
+#endif
       DO jp = 1, nplank
         Xe = MAX(0 _d 0, X(jp) - Xmin(jp))
         mortX = mort(jp)*Xe*mortTempFunc**tempMort(jp)
@@ -2041,7 +2050,17 @@ C==== Mortality and parameterized exudation ============================
         exude_POSi = exude_POSi + mort_c(jp)*Qsi(jp)
 
         exude_PIC = exude_PIC + mort_c(jp)*R_PICPOC(jp)
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+        exude_DOO = exude_DOO + (1.-ExportFracMort(jp)) *mortX *Qo(jp)
+     &                        + (1.-ExportFracMort2(jp))*mortX2*Qo(jp)
+        exude_POO = exude_POO +     ExportFracMort(jp)  *mortX *Qo(jp)
+     &                        +     ExportFracMort2(jp) *mortX2*Qo(jp)
 
+        exude_DOH = exude_DOH + (1.-ExportFracMort(jp)) *mortX *Qh(jp)
+     &                        + (1.-ExportFracMort2(jp))*mortX2*Qh(jp)
+        exude_POH = exude_POH +     ExportFracMort(jp)  *mortX *Qh(jp)
+     &                        +     ExportFracMort2(jp) *mortX2*Qh(jp)
+#endif 
 C Respiration of non-phototrophs
 C Respired carbon goes to DIC.  Other non-quota elements go to inorganic
 C matter pools according to plankton stoichiometry.  PIC also goes back
@@ -2152,6 +2171,12 @@ C to DIC as if it had never been synthesized.
       gTr(iPOP )=gTr(iPOP ) + exude_POP
       gTr(iPOSi)=gTr(iPOSi) + exude_POSi
       gTr(iPOFe)=gTr(iPOFe) + exude_POFe
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      gTr(iPOO)=gTr(iPOO) + exude_POO
+      gTr(iPOH)=gTr(iPOH) + exude_POH
+      gTr(iDOO)=gTr(iDOO) + exude_DOO
+      gTr(iDOH)=gTr(iDOH) + exude_DOH
+#endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
       exude_CDOM = fracCDOM*exude_DOC
