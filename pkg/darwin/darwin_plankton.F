@@ -375,7 +375,9 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL predexpo
       _RL predexph
       _RL RQ_POC 
-      _RL RQ_POP
+      _RL RQ_DOC
+      _RL predgrazo (nplank)
+      _RL predgrazh (nplank)
 #endif
 
 #ifdef DARWIN_ALLOW_CDOM
