@@ -351,6 +351,17 @@ C      _RL QP_DNA_plot0
 C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      _RL respPOO
+      _RL respPOH
+      _RL respDOO
+      _RL respDOH
+      _RL POO
+      _RL POH
+      _RL DOO 
+      _RL DOH
+#endif
+
 #ifdef DARWIN_ALLOW_CDOM
       _RL CDOM
       _RL reminPOC_CDOM
@@ -461,6 +472,12 @@ C==== Make all bio fields non-negative and compute quotas ==============
       POP  = MAX(0., Ptr(iPOP))
       POSi = MAX(0., Ptr(iPOSi))
       POFe = MAX(0., Ptr(iPOFe))
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      POO  = MAX(0., Ptr(iPOO))
+      POH  = MAX(0., Ptr(iPOH))
+      DOO  = MAX(0., Ptr(iDOO))
+      DOH  = MAX(0., Ptr(iDOH))
+#endif
 #ifdef DARWIN_ALLOW_CARBON
       O2   = MAX(0., Ptr(iO2))
 #endif
@@ -1488,11 +1505,11 @@ C shlomit: add O2-dependece respiration
       respPOP  = reminTempFunc*KPOP *POP*O2/(O2+10)
       respPOSi = reminTempFunc*KPOSi*POSi*O2/(O2+10)
       respPOFe = reminTempFunc*KPOFe*POFe*O2/(O2+10)
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP / shlomit, 
-      respPOFe = reminTempFunc*KPOFe*POFe*O2/(O2+10)
-      respPOFe = reminTempFunc*KPOFe*POFe*O2/(O2+10)
-      respPOFe = reminTempFunc*KPOFe*POFe*O2/(O2+10)
-      respPOFe = reminTempFunc*KPOFe*POFe*O2/(O2+10)
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      respPOO = reminTempFunc*KPOC*POO*O2/(O2+10)
+      respPOH = reminTempFunc*KPOC*POH*O2/(O2+10)
+      respDOO = reminTempFunc*KDOC*DOO*O2/(O2+10)
+      respDOH = reminTempFunc*KDOC*DOH*O2/(O2+10)
 #endif
 
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP / after computing the RHS, shlomit, 
