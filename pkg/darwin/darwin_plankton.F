@@ -1543,9 +1543,6 @@ C shlomit: add O2-dependece respiration
       respPOH = reminTempFunc*KPOC*POH*O2/(O2+10)
       respDOO = reminTempFunc*KDOC*DOO*O2/(O2+10)
       respDOH = reminTempFunc*KDOC*DOH*O2/(O2+10)
-#endif
-
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
       gTr(iPOO) = gTr(iPOO)  + respPOO
       gTr(iPOH) = gTr(iPOH)  + respPOH
       gTr(iDOO) = gTr(iDOO)  + respDOO
@@ -1777,6 +1774,10 @@ C==== Grazing ==========================================================
 #ifdef DARWIN_ALLOW_FEQUOTA
        predgrazfe(j) = 0.0
 #endif
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      predgrazo(j) = 0.0
+      predgrazh(j) = 0.0
+#endif
       ENDDO
       graz2POC  = 0.0
       graz2PON  = 0.0
@@ -1800,8 +1801,6 @@ C==== Grazing ==========================================================
       graz2POH = 0.0
       regQo  = 1.0
       regQh  = 1.0
-      predgrazo(j) = 0.0
-      predgrazh(j) = 0.0
 #endif
 C=======================================================================
       DO jz = 1, nplank

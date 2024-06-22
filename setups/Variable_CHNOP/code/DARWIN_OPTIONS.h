@@ -58,7 +58,7 @@ C enable macromolecular growth code; requires N, P and Fe quotas
 #define DARWIN_MACROMOLECULAR_GROWTH
 
 C enable mvariable C:H:N:O:P code; requires MACROMOLECULAR_GROWTH
-C does not work yet with Bacteria and Carbon Exudation
+C does not work yet with Bacteria, Carbon Exudation, and CDOM
 #define DARWIN_ALLOW_VARIABLE_CHNOP
 
 
