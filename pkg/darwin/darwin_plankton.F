@@ -364,6 +364,8 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL exude_POH
       _RL exude_DOO
       _RL exude_DOH
+      _RL Qo
+      _RL Qh
 #endif
 
 #ifdef DARWIN_ALLOW_CDOM
@@ -2051,15 +2053,15 @@ C==== Mortality and parameterized exudation ============================
 
         exude_PIC = exude_PIC + mort_c(jp)*R_PICPOC(jp)
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        exude_DOO = exude_DOO + (1.-ExportFracMort(jp)) *mortX *Qo(jp)
-     &                        + (1.-ExportFracMort2(jp))*mortX2*Qo(jp)
-        exude_POO = exude_POO +     ExportFracMort(jp)  *mortX *Qo(jp)
-     &                        +     ExportFracMort2(jp) *mortX2*Qo(jp)
+        exude_DOO = exude_DOO + (1.-ExportFracMort(jp)) *mortX *Qo
+     &                        + (1.-ExportFracMort2(jp))*mortX2*Qo
+        exude_POO = exude_POO +     ExportFracMort(jp)  *mortX *Qo
+     &                        +     ExportFracMort2(jp) *mortX2*Qo
 
-        exude_DOH = exude_DOH + (1.-ExportFracMort(jp)) *mortX *Qh(jp)
-     &                        + (1.-ExportFracMort2(jp))*mortX2*Qh(jp)
-        exude_POH = exude_POH +     ExportFracMort(jp)  *mortX *Qh(jp)
-     &                        +     ExportFracMort2(jp) *mortX2*Qh(jp)
+        exude_DOH = exude_DOH + (1.-ExportFracMort(jp)) *mortX *Qh
+     &                        + (1.-ExportFracMort2(jp))*mortX2*Qh
+        exude_POH = exude_POH +     ExportFracMort(jp)  *mortX *Qh
+     &                        +     ExportFracMort2(jp) *mortX2*Qh
 #endif 
 C Respiration of non-phototrophs
 C Respired carbon goes to DIC.  Other non-quota elements go to inorganic
