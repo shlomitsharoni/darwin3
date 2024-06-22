@@ -1035,15 +1035,34 @@ C          ENDIF
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
 
-        RQ = ( QN_pro_tot*Y_CN_protein(j))* 8.4600/5.3200 
-     &     + ( QC_other(j)/2  + QC_CSTO/2) * 56./43
-     &     + ( Y_PC_pg(j) * QP_thy)* 56./43
-     &     + ( QC_other(j)/2 + QC_CSTO/2) * 6./6.
-     &     + ( QC_chl) * 75.5000/55.
-     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 15.7500/9.7500 
-     &     + ( QN_RNA*Y_CN_RNA(j)) *  14.8775 /9.5
-     &     + ( QN_store*Y_CN_cyano(j)) * 18.5000/ 10.
+        RQ = ( QN_pro_tot*Y_CN_protein(j))* 1.56 
+     &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.34
+     &     + ( Y_PC_pg(j) * QP_thy)* 1.30
+     &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.0
+     &     + ( QC_chl) * 1.39
+     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 1.62
+     &     + ( QN_RNA*Y_CN_RNA(j)) *  1.57
+     &     + ( QN_store*Y_CN_cyano(j)) * 1.85
 
+        Qo = ( QN_pro_tot*Y_CN_protein(j))* 0.47 
+     &     + ( QC_other(j)/2  + QC_CSTO/2) * 0.12
+     &     + ( Y_PC_pg(j) * QP_thy)* 0.21
+     &     + ( QC_other(j)/2 + QC_CSTO/2) * 0.83
+     &     + ( QC_chl) * 0.09
+     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 0.61 
+     &     + ( QN_RNA*Y_CN_RNA(j)) * 0.73
+     &     + ( QN_store*Y_CN_cyano(j)) * 0.50
+
+
+        Qh = ( QN_pro_tot*Y_CN_protein(j))* 1.90 
+     &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.62
+     &     + ( Y_PC_pg(j) * QP_thy)* 1.74
+     &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.67
+     &     + ( QC_chl) * 1.30
+     &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 1.26 
+     &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23
+     &     + ( QN_store*Y_CN_cyano(j)) * 1.901
+     
             IF (Ptr(ip+j-1) .NE. 0 _d 0) THEN   
               dROP = RQ * MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
 C            ELSE
