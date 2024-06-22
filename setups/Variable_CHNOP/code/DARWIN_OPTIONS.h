@@ -177,7 +177,7 @@ C fill diagnostics for most tendency terms
 C deprecated
 
 C base particle scavenging on POP as in darwin2
-c#define DARWIN_PART_SCAV_POP
+#undef DARWIN_PART_SCAV_POP
 
 
 C random trait generation

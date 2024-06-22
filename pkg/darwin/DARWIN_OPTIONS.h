@@ -54,6 +54,13 @@ C this needs to be defined for coupling to atmospheric model:
 C enable RADI sediment model
 #undef  DARWIN_ALLOW_RADI
 
+C enable macromolecular growth code; requires N, P and Fe quotas
+#undef DARWIN_MACROMOLECULAR_GROWTH
+
+C enable mvariable C:H:N:O:P code; requires DARWIN_MACROMOLECULAR_GROWTH
+C does not work yet with Bacteria and Carbon Exudation
+#undef DARWIN_ALLOW_VARIABLE_CHNOP
+
 
 C optional bits
 
@@ -80,12 +87,6 @@ C CDOM is in carbon units and follows POC
 
 C include code for reading nutrient runoff from files
 #undef  DARWIN_NUTRIENT_RUNOFF
-
-C enable macromolecular growth code; requires N, P and Fe quotas
-#undef DARWIN_MACROMOLECULAR_GROWTH
-
-C enable mvariable C:H:N:O:P code; requires DARWIN_MACROMOLECULAR_GROWTH
-#undef DARWIN_ALLOW_VARIABLE_CHNOP
 
 
 C light
