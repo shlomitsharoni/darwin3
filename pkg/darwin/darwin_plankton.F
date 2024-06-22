@@ -366,6 +366,14 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL exude_DOH
       _RL Qo
       _RL Qh
+      _RL regQo
+      _RL regQh
+      _RL graz2POO
+      _RL graz2POH
+      _RL graz2OO
+      _RL graz2OH
+      _RL predexpo, predexph
+
 #endif
 
 #ifdef DARWIN_ALLOW_CDOM
@@ -1062,7 +1070,7 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 1.26 
      &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23
      &     + ( QN_store*Y_CN_cyano(j)) * 1.901
-     
+
             IF (Ptr(ip+j-1) .NE. 0 _d 0) THEN   
               dROP = RQ * MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
 C            ELSE
@@ -1785,7 +1793,16 @@ C==== Grazing ==========================================================
       regQp  = 1.0
       regQfe = 1.0
       regQc  = 1.0
-
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      graz2OO   = 0.0
+      graz2OH   = 0.0
+      graz2POO = 0.0
+      graz2POH = 0.0
+      regQo  = 1.0
+      regQh  = 1.0
+      predgrazo(j) = 0.0
+      predgrazh(j) = 0.0
+#endif
 C=======================================================================
       DO jz = 1, nplank
        IF (isPred(jz).NE.0) THEN
@@ -1811,7 +1828,10 @@ C       regulate grazing near full quota
         regQfe=regQfe**hillnumGraz
 #endif
         regQc = regQc**hillnumGraz
-
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+        regQh = regQc
+        regQo = regQc
+#endif
         sumprey = 0.0
         sumpref = 0.0
         DO jp = 1, nplank
@@ -1834,6 +1854,10 @@ C       regulate grazing near full quota
         predexpn  = 0.0 _d 0
         predexpp  = 0.0 _d 0
         predexpfe = 0.0 _d 0
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+        predexpo = 0.0 _d 0
+        predexph = 0.0 _d 0
+#endif 
         DO jp = 1, nplank
          IF (palat(jp,jz).NE.0 _d 0) THEN
 #ifdef DARWIN_GRAZING_SWITCH
@@ -1871,6 +1895,17 @@ C       regulate grazing near full quota
           predexpfe = predexpfe + expFrac*grazphy*asseff(jp,jz)*
      &                                    regQfe*Qfe(jp)
 #endif
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+          predgrazo(jz) = predgrazo(jz) + grazphy*asseff(jp,jz)*
+     &                                    regQo*Qo
+          predexpo = predexpo + expFrac*grazphy*asseff(jp,jz)*
+     &                                    regQo*Qo
+
+          predgrazh(jz) = predgrazh(jz) + grazphy*asseff(jp,jz)*
+     &                                    regQh*Qh 
+          predexph = predexph + expFrac*grazphy*asseff(jp,jz)*
+     &                                    regQh*Qh
+#endif
          ENDIF
         ENDDO
 
@@ -1902,6 +1937,14 @@ C organic-matter gain will be total preygraz - predgraz
         graz2POFe = graz2POFe - predexpc     *Qfe(jz)
 #endif
 
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+        graz2OO   = graz2OO  - predgrazo(jz)
+        graz2POO  = graz2POO - predexpo
+
+        graz2OH   = graz2OH  - predgrazh(jz)
+        graz2POH  = graz2POH - predexph
+#endif
+
        ENDIF
 C     end predator loop
       ENDDO
@@ -1919,6 +1962,10 @@ C     end predator loop
           graz2PON  = graz2PON  + preygrazexp(jp)*Qn (jp)
           graz2POP  = graz2POP  + preygrazexp(jp)*Qp (jp)
           graz2POFe = graz2POFe + preygrazexp(jp)*Qfe(jp)
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+          graz2POO = graz2POO + preygrazexp(jp)*Qo
+          graz2POH = graz2POH + preygrazexp(jp)*Qh
+#endif
        ENDIF
       ENDDO
 
@@ -1934,6 +1981,12 @@ C==== Apply grazing tendencies =========================================
       gTr(iPOSi)=gTr(iPOSi) + graz2POSi
       gTr(iPOFe)=gTr(iPOFe) + graz2POFe
       gTr(iPIC )=gTr(iPIC ) + graz2PIC
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      gTr(iPOO)=gTr(iPOO) + graz2POO
+      gTr(iPOH)=gTr(iPOH) + graz2POH
+      gTr(iDOO)=gTr(iDOO) + graz2OO  - graz2POO
+      gTr(iDOH)=gTr(iDOH) + graz2OH  - graz2POH
+#endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
       graz2CDOM = fracCDOM*(graz2OC - graz2POC)
