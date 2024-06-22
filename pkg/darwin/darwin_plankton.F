@@ -1512,7 +1512,7 @@ C shlomit: add O2-dependece respiration
       respDOH = reminTempFunc*KDOC*DOH*O2/(O2+10)
 #endif
 
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP / after computing the RHS, shlomit, 
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
       gTr(iPOO) = gTr(iPOO)  + respPOO
       gTr(iPOH) = gTr(iPOH)  + respPOH
       gTr(iDOO) = gTr(iDOO)  + respDOO
