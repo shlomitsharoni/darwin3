@@ -495,8 +495,13 @@ C==== Make all bio fields non-negative and compute quotas ==============
       POH  = MAX(0., Ptr(iPOH))
       DOO  = MAX(0., Ptr(iDOO))
       DOH  = MAX(0., Ptr(iDOH))
-      RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
-      RQ_DOC = (DOC+0.25*DOH+1.25*DON+1.25*DOP-0.5*DOO)/(DOC)
+C      IF (POC .NE. 0 _d 0) THEN   
+C      RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
+C      RQ_DOC = (DOC+0.25*DOH+1.25*DON+1.25*DOP-0.5*DOO)/(DOC)
+C      ELSE
+      RQ_POC = 170/120.0
+      RQ_DOC = 170/120.0
+C      ENDIF
 #endif
 #ifdef DARWIN_ALLOW_CARBON
       O2   = MAX(0., Ptr(iO2))
