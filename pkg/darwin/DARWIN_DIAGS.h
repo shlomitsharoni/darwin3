@@ -142,7 +142,7 @@ C Contains indices into diagnostics array
       PARAMETER(iExudePOO=  igraz2DOH+1)
       PARAMETER(iExudePOH= iExudePOO+1)
       PARAMETER(iExudeDOO= iExudePOH+1)
-      PARAMETER(iExudeDOH= iExudeDOH+1)
+      PARAMETER(iExudeDOH= iExudeDOO+1)
       PARAMETER(ichnop=  iExudeDOH+1)
 #else
      PARAMTER(ichnop= iaMacro)  
