@@ -2276,10 +2276,10 @@ C to DIC as if it had never been synthesized.
       gTr(iPOH)=gTr(iPOH) + ExudePOH
       gTr(iDOO)=gTr(iDOO) + ExudeDOO
       gTr(iDOH)=gTr(iDOH) + ExudeDOH
-      diags(iExude_POO) = ExudePOO
-      diags(iExude_POH) = ExudePOH
-      diags(iExude_DOO) = ExudeDOO
-      diags(iExude_DOH) = ExudeDOH
+      diags(iExudePOO) = ExudePOO
+      diags(iExudePOH) = ExudePOH
+      diags(iExudeDOO) = ExudeDOO
+      diags(iExudeDOH) = ExudeDOH
 #endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON

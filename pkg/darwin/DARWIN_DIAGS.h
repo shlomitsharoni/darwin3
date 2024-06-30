@@ -40,7 +40,7 @@ C Contains indices into diagnostics array
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
       integer irespPOO, irespPOH, irespDOO, irespDOH
       integer igraz2POO, igraz2POH, igraz2DOO, igraz2DOH
-      integer iexude_POO, iexude_POH, iexude_DOO, iexude_DOH
+      integer iExudePOO, iExudePOH, iExudeDOO, iExudeDOH
       integer ichnop
 #endif
       integer iConsO2
@@ -139,11 +139,11 @@ C Contains indices into diagnostics array
       PARAMETER(igraz2POH=   igraz2POO+1)
       PARAMETER(igraz2DOO=   igraz2POH+1)
       PARAMETER(igraz2DOH=   igraz2DOO+1)
-      PARAMETER(iexude_POO=  igraz2DOH+1)
-      PARAMETER(iexude_POH= iexude_POO+1)
-      PARAMETER(iexude_DOO= iexude_POH+1)
-      PARAMETER(iexude_DOH= iexude_DOH+1)
-      PARAMETER(ichnop=  iexude_DOH+1)
+      PARAMETER(iExudePOO=  igraz2DOH+1)
+      PARAMETER(iExudePOH= iExudePOO+1)
+      PARAMETER(iExudeDOO= iExudePOH+1)
+      PARAMETER(iExudeDOH= iExudeDOH+1)
+      PARAMETER(ichnop=  iExudeDOH+1)
 #else
      PARAMTER(ichnop= iaMacro)  
 #endif
