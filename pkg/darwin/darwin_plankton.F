@@ -2010,8 +2010,8 @@ C==== Apply grazing tendencies =========================================
       gTr(iDOH)=gTr(iDOH) + graz2OH  - graz2POH
       diags(iGraz2POO) = graz2POO
       diags(iGraz2POH) = graz2POH
-      diags(iGraz2DOO) = graz2DOO
-      diags(iGraz2DOH) = graz2DOH
+      diags(iGraz2DOO) = graz2OO  - graz2POO
+      diags(iGraz2DOH) = graz2OH  - graz2POH
 #endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
