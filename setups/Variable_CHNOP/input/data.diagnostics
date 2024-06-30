@@ -66,10 +66,10 @@
   fields(47,1) = 'graz2POH',
   fields(48,1) = 'graz2DOO',
   fields(49,1) = 'graz2DOH',
-  fields(50,1) = 'Exude_POO',
-  fields(51,1) = 'Exude_POH',
-  fields(52,1) = 'Exude_DOO',
-  fields(53,1) = 'Exude_DOH',
+  fields(50,1) = 'ExudePOO',
+  fields(51,1) = 'ExudePOH',
+  fields(52,1) = 'ExudeDOO',
+  fields(53,1) = 'ExudeDOH',
 
 #
 

@@ -203,28 +203,28 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
 
-      WRITE(diagName,'(A)')'exude_POO'
+      WRITE(diagName,'(A)')'ExudePOO'
       WRITE(diagTitle,'(A)')'exudation POO'
       diagUnits = 'mmol O/m^3/s    '
       diagCode  = 'SM P    MR      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
-      WRITE(diagName,'(A)')'exude_POH'
+      WRITE(diagName,'(A)')'ExudePOH'
       WRITE(diagTitle,'(A)')'exudation POH'
       diagUnits = 'mmol H/m^3/s    '
       diagCode  = 'SM P    MR      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
-      WRITE(diagName,'(A)')'exude_DOO'
+      WRITE(diagName,'(A)')'ExudeDOO'
       WRITE(diagTitle,'(A)')'exudation DOO'
       diagUnits = 'mmol O/m^3/s    '
       diagCode  = 'SM P    MR      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
-      WRITE(diagName,'(A)')'exude_DOH'
+      WRITE(diagName,'(A)')'ExudeDOH'
       WRITE(diagTitle,'(A)')'exudation DOH'
       diagUnits = 'mmol H/m^3/s    '
       diagCode  = 'SM P    MR      '

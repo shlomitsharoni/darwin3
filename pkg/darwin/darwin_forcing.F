@@ -988,16 +988,16 @@ C === diagnostics ======================================================
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iGraz2DOH),'graz2DOH',
      &          0,Nr,2,bi,bj,myThid)
 
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExude_POO),'Exude_POO',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExude_POO),'ExudePOO',
      &          0,Nr,2,bi,bj,myThid)
 
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExude_POH),'Exude_POH',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExude_POH),'ExudePOH',
      &          0,Nr,2,bi,bj,myThid)
 
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExude_DOO),'Exude_DOO',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExude_DOO),'ExudeDOO',
      &          0,Nr,2,bi,bj,myThid)
 
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExude_DOH),'Exude_DOH',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iExude_DOH),'ExudeDOH',
      &          0,Nr,2,bi,bj,myThid)
 #endif
 C      nutrient consumption diagnostics

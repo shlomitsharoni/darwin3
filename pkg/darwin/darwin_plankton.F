@@ -360,10 +360,10 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL POH
       _RL DOO 
       _RL DOH
-      _RL exude_POO
-      _RL exude_POH
-      _RL exude_DOO
-      _RL exude_DOH
+      _RL ExudePOO
+      _RL ExudePOH
+      _RL ExudeDOO
+      _RL ExudeDOH
       _RL Qo
       _RL Qh
       _RL regQo
@@ -2108,10 +2108,10 @@ C==== Mortality and parameterized exudation ============================
       respirFe   = 0.0 _d 0
       respirSi   = 0.0 _d 0
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      exude_POO  = 0.0 _d 0
-      exude_POH  = 0.0 _d 0
-      exude_DOO  = 0.0 _d 0
-      exude_DOH  = 0.0 _d 0
+      ExudePOO  = 0.0 _d 0
+      ExudePOH  = 0.0 _d 0
+      ExudeDOO  = 0.0 _d 0
+      ExudeDOH  = 0.0 _d 0
 #endif
       DO jp = 1, nplank
         Xe = MAX(0 _d 0, X(jp) - Xmin(jp))
@@ -2151,14 +2151,14 @@ C==== Mortality and parameterized exudation ============================
 
         exude_PIC = exude_PIC + mort_c(jp)*R_PICPOC(jp)
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        exude_DOO = exude_DOO + (1.-ExportFracMort(jp)) *mortX *Qo
+        ExudeDOO = ExudeDOO + (1.-ExportFracMort(jp)) *mortX *Qo
      &                        + (1.-ExportFracMort2(jp))*mortX2*Qo
-        exude_POO = exude_POO +     ExportFracMort(jp)  *mortX *Qo
+        ExudePOO = ExudePOO +     ExportFracMort(jp)  *mortX *Qo
      &                        +     ExportFracMort2(jp) *mortX2*Qo
 
-        exude_DOH = exude_DOH + (1.-ExportFracMort(jp)) *mortX *Qh
+        ExudeDOH = ExudeDOH + (1.-ExportFracMort(jp)) *mortX *Qh
      &                        + (1.-ExportFracMort2(jp))*mortX2*Qh
-        exude_POH = exude_POH +     ExportFracMort(jp)  *mortX *Qh
+        ExudePOH = ExudePOH +     ExportFracMort(jp)  *mortX *Qh
      &                        +     ExportFracMort2(jp) *mortX2*Qh
 #endif 
 C Respiration of non-phototrophs
@@ -2272,14 +2272,14 @@ C to DIC as if it had never been synthesized.
       gTr(iPOSi)=gTr(iPOSi) + exude_POSi
       gTr(iPOFe)=gTr(iPOFe) + exude_POFe
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      gTr(iPOO)=gTr(iPOO) + exude_POO
-      gTr(iPOH)=gTr(iPOH) + exude_POH
-      gTr(iDOO)=gTr(iDOO) + exude_DOO
-      gTr(iDOH)=gTr(iDOH) + exude_DOH
-      diags(iExude_POO) = exude_POO
-      diags(iExude_POH) = exude_POH
-      diags(iExude_DOO) = exude_DOO
-      diags(iExude_DOH) = exude_DOH
+      gTr(iPOO)=gTr(iPOO) + ExudePOO
+      gTr(iPOH)=gTr(iPOH) + ExudePOH
+      gTr(iDOO)=gTr(iDOO) + ExudeDOO
+      gTr(iDOH)=gTr(iDOH) + ExudeDOH
+      diags(iExude_POO) = ExudePOO
+      diags(iExude_POH) = ExudePOH
+      diags(iExude_DOO) = ExudeDOO
+      diags(iExude_DOH) = ExudeDOH
 #endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
