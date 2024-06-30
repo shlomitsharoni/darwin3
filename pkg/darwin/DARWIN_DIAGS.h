@@ -37,6 +37,12 @@ C Contains indices into diagnostics array
       integer iMODE, iFe_C, iexQc, iPCg
       integer iLIMP, iLIMN, iLIMF, iLIMC, iLIML
 #endif
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      integer irespPOO, irespPOH, irespDOO, irespDOH
+      integer igraz2POO, igraz2POH, igraz2DOO, igraz2DOH
+      integer iexude_POO, iexude_POH, iexude_DOO, iexude_DOH
+      integer ichnop
+#endif
       integer iConsO2
       integer iProdO2
       integer iPPplank
@@ -124,8 +130,25 @@ C Contains indices into diagnostics array
 #else
       PARAMETER(iaMacro= 22)
 #endif
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      PARAMETER(irespPOO=        iaMacro)
+      PARAMETER(irespPOH=     irespPOO+1)
+      PARAMETER(irespDOO=     irespPOH+1)
+      PARAMETER(irespDOH=     irespDOO+1)
+      PARAMETER(igraz2POO=    irespDOH+1)
+      PARAMETER(igraz2POH=   igraz2POO+1)
+      PARAMETER(igraz2DOO=   igraz2POH+1)
+      PARAMETER(igraz2DOH=   igraz2DOO+1)
+      PARAMETER(iexude_POO=  igraz2DOH+1)
+      PARAMETER(iexude_POH= iexude_POO+1)
+      PARAMETER(iexude_DOO= iexude_POH+1)
+      PARAMETER(iexude_DOH= iexude_DOH+1)
+      PARAMETER(ichnop=  iexude_DOH+1)
+#else
+     PARAMTER(ichnop= iaMacro)  
+#endif
 #ifdef DARWIN_ALLOW_CSTORE
-      PARAMETER(iEX=  iaMacro)
+      PARAMETER(iEX=  ichnop)
       PARAMETER(iGW=  iEX+1)
       PARAMETER(iDN=  iGW+1)
       PARAMETER(iDP=  iDN+1)

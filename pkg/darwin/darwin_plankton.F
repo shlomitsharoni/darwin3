@@ -1558,6 +1558,10 @@ C shlomit: add O2-dependece respiration
       gTr(iPOH) = gTr(iPOH)  + respPOH
       gTr(iDOO) = gTr(iDOO)  + respDOO
       gTr(iDOH) = gTr(iDOH)  + respDOH
+      diags(iRespPOO) = respPOO
+      diags(iRespPOH) = respPOH
+      diags(iRespDOO) = respDOO
+      diags(iRespDOH) = respDOH
 #endif
 
       consumDOC  = consumDOC  + respDOC
@@ -2004,6 +2008,10 @@ C==== Apply grazing tendencies =========================================
       gTr(iPOH)=gTr(iPOH) + graz2POH
       gTr(iDOO)=gTr(iDOO) + graz2OO  - graz2POO
       gTr(iDOH)=gTr(iDOH) + graz2OH  - graz2POH
+      diags(iGraz2POO) = graz2POO
+      diags(iGraz2POH) = graz2POH
+      diags(iGraz2DOO) = graz2DOO
+      diags(iGraz2DOH) = graz2DOH
 #endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
@@ -2268,6 +2276,10 @@ C to DIC as if it had never been synthesized.
       gTr(iPOH)=gTr(iPOH) + exude_POH
       gTr(iDOO)=gTr(iDOO) + exude_DOO
       gTr(iDOH)=gTr(iDOH) + exude_DOH
+      diags(iExude_POO) = exude_POO
+      diags(iExude_POH) = exude_POH
+      diags(iExude_DOO) = exude_DOO
+      diags(iExude_DOH) = exude_DOH
 #endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
