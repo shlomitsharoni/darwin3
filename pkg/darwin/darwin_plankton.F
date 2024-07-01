@@ -1554,10 +1554,10 @@ C shlomit: add O2-dependece respiration
       respPOH = reminTempFunc*KPOC*POH*O2/(O2+10)
       respDOO = reminTempFunc*KDOC*DOO*O2/(O2+10)
       respDOH = reminTempFunc*KDOC*DOH*O2/(O2+10)
-      gTr(iPOO) = gTr(iPOO)  + respPOO
-      gTr(iPOH) = gTr(iPOH)  + respPOH
-      gTr(iDOO) = gTr(iDOO)  + respDOO
-      gTr(iDOH) = gTr(iDOH)  + respDOH
+      gTr(iPOO) = gTr(iPOO)  - respPOO
+      gTr(iPOH) = gTr(iPOH)  - respPOH
+      gTr(iDOO) = gTr(iDOO)  - respDOO
+      gTr(iDOH) = gTr(iDOH)  - respDOH
       diags(iRespPOO) = respPOO
       diags(iRespPOH) = respPOH
       diags(iRespDOO) = respDOO
