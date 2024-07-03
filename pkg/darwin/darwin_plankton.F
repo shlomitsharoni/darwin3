@@ -1588,17 +1588,9 @@ C     endif O2, NO3 for DARWIN_ALLOW_DENIT
 
 #ifdef DARWIN_ALLOW_CARBON
       IF (O2 .GE. O2crit) THEN
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        consumO2  = consumO2  + respDOC*RQ_DOC
-# else
         consumO2  = consumO2  + respDOP*R_OP
-#endif
 #ifndef DARWIN_ALLOW_CDOM
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        consumO2  = consumO2  + respPOC*RQ_POC
-# else
         consumO2  = consumO2  + respPOP*R_OP
-#endif
 #endif
       ENDIF
 #endif
