@@ -1078,9 +1078,9 @@ C        MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
               dROP = RQ/Qp(j)
             ENDIF 
 
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP            
-        R_OP = dROP 
-#endif
+C#ifdef DARWIN_ALLOW_VARIABLE_CHNOP            
+C        R_OP = dROP 
+C#endif
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iVP  +j-1) = VP
