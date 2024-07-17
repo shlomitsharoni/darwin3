@@ -495,16 +495,16 @@ C==== Make all bio fields non-negative and compute quotas ==============
       POH  = MAX(0., Ptr(iPOH))
       DOO  = MAX(0., Ptr(iDOO))
       DOH  = MAX(0., Ptr(iDOH))
-C      IF (POC .NE. 0 _d 0) THEN
-C      RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
-C      ELSE
+      IF (POC .NE. 0 _d 0) THEN
+      RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
+      ELSE
       RQ_POC = 170/120.0
-C      ENDIF
-C      IF (DOC .NE. 0 _d 0) THEN
-C      RQ_DOC = (DOC+0.25*DOH+1.25*DON+1.25*DOP-0.5*DOO)/(DOC)
-C      ELSE
+      ENDIF
+      IF (DOC .NE. 0 _d 0) THEN
+      RQ_DOC = (DOC+0.25*DOH+1.25*DON+1.25*DOP-0.5*DOO)/(DOC)
+      ELSE
       RQ_DOC = 170/120.0
-C      ENDIF
+      ENDIF
 #endif
 #ifdef DARWIN_ALLOW_CARBON
       O2   = MAX(0., Ptr(iO2))
@@ -1563,8 +1563,8 @@ C shlomit: add O2-dependece respiration
       gTr(iDOH) = gTr(iDOH)  - respDOH
       diags(iRespPOO) = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
       diags(iRespPOH) = (DOC+0.25*DOH+1.25*DON+1.25*DOP-0.5*DOO)/(DOC)
-      diags(iRespDOO) = respDOO
-      diags(iRespDOH) = respDOH
+      diags(iRespDOO) = RQ_POC
+      diags(iRespDOH) = RQ_DOC
 #endif
 
       consumDOC  = consumDOC  + respDOC
