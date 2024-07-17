@@ -146,6 +146,20 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 #endif
 
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      WRITE(diagName,'(A)')'RQ_POC'
+      WRITE(diagTitle,'(A)')'RQ of POC'
+      diagUnits = '-mol O2: mol C  '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'RQ_DOC'
+      WRITE(diagTitle,'(A)')'RQ of POC'
+      diagUnits = '-mol O2: mol C  '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
       WRITE(diagName,'(A)')'respPOO'
       WRITE(diagTitle,'(A)')'respiration POO'
       diagUnits = 'mmol O/m^3/s    '

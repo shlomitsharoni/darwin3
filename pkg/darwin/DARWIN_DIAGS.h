@@ -38,6 +38,7 @@ C Contains indices into diagnostics array
       integer iLIMP, iLIMN, iLIMF, iLIMC, iLIML
 #endif
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      integer iRQ_POC iRQ_DOC
       integer irespPOO, irespPOH, irespDOO, irespDOH
       integer igraz2POO, igraz2POH, igraz2DOO, igraz2DOH
       integer iExudePOO, iExudePOH, iExudeDOO, iExudeDOH
@@ -131,15 +132,17 @@ C Contains indices into diagnostics array
       PARAMETER(iaMacro= 22)
 #endif
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      PARAMETER(irespPOO=        iaMacro)
-      PARAMETER(irespPOH=     irespPOO+1)
-      PARAMETER(irespDOO=     irespPOH+1)
-      PARAMETER(irespDOH=     irespDOO+1)
-      PARAMETER(igraz2POO=    irespDOH+1)
-      PARAMETER(igraz2POH=   igraz2POO+1)
-      PARAMETER(igraz2DOO=   igraz2POH+1)
-      PARAMETER(igraz2DOH=   igraz2DOO+1)
-      PARAMETER(iExudePOO=  igraz2DOH+1)
+      PARAMETER(iRQ_POC=  iaMacro)
+      PARAMETER(iRQ_DOC=  iRQ_POC+1)
+      PARAMETER(irespPOO= iRQ_DOC+1)
+      PARAMETER(irespPOH= irespPOO+1)
+      PARAMETER(irespDOO= irespPOH+1)
+      PARAMETER(irespDOH= irespDOO+1)
+      PARAMETER(igraz2POO= irespDOH+1)
+      PARAMETER(igraz2POH= igraz2POO+1)
+      PARAMETER(igraz2DOO= igraz2POH+1)
+      PARAMETER(igraz2DOH= igraz2DOO+1)
+      PARAMETER(iExudePOO= igraz2DOH+1)
       PARAMETER(iExudePOH= iExudePOO+1)
       PARAMETER(iExudeDOO= iExudePOH+1)
       PARAMETER(iExudeDOH= iExudeDOO+1)
