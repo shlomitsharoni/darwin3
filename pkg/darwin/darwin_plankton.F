@@ -1599,7 +1599,7 @@ C     endif O2, NO3 for DARWIN_ALLOW_DENIT
 #endif
 #ifndef DARWIN_ALLOW_CDOM
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        diags(RQ_POC) = RQ_POC
+        diags(iRQ_POC) = RQ_POC
         consumO2  = consumO2  + respPOC*RQ_POC
 #else
         consumO2  = consumO2  + respPOP*R_OP
