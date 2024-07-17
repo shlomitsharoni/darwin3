@@ -38,7 +38,7 @@ C Contains indices into diagnostics array
       integer iLIMP, iLIMN, iLIMF, iLIMC, iLIML
 #endif
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      integer iRQ_POC iRQ_DOC
+      integer iRQ_POC, iRQ_DOC
       integer irespPOO, irespPOH, irespDOO, irespDOH
       integer igraz2POO, igraz2POH, igraz2DOO, igraz2DOH
       integer iExudePOO, iExudePOH, iExudeDOO, iExudeDOH
