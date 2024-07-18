@@ -964,10 +964,10 @@ C === diagnostics ======================================================
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_POC),'RQ_POC ',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_POC),'RQ_POC',
      &          0,Nr,2,bi,bj,myThid)
 
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_DOC),'RQ_DOC ',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_DOC),'RQ_DOC',
      &          0,Nr,2,bi,bj,myThid)
      
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespPOO),'respPOO ',
