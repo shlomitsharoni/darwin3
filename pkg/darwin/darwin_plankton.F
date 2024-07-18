@@ -498,6 +498,8 @@ C==== Make all bio fields non-negative and compute quotas ==============
       IF (POC .NE. 0 _d 0) THEN
       RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
       diags(iRQ_POC) = RQ_POC
+      diags(iRespDOO) = 6
+      diags(iRespDOH) = RQ_POC
       ELSE
       RQ_POC = 170/120.0
       ENDIF
@@ -1562,11 +1564,11 @@ C shlomit: add O2-dependece respiration
       gTr(iPOH) = gTr(iPOH)  - respPOH
       gTr(iDOO) = gTr(iDOO)  - respDOO
       gTr(iDOH) = gTr(iDOH)  - respDOH
-      diags(iRQ_DOC) = RQ_DOC
-      diags(iRespPOO) = respPOO
-      diags(iRespPOH) = respPOH
-      diags(iRespDOO) = respDOO
-      diags(iRespDOH) = respDOH
+      diags(iRQ_DOC) = 43
+C      diags(iRespPOO) = respPOO
+C      diags(iRespPOH) = respPOH
+C      diags(iRespDOO) = respDOO
+C      diags(iRespDOH) = respDOH
 #endif
 
       consumDOC  = consumDOC  + respDOC
@@ -1595,6 +1597,8 @@ C     endif O2, NO3 for DARWIN_ALLOW_DENIT
       IF (O2 .GE. O2crit) THEN
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
 C        diags(iRQ_DOC) = RQ_DOC
+      diags(iRespPOO) = 6
+      diags(iRespPOH) = RQ_DOC
         consumO2  = consumO2  + respDOC*RQ_DOC
 #else
         consumO2  = consumO2  + respDOP*R_OP
