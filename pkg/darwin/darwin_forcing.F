@@ -964,7 +964,7 @@ C === diagnostics ======================================================
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        WRITE(diagname, '(A,I4.4)') 'RQ_POC', iTr
+        WRITE(diagname, '(A,I4.4)') 'RQ_POC  ', iTr
          CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_POC),diagname,
      &          0,Nr,2,bi,bj,myThid)
 
