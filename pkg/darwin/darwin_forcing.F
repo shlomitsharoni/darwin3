@@ -964,22 +964,22 @@ C === diagnostics ======================================================
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
 
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_POC),'RQ_POC',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_POC),'RQ_POC  ',
      &          0,Nr,2,bi,bj,myThid)
 
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_DOC),'RQ_DOC',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRQ_DOC),'RQ_DOC  ',
      &          0,Nr,2,bi,bj,myThid)
      
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespPOO),'respPOO',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespPOO),'respPOO ',
      &          0,Nr,2,bi,bj,myThid)
 
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespPOH),'respPOH',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespPOH),'respPOH ',
      &          0,Nr,2,bi,bj,myThid)
 
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespDOO),'respDOO',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespDOO),'respDOO ',
      &          0,Nr,2,bi,bj,myThid)
 
-        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespDOH),'respDOH',
+        CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iRespDOH),'respDOH ',
      &          0,Nr,2,bi,bj,myThid)
      
         CALL DIAGNOSTICS_FILL(diags(1-OLx,1-OLy,1,iGraz2POO),'graz2POO',
