@@ -497,9 +497,9 @@ C==== Make all bio fields non-negative and compute quotas ==============
       DOH  = MAX(0., Ptr(iDOH))
       IF (POC .NE. 0 _d 0) THEN
       RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
-      diags(iRQ_POC) = RQ_POC
-      diags(iRespDOO) = 6
-      diags(iRespDOH) = RQ_POC
+      diags(iRQ_POC) = 1
+      diags(iRespDOO) = 5
+      diags(iRespDOH) = 6
       ELSE
       RQ_POC = 170/120.0
       ENDIF
@@ -1127,7 +1127,7 @@ C#endif
         diags(iLIMN+j-1) = LIMN
         diags(iLIMF+j-1) = LIMF
         diags(iLIMC+j-1) = LIMC
-        diags(iLIML+j-1) = LIML
+        diags(iLIML+j-1) = 100
 
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
@@ -1564,7 +1564,7 @@ C shlomit: add O2-dependece respiration
       gTr(iPOH) = gTr(iPOH)  - respPOH
       gTr(iDOO) = gTr(iDOO)  - respDOO
       gTr(iDOH) = gTr(iDOH)  - respDOH
-      diags(iRQ_DOC) = 43
+      diags(iRQ_DOC) = 2
 C      diags(iRespPOO) = respPOO
 C      diags(iRespPOH) = respPOH
 C      diags(iRespDOO) = respDOO
@@ -1597,8 +1597,8 @@ C     endif O2, NO3 for DARWIN_ALLOW_DENIT
       IF (O2 .GE. O2crit) THEN
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
 C        diags(iRQ_DOC) = RQ_DOC
-      diags(iRespPOO) = 6
-      diags(iRespPOH) = RQ_DOC
+      diags(iRespPOO) = 3
+      diags(iRespPOH) = 4
         consumO2  = consumO2  + respDOC*RQ_DOC
 #else
         consumO2  = consumO2  + respDOP*R_OP
@@ -2019,10 +2019,12 @@ C==== Apply grazing tendencies =========================================
       gTr(iPOH)=gTr(iPOH) + graz2POH
       gTr(iDOO)=gTr(iDOO) + graz2OO  - graz2POO
       gTr(iDOH)=gTr(iDOH) + graz2OH  - graz2POH
-      diags(iGraz2POO) = graz2POO
-      diags(iGraz2POH) = graz2POH
-      diags(iGraz2DOO) = graz2OO  - graz2POO
-      diags(iGraz2DOH) = graz2OH  - graz2POH
+      diags(iGraz2POO) = 7
+      diags(iGraz2POH) = 8
+      diags(iGraz2DOO) = 9
+      diags(iGraz2DOH) = 10
+C      diags(iGraz2DOO) = graz2OO  - graz2POO
+C      diags(iGraz2DOH) = graz2OH  - graz2POH
 #endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
@@ -2287,10 +2289,10 @@ C to DIC as if it had never been synthesized.
       gTr(iPOH)=gTr(iPOH) + ExudePOH
       gTr(iDOO)=gTr(iDOO) + ExudeDOO
       gTr(iDOH)=gTr(iDOH) + ExudeDOH
-      diags(iExudePOO) = ExudePOO
-      diags(iExudePOH) = ExudePOH
-      diags(iExudeDOO) = ExudeDOO
-      diags(iExudeDOH) = ExudeDOH
+      diags(iExudePOO) = 11
+      diags(iExudePOH) = 12
+      diags(iExudeDOO) = 13
+      diags(iExudeDOH) = 14
 #endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
