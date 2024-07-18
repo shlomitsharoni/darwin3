@@ -145,107 +145,6 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 #endif
 
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      WRITE(diagName,'(A)')'RQ_POC'
-      WRITE(diagTitle,'(A)')'RQ of POC'
-      diagUnits = '-mol O2: mol C  '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'RQ_DOC'
-      WRITE(diagTitle,'(A)')'RQ of POC'
-      diagUnits = '-mol O2: mol C  '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'respPOO'
-      WRITE(diagTitle,'(A)')'respiration POO'
-      diagUnits = 'mmol O/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'respPOH'
-      WRITE(diagTitle,'(A)')'respiration POH'
-      diagUnits = 'mmol H/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'respDOO'
-      WRITE(diagTitle,'(A)')'respiration DOO'
-      diagUnits = 'mmol O/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'respDOH'
-      WRITE(diagTitle,'(A)')'respiration DOH'
-      diagUnits = 'mmol H/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'graz2POO'
-      WRITE(diagTitle,'(A)')'grazing POO'
-      diagUnits = 'mmol O/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'graz2POH'
-      WRITE(diagTitle,'(A)')'grazing POH'
-      diagUnits = 'mmol H/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'graz2DOO'
-      WRITE(diagTitle,'(A)')'grazing DOO'
-      diagUnits = 'mmol O/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'graz2DOH'
-      WRITE(diagTitle,'(A)')'grazing DOH'
-      diagUnits = 'mmol H/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-
-      WRITE(diagName,'(A)')'ExudePOO'
-      WRITE(diagTitle,'(A)')'exudation POO'
-      diagUnits = 'mmol O/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'ExudePOH'
-      WRITE(diagTitle,'(A)')'exudation POH'
-      diagUnits = 'mmol H/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'ExudeDOO'
-      WRITE(diagTitle,'(A)')'exudation DOO'
-      diagUnits = 'mmol O/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-
-      WRITE(diagName,'(A)')'ExudeDOH'
-      WRITE(diagTitle,'(A)')'exudation DOH'
-      diagUnits = 'mmol H/m^3/s    '
-      diagCode  = 'SM P    MR      '
-      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
-     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
-#endif
-
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       DO j = 1, nPhoto
 
@@ -475,6 +374,107 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
      
       ENDDO
 #endif /* DARWIN_MACROMOLECULAR_GROWTH */
+
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      WRITE(diagName,'(A)')'RQ_POC'
+      WRITE(diagTitle,'(A)')'RQ of POC'
+      diagUnits = '-mol O2: mol C  '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'RQ_DOC'
+      WRITE(diagTitle,'(A)')'RQ of POC'
+      diagUnits = '-mol O2: mol C  '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'respPOO'
+      WRITE(diagTitle,'(A)')'respiration POO'
+      diagUnits = 'mmol O/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'respPOH'
+      WRITE(diagTitle,'(A)')'respiration POH'
+      diagUnits = 'mmol H/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'respDOO'
+      WRITE(diagTitle,'(A)')'respiration DOO'
+      diagUnits = 'mmol O/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'respDOH'
+      WRITE(diagTitle,'(A)')'respiration DOH'
+      diagUnits = 'mmol H/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'graz2POO'
+      WRITE(diagTitle,'(A)')'grazing POO'
+      diagUnits = 'mmol O/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'graz2POH'
+      WRITE(diagTitle,'(A)')'grazing POH'
+      diagUnits = 'mmol H/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'graz2DOO'
+      WRITE(diagTitle,'(A)')'grazing DOO'
+      diagUnits = 'mmol O/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'graz2DOH'
+      WRITE(diagTitle,'(A)')'grazing DOH'
+      diagUnits = 'mmol H/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+
+      WRITE(diagName,'(A)')'ExudePOO'
+      WRITE(diagTitle,'(A)')'exudation POO'
+      diagUnits = 'mmol O/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'ExudePOH'
+      WRITE(diagTitle,'(A)')'exudation POH'
+      diagUnits = 'mmol H/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'ExudeDOO'
+      WRITE(diagTitle,'(A)')'exudation DOO'
+      diagUnits = 'mmol O/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+
+      WRITE(diagName,'(A)')'ExudeDOH'
+      WRITE(diagTitle,'(A)')'exudation DOH'
+      diagUnits = 'mmol H/m^3/s    '
+      diagCode  = 'SM P    MR      '
+      CALL DIAGNOSTICS_ADDTOLIST( diagNum,
+     I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
+#endif
 
 #ifdef ALLOW_RADTRANS
       DO j = 1, nlam
