@@ -1561,10 +1561,10 @@ C shlomit: add O2-dependece respiration
       gTr(iPOH) = gTr(iPOH)  - respPOH
       gTr(iDOO) = gTr(iDOO)  - respDOO
       gTr(iDOH) = gTr(iDOH)  - respDOH
-      diags(iRespPOO) = 3
-      diags(iRespPOH) = 4
-      diags(iRespDOO) = 5
-      diags(iRespDOH) = 6
+      diags(iRespPOO) = respPOO
+      diags(iRespPOH) = respPOH
+      diags(iRespDOO) = respDOO
+      diags(iRespDOH) = respDOH
 #endif
 
       consumDOC  = consumDOC  + respDOC
@@ -1592,14 +1592,14 @@ C     endif O2, NO3 for DARWIN_ALLOW_DENIT
 #ifdef DARWIN_ALLOW_CARBON
       IF (O2 .GE. O2crit) THEN
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        diags(iRQ_DOC) = 2
+        diags(iRQ_DOC) = RQ_DOC
         consumO2  = consumO2  + respDOC*RQ_DOC
 #else
         consumO2  = consumO2  + respDOP*R_OP
 #endif
 #ifndef DARWIN_ALLOW_CDOM
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        diags(iRQ_POC) = 1
+        diags(iRQ_POC) = RQ_POC
         consumO2  = consumO2  + respPOC*RQ_POC
 #else
         consumO2  = consumO2  + respPOP*R_OP
@@ -2013,10 +2013,10 @@ C==== Apply grazing tendencies =========================================
       gTr(iPOH)=gTr(iPOH) + graz2POH
       gTr(iDOO)=gTr(iDOO) + graz2OO  - graz2POO
       gTr(iDOH)=gTr(iDOH) + graz2OH  - graz2POH
-      diags(iGraz2POO) = 7
-      diags(iGraz2POH) = 8
-      diags(iGraz2DOO) = 9
-      diags(iGraz2DOH) = 10
+      diags(iGraz2POO) = graz2POO
+      diags(iGraz2POH) = graz2POH
+      diags(iGraz2DOO) = 999
+      diags(iGraz2DOH) = 888
 #endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
@@ -2281,10 +2281,10 @@ C to DIC as if it had never been synthesized.
       gTr(iPOH)=gTr(iPOH) + ExudePOH
       gTr(iDOO)=gTr(iDOO) + ExudeDOO
       gTr(iDOH)=gTr(iDOH) + ExudeDOH
-      diags(iExudePOO) = 11
-      diags(iExudePOH) = 12
-      diags(iExudeDOO) = 13
-      diags(iExudeDOH) = 14
+      diags(iExudePOO) = ExudePOO
+      diags(iExudePOH) = ExudePOH
+      diags(iExudeDOO) = ExudeDOO
+      diags(iExudeDOH) = ExudeDOH
 #endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
