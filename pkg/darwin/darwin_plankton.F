@@ -2017,8 +2017,6 @@ C==== Apply grazing tendencies =========================================
       diags(iGraz2POH) = 8
       diags(iGraz2DOO) = 9
       diags(iGraz2DOH) = 10
-C      diags(iGraz2DOO) = graz2OO  - graz2POO
-C      diags(iGraz2DOH) = graz2OH  - graz2POH
 #endif
 #ifdef DARWIN_ALLOW_CDOM
 # ifdef DARWIN_CDOM_UNITS_CARBON
