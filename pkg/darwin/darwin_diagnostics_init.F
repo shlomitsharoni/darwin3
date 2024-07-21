@@ -384,7 +384,7 @@ C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
      I           diagName, diagCode, diagUnits, diagTitle, 0, myThid )
 
       WRITE(diagName,'(A)')'RQ_DOC'
-      WRITE(diagTitle,'(A)')'RQ of POC'
+      WRITE(diagTitle,'(A)')'RQ of DOC'
       diagUnits = '-mol O2: mol C  '
       diagCode  = 'SM P    MR      '
       CALL DIAGNOSTICS_ADDTOLIST( diagNum,
