@@ -1856,8 +1856,8 @@ C       regulate grazing near full quota
 #endif
         regQc = regQc**hillnumGraz
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        regQh = regQc
-        regQo = regQc
+        regQh = 1
+        regQo = 1
 #endif
         sumprey = 0.0
         sumpref = 0.0
