@@ -335,7 +335,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL FCmin
       _RL Scal_coeff
       _RL QC_CSTO
-      _RL RQ
       _RL dROP
       _RL QN_pro_const
       _RL QN_DNA_plot
@@ -364,8 +363,9 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL ExudePOH
       _RL ExudeDOO
       _RL ExudeDOH
-      _RL Qo
-      _RL Qh
+      _RL Qo(nplank)
+      _RL Qh(nplank)
+      _RL RQ(nplank)
       _RL regQo
       _RL regQh
       _RL graz2POO
@@ -1057,7 +1057,7 @@ C          ENDIF
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
 
-        RQ = ( QN_pro_tot*Y_CN_protein(j))* 1.56 
+        RQ(j) = ( QN_pro_tot*Y_CN_protein(j))* 1.56 
      &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.34
      &     + ( Y_PC_pg(j) * QP_thy)* 1.30
      &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.0
@@ -1066,7 +1066,7 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) *  1.57
      &     + ( QN_store*Y_CN_cyano(j)) * 1.85
 
-        Qo = ( QN_pro_tot*Y_CN_protein(j))* 0.47 
+        Qo(j) = ( QN_pro_tot*Y_CN_protein(j))* 0.47 
      &     + ( QC_other(j)/2  + QC_CSTO/2) * 0.12
      &     + ( Y_PC_pg(j) * QP_thy)* 0.21
      &     + ( QC_other(j)/2 + QC_CSTO/2) * 0.83
@@ -1076,7 +1076,7 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_store*Y_CN_cyano(j)) * 0.50
 
 
-        Qh = ( QN_pro_tot*Y_CN_protein(j))* 1.90 
+        Qh(j) = ( QN_pro_tot*Y_CN_protein(j))* 1.90 
      &     + ( QC_other(j)/2  + QC_CSTO/2) * 1.62
      &     + ( Y_PC_pg(j) * QP_thy)* 1.74
      &     + ( QC_other(j)/2 + QC_CSTO/2) * 1.67
@@ -1087,7 +1087,7 @@ C       ! shlomit: Calclate the O2:P ratio
 
             IF (Qp(j) .NE. 0 _d 0) THEN   
 C        MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
-              dROP = RQ/Qp(j)
+              dROP = (RQ(j))/Qp(j)
             ENDIF 
 
 C#ifdef DARWIN_ALLOW_VARIABLE_CHNOP            
@@ -1118,13 +1118,13 @@ C#endif
         diags(iFPHO+j-1) = Qfe_pro_photo
         diags(iFSTO+j-1) = Qfe_Store
         diags(iFEXC+j-1) = Qfe_excess
-        diags(iY_RQ+j-1) = RQ
+        diags(iY_RQ+j-1) = RQ(j)
         diags(idROP+j-1) = dROP
         diags(iLIMP+j-1) = LIMP
         diags(iLIMN+j-1) = LIMN
         diags(iLIMF+j-1) = LIMF
         diags(iLIMC+j-1) = LIMC
-        diags(iLIML+j-1) = 100
+        diags(iLIML+j-1) = LIML
 
 
 #else /* DARWIN_MACROMOLECULAR_GROWTH */
@@ -1924,14 +1924,14 @@ C#endif
 #endif
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
           predgrazo(jz) = predgrazo(jz) + grazphy*asseff(jp,jz)*
-     &                                    regQo*Qo
+     &                                    regQo*Qo(jp)
           predexpo = predexpo + expFrac*grazphy*asseff(jp,jz)*
-     &                                    regQo*Qo
+     &                                    regQo*Qo(jp)
 
           predgrazh(jz) = predgrazh(jz) + grazphy*asseff(jp,jz)*
-     &                                    regQh*Qh 
+     &                                    regQh*Qh(jp)
           predexph = predexph + expFrac*grazphy*asseff(jp,jz)*
-     &                                    regQh*Qh
+     &                                    regQh*Qh(jp)
 #endif
          ENDIF
         ENDDO
@@ -1990,8 +1990,8 @@ C     end predator loop
           graz2POP  = graz2POP  + preygrazexp(jp)*Qp (jp)
           graz2POFe = graz2POFe + preygrazexp(jp)*Qfe(jp)
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-          graz2POO = graz2POO + preygrazexp(jp)*Qo
-          graz2POH = graz2POH + preygrazexp(jp)*Qh
+          graz2POO = graz2POO + preygrazexp(jp)*Qo(jp)
+          graz2POH = graz2POH + preygrazexp(jp)*Qh(jp)
 #endif
        ENDIF
       ENDDO
@@ -2156,15 +2156,15 @@ C==== Mortality and parameterized exudation ============================
 
         exude_PIC = exude_PIC + mort_c(jp)*R_PICPOC(jp)
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-        ExudeDOO = ExudeDOO + (1.-ExportFracMort(jp)) *mortX *Qo
-     &                        + (1.-ExportFracMort2(jp))*mortX2*Qo
-        ExudePOO = ExudePOO +     ExportFracMort(jp)  *mortX *Qo
-     &                        +     ExportFracMort2(jp) *mortX2*Qo
+        ExudeDOO = ExudeDOO + (1.-ExportFracMort(jp)) *mortX *Qo(jp)
+     &                        + (1.-ExportFracMort2(jp))*mortX2*Qo(jp)
+        ExudePOO = ExudePOO +     ExportFracMort(jp)  *mortX *Qo(jp)
+     &                        +     ExportFracMort2(jp) *mortX2*Qo(jp)
 
-        ExudeDOH = ExudeDOH + (1.-ExportFracMort(jp)) *mortX *Qh
-     &                        + (1.-ExportFracMort2(jp))*mortX2*Qh
-        ExudePOH = ExudePOH +     ExportFracMort(jp)  *mortX *Qh
-     &                        +     ExportFracMort2(jp) *mortX2*Qh
+        ExudeDOH = ExudeDOH + (1.-ExportFracMort(jp)) *mortX *Qh(jp)
+     &                        + (1.-ExportFracMort2(jp))*mortX2*Qh(jp)
+        ExudePOH = ExudePOH +     ExportFracMort(jp)  *mortX *Qh(jp)
+     &                        +     ExportFracMort2(jp) *mortX2*Qh(jp)
 #endif 
 C Respiration of non-phototrophs
 C Respired carbon goes to DIC.  Other non-quota elements go to inorganic
