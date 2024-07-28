@@ -1829,10 +1829,11 @@ C==== Grazing ==========================================================
       regQfe = 1.0
       regQc  = 1.0
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-      graz2OO   = 0.0
-      graz2OH   = 0.0
       graz2POO = 0.0
       graz2POH = 0.0
+      graz2OO  = 0.0
+      graz2OH  = 0.0
+
       regQo  = 1.0
       regQh  = 1.0
 #endif
@@ -1996,6 +1997,8 @@ C     end predator loop
           graz2POP  = graz2POP  + preygrazexp(jp)*Qp (jp)
           graz2POFe = graz2POFe + preygrazexp(jp)*Qfe(jp)
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+          graz2OO = graz2OO + preygraz(jp)*Qo(jp)
+          graz2OH = graz2OH + preygraz(jp)*Qh(jp)
           graz2POO = graz2POO + preygrazexp(jp)*Qo(jp)
           graz2POH = graz2POH + preygrazexp(jp)*Qh(jp)
 #endif
