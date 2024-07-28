@@ -1843,29 +1843,29 @@ C=======================================================================
 
 C       regulate grazing near full quota
         regQc = 1.0 _d 0
-C#ifdef DARWIN_ALLOW_NQUOTA
-C        regQn = MAX(0., MIN(1., (Qnmax(jz)-Qn(jz))/
-C     &                          (Qnmax(jz)-Qnmin(jz)) ))
-C        regQc = MIN(regQc, 1.0 _d 0 - regQn)
-C        regQn = regQn**hillnumGraz
-C#endif
-C#ifdef DARWIN_ALLOW_PQUOTA
-C        regQp = MAX(0., MIN(1., (Qpmax(jz)-Qp(jz))/
-C     &                          (Qpmax(jz)-Qpmin(jz)) ))
-C        regQc = MIN(regQc, 1.0 _d 0 - regQp)
-C        regQp = regQp**hillnumGraz
-C#endif
-C#ifdef DARWIN_ALLOW_FEQUOTA
-C        regQfe= MAX(0., MIN(1., (Qfemax(jz)-Qfe(jz))/
-C     &                          (Qfemax(jz)-Qfemin(jz)) ))
-C        regQc = MIN(regQc, 1.0 _d 0 - regQfe)
-C        regQfe=regQfe**hillnumGraz
-C#endif
-C        regQc = regQc**hillnumGraz
-C#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
-C        regQh = regQc
-C        regQo = regQc
-C#endif
+#ifdef DARWIN_ALLOW_NQUOTA
+        regQn = MAX(0., MIN(1., (Qnmax(jz)-Qn(jz))/
+     &                          (Qnmax(jz)-Qnmin(jz)) ))
+        regQc = MIN(regQc, 1.0 _d 0 - regQn)
+        regQn = regQn**hillnumGraz
+#endif
+#ifdef DARWIN_ALLOW_PQUOTA
+        regQp = MAX(0., MIN(1., (Qpmax(jz)-Qp(jz))/
+     &                          (Qpmax(jz)-Qpmin(jz)) ))
+        regQc = MIN(regQc, 1.0 _d 0 - regQp)
+        regQp = regQp**hillnumGraz
+#endif
+#ifdef DARWIN_ALLOW_FEQUOTA
+        regQfe= MAX(0., MIN(1., (Qfemax(jz)-Qfe(jz))/
+     &                          (Qfemax(jz)-Qfemin(jz)) ))
+        regQc = MIN(regQc, 1.0 _d 0 - regQfe)
+        regQfe=regQfe**hillnumGraz
+#endif
+        regQc = regQc**hillnumGraz
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+        regQh = regQc
+        regQo = regQc
+#endif
         sumprey = 0.0
         sumpref = 0.0
         DO jp = 1, nplank
