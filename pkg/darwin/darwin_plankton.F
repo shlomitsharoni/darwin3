@@ -515,8 +515,8 @@ C==== Make all bio fields non-negative and compute quotas ==============
 
       DO j = 1, nplank
 #ifdef DARWIN_ALLOW_VARIABLE_CHNOP      
- first write it as a constant value, and for phototrophs it will get 
- updated inside of the MARCROMOL LOOP
+C first write the Qo, Qh as a constant value, and for phototrophs it will get 
+C updated inside of the MARCROMOL LOOP
        Qo(j) = 0.50 _d 0
        Qh(j) = 1.80 _d 0
 #endif
