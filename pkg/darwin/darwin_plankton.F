@@ -1698,7 +1698,7 @@ c production of O2 by photosynthesis
 #else
       gTr(iO2  )=gTr(iO2  ) + R_OP*consumPO4
       diags(iProdO2) = diags(iProdO2) + R_OP*consumPO4
-#end
+#endif
 c loss of O2 by remineralization
       IF (O2 .GE. O2crit) THEN
         gTr(iO2)=gTr(iO2) - consumO2
