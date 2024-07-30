@@ -336,6 +336,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Scal_coeff
       _RL QC_CSTO
       _RL dROP
+      -RL RQ_OC
       _RL QN_pro_const
       _RL QN_DNA_plot
       _RL QP_const_plot
@@ -1091,15 +1092,15 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23
      &     + ( QN_store*Y_CN_cyano(j)) * 1.901
 
-            IF (Qp(j) .NE. 0 _d 0) THEN   
+C            IF (Qp(j) .NE. 0 _d 0) THEN   
 C        MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
 C              dROP = (RQ(j))/Qp(j)
-              dROP = (1.35 _d 0)/Qp(j)
-            ENDIF 
+C              dROP = (1.35 _d 0)/Qp(j)
+C            ENDIF 
 
-#ifdef DARWIN_ALLOW_VARIABLE_CHNOP            
-        R_OP = dROP 
-#endif
+C        RQ_OC = RQ(j)
+        RQ_OC = 1.35
+
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iVP  +j-1) = VP
@@ -1691,8 +1692,13 @@ C==== Apply remaining tendencies =======================================
 
 #ifdef DARWIN_ALLOW_CARBON
 c production of O2 by photosynthesis
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
+      gTr(iO2  )=gTr(iO2  ) + RQ_OC*growth
+      diags(iProdO2) = diags(iProdO2) + RQ_OC*growth
+#else
       gTr(iO2  )=gTr(iO2  ) + R_OP*consumPO4
       diags(iProdO2) = diags(iProdO2) + R_OP*consumPO4
+#end
 c loss of O2 by remineralization
       IF (O2 .GE. O2crit) THEN
         gTr(iO2)=gTr(iO2) - consumO2
