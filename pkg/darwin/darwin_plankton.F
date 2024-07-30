@@ -495,16 +495,16 @@ C==== Make all bio fields non-negative and compute quotas ==============
       POH  = MAX(0., Ptr(iPOH))
       DOO  = MAX(0., Ptr(iDOO))
       DOH  = MAX(0., Ptr(iDOH))
-      IF (POC .NE. 0 _d 0) THEN
-      RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
-      ELSE
-      RQ_POC = 170/120.0
-      ENDIF
-      IF (DOC .NE. 0 _d 0) THEN
-      RQ_DOC = (DOC+0.25*DOH+1.25*DON+1.25*DOP-0.5*DOO)/(DOC)
-      ELSE
-      RQ_DOC = 170/120.0
-      ENDIF
+C      IF (POC .NE. 0 _d 0) THEN
+C      RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
+C      ELSE
+      RQ_POC = 1.35 _d 0
+C      ENDIF
+C      IF (DOC .NE. 0 _d 0) THEN
+C      RQ_DOC = (DOC+0.25*DOH+1.25*DON+1.25*DOP-0.5*DOO)/(DOC)
+C      ELSE
+      RQ_DOC = 1.35 _d 0
+C      ENDIF
 #endif
 #ifdef DARWIN_ALLOW_CARBON
       O2   = MAX(0., Ptr(iO2))
@@ -1093,12 +1093,13 @@ C       ! shlomit: Calclate the O2:P ratio
 
             IF (Qp(j) .NE. 0 _d 0) THEN   
 C        MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
-              dROP = (RQ(j))/Qp(j)
+C              dROP = (RQ(j))/Qp(j)
+              dROP = (1.35 _d 0)/Qp(j)
             ENDIF 
 
-C#ifdef DARWIN_ALLOW_VARIABLE_CHNOP            
-C        R_OP = dROP 
-C#endif
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP            
+        R_OP = dROP 
+#endif
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
         diags(iVP  +j-1) = VP
