@@ -336,7 +336,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Scal_coeff
       _RL QC_CSTO
       _RL dROP
-      -RL RQ_OC
+      _RL RQ_OC
       _RL QN_pro_const
       _RL QN_DNA_plot
       _RL QP_const_plot
