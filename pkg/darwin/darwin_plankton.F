@@ -1783,6 +1783,7 @@ C     DOC is created by #4 PA-assoc solubilization and consumed by #5
 C shlomit, remineralization goes directly to nitrate
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       gTr(iNO3 )=gTr(iNO3 ) + reminPON
+      gTr(iNH4 )=0.0 _d 0
 #endif
       gTr(iPO4 )=gTr(iPO4 ) + reminPOP
       gTr(iFeT )=gTr(iFeT ) + reminPOFe
