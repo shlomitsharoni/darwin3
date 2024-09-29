@@ -1049,17 +1049,10 @@ C       Carbon-specific FeT uptake rate
             uptakeFeT = Vfe*mmX
 
 
-C       exQc = cc(PCc-PC)*0.3
 
-C          PCg = PChl * QC_chl
-C        ! shlomit: New C exudation term
-C          IF (tauExC(j) .NE. 0 _d 0 .AND. exQn .EQ. 0 _d 0) THEN
-C           BC_all = (/ VN/mmQn, VP/mmQP, Vfe/mmQfe /)
-C           BC = MAX(MINVAL(BC_all), 0 _d 0)
-C           exQc = MAX(0., PCg - BC)*0.3
-C          ELSE
+
             exQc = 0 _d 0
-C          ENDIF
+  
         
 C       ! shlomit: Calclate the O2:P ratio 
         QC_CSTO = MAX(1 - QC_essential - QN_store * Y_CN_cyano(j) ,0.)
@@ -2210,7 +2203,7 @@ C to DIC as if it had never been synthesized.
         gTr(in+jp-1)=gTr(in+jp-1)  - mort_c(jp)*Qn(jp)
 #endif
 #ifdef DARWIN_ALLOW_PQUOTA
-        gTr(ip+jp-1)=gTr(ip+jp-1)  - mort_c(jp)*Qp(jp)
+        jp-1)=gTr(ip+jp-1)  - mort_c(jp)*Qp(jp)
 #endif
 #ifdef DARWIN_ALLOW_SIQUOTA
         gTr(isi+jp-1)=gTr(isi+jp-1) - mort_c(jp)*Qsi(jp)
