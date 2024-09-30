@@ -925,7 +925,7 @@ C        Calculate the growth rate as a function of macromolecular composition
 
 C       Case 2: Light limitation, growth rate is zero, QC_chl is calculated based on cellular mass balance
         ELSE
-C         MODE = 5 _d 0
+         MODE = 5 _d 0
          LIML = 1 _d 0
          PC = 0. _d 0
          PCc= 0. _d 0 
