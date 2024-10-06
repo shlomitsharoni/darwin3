@@ -2203,7 +2203,7 @@ C to DIC as if it had never been synthesized.
         gTr(in+jp-1)=gTr(in+jp-1)  - mort_c(jp)*Qn(jp)
 #endif
 #ifdef DARWIN_ALLOW_PQUOTA
-        jp-1)=gTr(ip+jp-1)  - mort_c(jp)*Qp(jp)
+        gTr(ip+jp-1)=gTr(ip+jp-1)  - mort_c(jp)*Qp(jp)
 #endif
 #ifdef DARWIN_ALLOW_SIQUOTA
         gTr(isi+jp-1)=gTr(isi+jp-1) - mort_c(jp)*Qsi(jp)
