@@ -28,6 +28,7 @@ C Contains indices into diagnostics array
       integer iConsALK
       integer iSrcAlk
       integer iaMacro
+      integer ichnop
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       integer iPChl, iVN, iVP
       integer iCChl, iNChl, iNPho, iNSyn, iNPrn, iNRNA
@@ -42,7 +43,6 @@ C Contains indices into diagnostics array
       integer irespPOO, irespPOH, irespDOO, irespDOH
       integer igraz2POO, igraz2POH, igraz2DOO, igraz2DOH
       integer iExudePOO, iExudePOH, iExudeDOO, iExudeDOH
-      integer ichnop
 #endif
       integer iConsO2
       integer iProdO2
