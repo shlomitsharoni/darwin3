@@ -171,7 +171,7 @@ C Contains indices into diagnostics array
       PARAMETER(iPPplank=iDmin+1)
 # endif
 #else
-      PARAMETER(iPPplank=iaMacro)
+      PARAMETER(iPPplank=ichnop)
 #endif
 #ifdef DARWIN_DIAG_PERTYPE
       PARAMETER(iPCplank=iPPplank+nplank)
