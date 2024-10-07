@@ -148,7 +148,7 @@ C Contains indices into diagnostics array
       PARAMETER(iExudeDOH= iExudeDOO+1)
       PARAMETER(ichnop=  iExudeDOH+1)
 #else
-     PARAMTER(ichnop= iaMacro)  
+      PARAMETER(ichnop= iaMacro)  
 #endif
 #ifdef DARWIN_ALLOW_CSTORE
       PARAMETER(iEX=  ichnop)
