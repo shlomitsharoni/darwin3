@@ -336,6 +336,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL Scal_coeff
       _RL QC_CSTO
       _RL dROP
+      _RL RQ_DOC
       _RL RQ_OC
       _RL QN_pro_const
       _RL QN_DNA_plot
@@ -366,7 +367,6 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL ExudeDOH
       _RL Qo(nplank)
       _RL Qh(nplank)
-      _RL RQ(nplank)
       _RL regQo
       _RL regQh
       _RL graz2POO
@@ -1066,6 +1066,7 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_RNA*Y_CN_RNA(j)) *  1.57
      &     + ( QN_store*Y_CN_cyano(j)) * 1.85
 
+#ifdef DARWIN_ALLOW_VARIABLE_CHNOP
         Qo(j) = ( QN_pro_tot*Y_CN_protein(j))* 0.47 
      &     + ( QC_other(j)/2  + QC_CSTO/2) * 0.12
      &     + ( Y_PC_pg(j) * QP_thy)* 0.21
@@ -1084,7 +1085,7 @@ C       ! shlomit: Calclate the O2:P ratio
      &     + ( QN_DNA_plot*Y_CN_DNA(j)) * 1.26 
      &     + ( QN_RNA*Y_CN_RNA(j)) * 1.23
      &     + ( QN_store*Y_CN_cyano(j)) * 1.901
-
+#endif
 C            IF (Qp(j) .NE. 0 _d 0) THEN   
 C        MAX(0., X(j)/Ptr(ip+j-1) ) ! RQ/mmQp
 C              dROP = (RQ(j))/Qp(j)
