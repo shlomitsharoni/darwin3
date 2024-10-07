@@ -338,6 +338,7 @@ C@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
       _RL dROP
       _RL RQ_DOC
       _RL RQ_OC
+      _RL RQ
       _RL QN_pro_const
       _RL QN_DNA_plot
       _RL QP_const_plot
