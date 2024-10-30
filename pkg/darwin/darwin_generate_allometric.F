@@ -367,7 +367,7 @@ C real parameters
         ksatPOFe(jp) = ksatPON(jp)/R_NC(jp)*R_FeC(jp)
         ksatDOC(jp)  = ksatDON(jp)/R_NC(jp)
         ksatDOP(jp)  = ksatDON(jp)/R_NC(jp)*R_PC(jp)
-        (jp) = ksatDON(jp)/R_NC(jp)*R_FeC(jp)
+        ksatDOFe(jp) = ksatDON(jp)/R_NC(jp)*R_FeC(jp)
 
 C ----------------------------------------------------------------------
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
