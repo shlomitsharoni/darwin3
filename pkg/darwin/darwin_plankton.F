@@ -499,12 +499,12 @@ C==== Make all bio fields non-negative and compute quotas ==============
 c      IF (POC .NE. 0 _d 0) THEN
 c      RQ_POC = (POC+0.25*POH+1.25*PON+1.25*POP-0.5*POO)/(POC)
 c      ELSE
-      RQ_POC = 1.3 _d 0
+      RQ_POC = 1.5 _d 0
 c      ENDIF
 c      IF (DOC .NE. 0 _d 0) THEN
 c      RQ_DOC = (DOC+0.25*DOH+1.25*DON+1.25*DOP-0.5*DOO)/(DOC)
 c      ELSE
-      RQ_DOC = 1.3 _d 0
+      RQ_DOC = 1.5 _d 0
 c      ENDIF
 #endif
 #ifdef DARWIN_ALLOW_CARBON
@@ -1093,7 +1093,7 @@ C              dROP = (1.35 _d 0)/Qp(j)
 C            ENDIF 
 
 c        RQ_OC = RQ(j)
-        RQ_OC = 1.3
+        RQ_OC = 1.5
 
         diags(iPChl+j-1) = PChl
         diags(iVN  +j-1) = VN
