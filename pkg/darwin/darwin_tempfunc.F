@@ -134,10 +134,10 @@ c      mortFun = 1.0 _d 0
 c      mort2Fun = 1.0 _d 0
       uptakeFun = 1.0 _d 0
 c ### shlomit: need to add: DARWIN_MACROMOLECULAR_ALLOW_TEMP 
-c      macromolFun = exp(-8470.0*(1.0 _d 0/(Temp+Tkel) -
-c     &                       1.0 _d 0/(TemprefArr) ) )
-c      macromolFun =  max(macromolFun , 1. _d -10)
-      macromolFun = 1. _d 0
+      macromolFun = exp(-8470.0*(1.0 _d 0/(Temp+Tkel) -
+     &                       1.0 _d 0/(TemprefArr) ) )
+      macromolFun =  max(macromolFun , 1. _d -10)
+c      macromolFun = 1. _d 0
 
 c ++++++++++++++ END VERSION 2 +++++++++++++++++++++++++++++++++++++++
 
@@ -192,10 +192,10 @@ cswd -- temperature range
       mort2Fun  = EXP(mort2TempAe*(Temp - Tempref))
       uptakeFun = EXP(uptakeTempAe*(Temp - Tempref))
 c ### shlomit: need to add: DARWIN_MACROMOLECULAR_ALLOW_TEMP 
-c      macromolFun = exp(-8470.0*(1.0 _d 0/(Temp+Tkel) -
-c     &                       1.0 _d 0/(TemprefArr) ) )
-c      macromolFun =  max(macromolFun , 1. _d -10)
-      macromolFun = 1. _d 0
+      macromolFun = exp(-8470.0*(1.0 _d 0/(Temp+Tkel) -
+     &                       1.0 _d 0/(TemprefArr) ) )
+      macromolFun =  max(macromolFun , 1. _d -10)
+c      macromolFun = 1. _d 0
 c ++++++++++++++ END VERSION 4 +++++++++++++++++++++++++++++++++++++++
 
 #else
