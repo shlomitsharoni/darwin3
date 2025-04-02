@@ -488,13 +488,13 @@ C     used to be 120D-20 for phyto
 #ifdef DARWIN_MACROMOLECULAR_GROWTH
       a_A_pho = 16.0 _d 0
       a_THY_P = 0.028163 _d 0
-      a_CN_pro = 4.49 _d 0
+      a_CN_pro = 5.3 _d 0 /1.4 _d 0
       a_FeN_photo = 0.00163 _d 0
       a_NC_chl = 4.0 _d 0/55.0 _d 0
       a_CN_cyano =  2.0 _d 0
-      a_PN_nucacid = 0.2644 _d 0
-      a_CN_DNA = 2.9370 _d 0
-      a_CN_RNA = 2.8277 _d 0
+      a_PN_nucacid = 1. _d 0 /3.75 _d 0
+      a_CN_DNA = 9.75 _d 0 /3.75 _d 0
+      a_CN_RNA = 9.50 _d 0 /3.75 _d 0
       a_R_PCpg = 40. _d 0
       a_ECo2Prod = 0.774 _d 0
       a_maintConsum = 0.393 _d 0/3600/24
